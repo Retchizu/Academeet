@@ -13,20 +13,21 @@ import AddPhotoScreen from "./screens/AddPhotoScreen";
 import NameScreen from "./screens/NameScreen";
 import GenderScreen from "./screens/GenderScreen";
 import TopicScreen from "./screens/TopicScreen";
+import InterestScreen from "./screens/InterestScreen";
 
 const Stack = createNativeStackNavigator();
 
 const App = () => (
   <NavigationContainer>
 
-    <Stack.Navigator initialRouteName="TopicScreen">
+    <Stack.Navigator initialRouteName="NameScreen">
       <Stack.Screen
         name="TopicScreen"
         component={TopicScreen}
         options={{ headerShown: false, statusBarHidden: true }}
       />
       <Stack.Screen
-        name="GenderSreen"
+        name="GenderScreen"
         component={GenderScreen}
         options={{ headerShown: false, statusBarHidden: true }}
       />
@@ -75,6 +76,11 @@ const App = () => (
       <Stack.Screen
         name="NameScreen"
         component={NameScreen}
+        options={{ headerShown: false, statusBarHidden: true }}
+      />
+      <Stack.Screen
+        name="InterestScreen"
+        component={InterestScreen}
         options={{ headerShown: false, statusBarHidden: true }}
       />
     </Stack.Navigator>

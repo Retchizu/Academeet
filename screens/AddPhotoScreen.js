@@ -63,7 +63,7 @@ const AddPhotoScreen = () => {
       </View>
       <TouchableOpacity
         style={styles.nextIconContainer}
-        onPress={goToNextScreen}
+        onPress={() => navigation.navigate("GenderScreen")}
       >
         <SvgXml xml={SVGnext} width={45} height={45} style={styles.nextIcon} />
       </TouchableOpacity>
