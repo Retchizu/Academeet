@@ -17,7 +17,7 @@ const Stack = createNativeStackNavigator();
 
 const App = () => (
   <NavigationContainer>
-    <Stack.Navigator initialRouteName="ReminderScreen">
+    <Stack.Navigator initialRouteName="NameScreen">
       <Stack.Screen
         name="ReminderScreen"
         component={ReminderScreen}
