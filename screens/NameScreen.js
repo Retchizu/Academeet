@@ -1,3 +1,5 @@
+// NameScreen.js
+
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, TextInput } from "react-native";
 import { loadFont } from "../misc/loadFont";
@@ -5,6 +7,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-nat
 import { SvgXml } from "react-native-svg";
 import { SVGnext } from "../misc/loadSVG";
 import { useNavigation } from "@react-navigation/native";
+import * as Progress from "react-native-progress";
 
 const NameScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -16,16 +19,21 @@ const NameScreen = () => {
     loadFont().then(() => setFontLoaded(true));
   }, []);
 
-  if (!fontLoaded) {
-    return null;
-  }
 
   const goToNextScreen = () => {
     navigation.navigate("ProgramScreen");
   };
 
+  if (!fontLoaded) {
+    return null;
+  }
+
   return (
     <View style={styles.container}>
+      <View style={styles.progressBarContainer}>
+        <Progress.Bar progress={0.1} width={wp(90)} color="#FF6D00" />
+      </View>
+
       <View style={styles.titleContainer}>
         <Text style={styles.logoText}>What's your name?</Text>
         <Text style={styles.description}>Please introduce yourself.</Text>
@@ -39,7 +47,10 @@ const NameScreen = () => {
           placeholderTextColor="#6D6D6D"
         />
       </View>
-      <TouchableOpacity style={styles.nextIconContainer} onPress={goToNextScreen}>
+      <TouchableOpacity
+        style={styles.nextIconContainer}
+        onPress={goToNextScreen}
+      >
         <SvgXml xml={SVGnext} width={45} height={45} style={styles.nextIcon} />
       </TouchableOpacity>
     </View>
@@ -55,7 +66,7 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     textAlign: "left",
     paddingRight: wp(25),
-    paddingTop: hp(1)
+    paddingTop: hp(1),
   },
   description: {
     fontFamily: "lato-light",
@@ -73,7 +84,7 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     position: "absolute",
-    top: hp(7),
+    top: hp(15), 
     alignItems: "flex-start",
     paddingLeft: wp(5),
   },
@@ -102,6 +113,15 @@ const styles = StyleSheet.create({
   },
   nextIcon: {
     tintColor: "#FFFFFF",
-    paddingRight: wp(20)
+    paddingRight: wp(20),
+  },
+  progressBarContainer: {
+    position: "absolute",
+    top: 0, 
+    left: 0,
+    right: 0,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: hp(2),
   },
 });

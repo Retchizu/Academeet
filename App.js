@@ -18,6 +18,7 @@ const Stack = createNativeStackNavigator();
 
 const App = () => (
   <NavigationContainer>
+
     <Stack.Navigator initialRouteName="TopicScreen">
       <Stack.Screen
         name="TopicScreen"
@@ -29,6 +30,7 @@ const App = () => (
         component={GenderScreen}
         options={{ headerShown: false, statusBarHidden: true }}
       />
+
       <Stack.Screen
         name="ReminderScreen"
         component={ReminderScreen}
