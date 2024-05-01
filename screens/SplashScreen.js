@@ -7,11 +7,17 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { SVGLogo } from "../misc/loadSVG";
+import LandingScreen from "./LandingScreen";
 
 const SplashScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
+  const [isShowSplash, setIsShowSplash] = useState(true);
+
   useEffect(() => {
     loadFont().then(() => setFontLoaded(true));
+    setTimeout(() => {
+      setIsShowSplash(false);
+    }, 3000);
   }, []);
 
   if (!fontLoaded) {
@@ -20,8 +26,14 @@ const SplashScreen = () => {
 
   return (
     <View style={styles.container}>
-      <SvgXml xml={SVGLogo}/>
-      <Text style={styles.logoText}>academeet</Text>
+      {isShowSplash ? (
+        <>
+          <SvgXml xml={SVGLogo} />
+          <Text style={styles.logoText}>academeet</Text>
+        </>
+      ) : (
+        <LandingScreen />
+      )}
     </View>
   );
 };
