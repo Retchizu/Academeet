@@ -13,9 +13,12 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { SVGLogo } from "../misc/loadSVG";
+import { useNavigation } from "@react-navigation/native";
 import { Entypo } from "@expo/vector-icons";
 
 const LogInScreen = () => {
+  const navigation = useNavigation();
+
   const [fontLoaded, setFontLoaded] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [username, setUsername] = useState("");
@@ -70,7 +73,9 @@ const LogInScreen = () => {
       <View style={styles.registerContainer}>
         <Text style={styles.registerText}>
           Don't have an account yet?{" "}
-          <TouchableOpacity onPress={() => console.log("nav to reg")}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("RegisterScreen")}
+          >
             <Text style={styles.registerLink}>Register here.</Text>
           </TouchableOpacity>
         </Text>
