@@ -18,5 +18,50 @@ const SVGLogo = `
 </svg>
 
 `;
+const SVGnext =`<svg width="97" height="89" viewBox="0 0 97 89" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_d_387_344)">
+<rect x="4" width="89" height="81" rx="30" fill="#FF9E00"/>
+</g>
+<path d="M58.682 38.0313L45.2016 24.551C43.967 23.3163 41.9434 23.3163 40.7087 24.551L39.5837 25.676C38.349 26.9093 38.349 28.9329 39.5837 30.1676L49.869 40.4557L39.5823 50.7424C38.3476 51.9771 38.3476 54.0007 39.5823 55.234L40.7073 56.359C41.942 57.5951 43.9655 57.5951 45.2002 56.359L58.6805 42.8773C59.3443 42.2149 59.6396 41.3262 59.5904 40.4543C59.641 39.5838 59.3457 38.6951 58.682 38.0313Z" fill="#515151"/>
+<defs>
+<filter id="filter0_d_387_344" x="0" y="0" width="97" height="89" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="2"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_387_344"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_387_344" result="shape"/>
+</filter>
+</defs>
+</svg>
+`;
 
-export { SVGLogo };
+const SVGprevious = `<svg width="97" height="89" viewBox="0 0 97 89" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_d_0_1)">
+<rect x="4" width="89" height="81" rx="30" fill="#FF9E00"/>
+</g>
+<path d="M39.914 43.2548L53.3943 56.7351C54.629 57.9698 56.6526 57.9698 57.8873 56.7351L59.0123 55.6101C60.247 54.3768 60.247 52.3532 59.0123 51.1186L48.727 40.8304L59.0137 30.5437C60.2484 29.309 60.2484 27.2854 59.0137 26.0521L57.8887 24.9271C56.654 23.6911 54.6304 23.6911 53.3957 24.9271L39.9154 38.4089C39.2517 39.0712 38.9563 39.96 39.0056 40.8318C38.9549 41.7023 39.2502 42.5911 39.914 43.2548Z" fill="#515151"/>
+<defs>
+<filter id="filter0_d_0_1" x="0" y="0" width="97" height="89" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="2"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_0_1"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_0_1" result="shape"/>
+</filter>
+</defs>
+</svg>
+
+
+`;
+const dropDown = `<svg width="35" height="22" viewBox="0 0 35 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M19.893 20.3862L33.3733 6.90593C34.608 5.67124 34.608 3.64764 33.3733 2.41296L32.2483 1.28796C31.015 0.0532696 28.9914 0.0532696 27.7567 1.28796L17.4686 11.5733L7.18189 1.28655C5.9472 0.0518628 3.92361 0.0518628 2.69033 1.28655L1.56533 2.41155C0.329235 3.64624 0.329235 5.66983 1.56533 6.90452L15.047 20.3848C15.7094 21.0486 16.5981 21.3439 17.47 21.2947C18.3405 21.3453 19.2292 21.05 19.893 20.3862Z" fill="#515151"/>
+</svg>
+`;
+
+export { SVGLogo, SVGnext, SVGprevious, dropDown };
