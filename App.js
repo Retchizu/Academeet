@@ -6,12 +6,15 @@ import LandingScreen from "./screens/LandingScreen";
 import SplashScren from "./screens/SplashScreen";
 import LogInScreen from "./screens/LogInScreen";
 import RegisterScreen from "./screens/RegisterScreen";
+import ProgramScreen from "./screens/ProgramScreen";
+import AddPhotoScreen from "./screens/AddPhotoScreen";
+import NameScreen from "./screens/NameScreen";
 
 const Stack = createNativeStackNavigator();
 
 const App = () => (
   <NavigationContainer>
-    <Stack.Navigator initialRouteName="SplashScreen">
+    <Stack.Navigator initialRouteName="ProgramScreen">
       <Stack.Screen
         name="SplashScreen"
         component={SplashScren}
@@ -30,6 +33,21 @@ const App = () => (
       <Stack.Screen
         name="RegisterScreen"
         component={RegisterScreen}
+        options={{ headerShown: false, statusBarHidden: true }}
+      />
+      <Stack.Screen
+        name="ProgramScreen"
+        component={ProgramScreen}
+        options={{ headerShown: false, statusBarHidden: true }}
+      />
+      <Stack.Screen
+        name="AddPhotoScreen"
+        component={AddPhotoScreen}
+        options={{ headerShown: false, statusBarHidden: true }}
+      />
+      <Stack.Screen
+        name="NameScreen"
+        component={NameScreen}
         options={{ headerShown: false, statusBarHidden: true }}
       />
     </Stack.Navigator>
