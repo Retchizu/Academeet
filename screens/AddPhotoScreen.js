@@ -8,7 +8,10 @@ import {
   FlatList,
 } from "react-native";
 import { loadFont } from "../misc/loadFont";
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 import { SvgXml } from "react-native-svg";
 import { SVGnext, SVGprevious } from "../misc/loadSVG";
 import { useNavigation } from "@react-navigation/native";
@@ -50,14 +53,26 @@ const AddPhotoScreen = () => {
       <View style={styles.titleContainer}>
         <Text style={styles.logoText}>Add your first photo!</Text>
         <Text style={styles.description}>
-        This is something to make you known for other students like you. Of course, you can definitely change it later.
+          This is something to make you known for other students like you. Of
+          course, you can definitely change it later.
         </Text>
       </View>
-      <TouchableOpacity style={styles.nextIconContainer} onPress={goToNextScreen}>
+      <TouchableOpacity
+        style={styles.nextIconContainer}
+        onPress={goToNextScreen}
+      >
         <SvgXml xml={SVGnext} width={45} height={45} style={styles.nextIcon} />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.previousIconContainer} onPress={() => navigation.navigate("ProgramScreen")}>
-        <SvgXml xml={SVGprevious} width={45} height={45} style={styles.previousIcon} />
+      <TouchableOpacity
+        style={styles.previousIconContainer}
+        onPress={() => navigation.navigate("ProgramScreen")}
+      >
+        <SvgXml
+          xml={SVGprevious}
+          width={45}
+          height={45}
+          style={styles.previousIcon}
+        />
       </TouchableOpacity>
     </View>
   );
@@ -157,10 +172,10 @@ const styles = StyleSheet.create({
   },
   nextIcon: {
     tintColor: "#FFFFFF",
-    paddingRight: wp(20)
+    paddingRight: wp(20),
   },
   previousIcon: {
     tintColor: "#FFFFFF",
-    paddingLeft: wp(20)
+    paddingLeft: wp(20),
   },
 });

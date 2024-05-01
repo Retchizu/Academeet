@@ -11,13 +11,24 @@ import ReminderScreen from "./screens/ReminderScreen";
 import ProgramScreen from "./screens/ProgramScreen";
 import AddPhotoScreen from "./screens/AddPhotoScreen";
 import NameScreen from "./screens/NameScreen";
-
+import GenderScreen from "./screens/GenderScreen";
+import TopicScreen from "./screens/TopicScreen";
 
 const Stack = createNativeStackNavigator();
 
 const App = () => (
   <NavigationContainer>
-    <Stack.Navigator initialRouteName="ReminderScreen">
+    <Stack.Navigator initialRouteName="TopicScreen">
+      <Stack.Screen
+        name="TopicScreen"
+        component={TopicScreen}
+        options={{ headerShown: false, statusBarHidden: true }}
+      />
+      <Stack.Screen
+        name="GenderSreen"
+        component={GenderScreen}
+        options={{ headerShown: false, statusBarHidden: true }}
+      />
       <Stack.Screen
         name="ReminderScreen"
         component={ReminderScreen}
@@ -28,7 +39,7 @@ const App = () => (
         component={BlurScreen}
         options={{ headerShown: false, statusBarHidden: true }}
       />
-    
+
       <Stack.Screen
         name="SplashScreen"
         component={SplashScren}
