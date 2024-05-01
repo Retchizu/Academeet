@@ -6,12 +6,24 @@ import LandingScreen from "./screens/LandingScreen";
 import SplashScren from "./screens/SplashScreen";
 import LogInScreen from "./screens/LogInScreen";
 import RegisterScreen from "./screens/RegisterScreen";
+import BlurScreen from "./screens/BlurScreen";
+import ReminderScreen from "./screens/ReminderScreen";
 
 const Stack = createNativeStackNavigator();
 
 const App = () => (
   <NavigationContainer>
-    <Stack.Navigator initialRouteName="SplashScreen">
+    <Stack.Navigator initialRouteName="ReminderScreen">
+      <Stack.Screen
+        name="ReminderScreen"
+        component={ReminderScreen}
+        options={{ headerShown: false, statusBarHidden: true }}
+      />
+      <Stack.Screen
+        name="BlurScreen"
+        component={BlurScreen}
+        options={{ headerShown: false, statusBarHidden: true }}
+      />
       <Stack.Screen
         name="SplashScreen"
         component={SplashScren}
