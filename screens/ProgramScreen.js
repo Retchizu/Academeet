@@ -17,6 +17,7 @@ import { dropDown, SVGnext, SVGprevious } from "../misc/loadSVG";
 import { useNavigation } from "@react-navigation/native";
 import AddPhotoScreen from "./AddPhotoScreen";
 import NameScreen from "./NameScreen";
+import * as Progress from "react-native-progress";
 
 const ProgramScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -29,27 +30,12 @@ const ProgramScreen = () => {
     "Multimedia Arts",
     "Entrepreneurship",
     "Broadcasting",
-    "Psychology",
-    "Accountancy",
-    "Accounting Information System",
-    "Criminology",
-    "Political Science",
-    "Architecture",
-    "Astronomy",
-    "Civil Engineering",
-    "Electrical Engineering",
-    "Industrial Engineering",
-    "Mechanical Engineering",
-    "Medical Technology",
-    "Music Education",
-    "Choral Conducting",
-    "Self-Study"
+
   ];
   programs.sort();
 
   const containerRef = useRef(null);
   const navigation = useNavigation();
-  
 
   useEffect(() => {
     loadFont().then(() => setFontLoaded(true));
@@ -70,6 +56,10 @@ const ProgramScreen = () => {
 
   return (
     <View style={styles.container} ref={containerRef}>
+      <View style={styles.progressBarContainer}>
+        <Progress.Bar progress={0.3} width={wp(90)} color="#FF6D00" />
+      </View>
+
       <View style={styles.titleContainer}>
         <Text style={styles.logoText}>How about your program?</Text>
         <Text style={styles.description}>
@@ -220,10 +210,19 @@ const styles = StyleSheet.create({
   },
   nextIcon: {
     tintColor: "#FFFFFF",
-    paddingRight: wp(20)
+    paddingRight: wp(20),
   },
   previousIcon: {
     tintColor: "#FFFFFF",
-    paddingLeft: wp(20)
+    paddingLeft: wp(20),
+  },
+  progressBarContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: hp(2),
   },
 });
