@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import LandingScreen from "./screens/LandingScreen";
-import SplashScren from "./screens/SplashScreen";
+import SplashScreen from "./screens/SplashScreen";
 import LogInScreen from "./screens/LogInScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 
@@ -14,7 +14,7 @@ const App = () => (
     <Stack.Navigator initialRouteName="SplashScreen">
       <Stack.Screen
         name="SplashScreen"
-        component={SplashScren}
+        component={SplashScreen}
         options={{ headerShown: false, statusBarHidden: true }}
       />
       <Stack.Screen

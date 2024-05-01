@@ -1,7 +1,7 @@
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import { loadFont } from "../misc/loadFont";
 import React, { useState, useEffect } from "react";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { SvgXml } from "react-native-svg";
+import { useNavigation } from "@react-navigation/native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -9,9 +9,13 @@ import {
 import { SVGLogo } from "../misc/loadSVG";
 
 const LandingScreen = () => {
+  const navigation = useNavigation();
+
   const [fontLoaded, setFontLoaded] = useState(false);
   useEffect(() => {
-    loadFont().then(() => setFontLoaded(true));
+    setTimeout(() => {
+      setFontLoaded(true);
+    }, 1000);
   }, []);
 
   if (!fontLoaded) {
@@ -22,10 +26,16 @@ const LandingScreen = () => {
       <SvgXml xml={SVGLogo} />
       <Text style={styles.logoText}>academeet</Text>
       <View style={styles.buttonsContainer}>
-        <TouchableOpacity style={[styles.button, styles.loginButton]}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("LogInScreen")}
+          style={[styles.button, styles.loginButton]}
+        >
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.button, styles.registerButton]}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("RegisterScreen")}
+          style={[styles.button, styles.registerButton]}
+        >
           <Text style={styles.buttonText}>Register</Text>
         </TouchableOpacity>
       </View>
@@ -64,15 +74,15 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    width: wp(30), 
-    justifyContent: "center", 
-    alignItems: "center", 
+    width: wp(30),
+    justifyContent: "center",
+    alignItems: "center",
   },
   registerButton: {
-    backgroundColor: "#0077B6", 
+    backgroundColor: "#0077B6",
   },
   loginButton: {
-    backgroundColor: "#FF9E00", 
+    backgroundColor: "#FF9E00",
   },
   buttonText: {
     fontFamily: "lato-light",
