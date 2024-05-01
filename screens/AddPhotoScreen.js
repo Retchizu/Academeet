@@ -8,10 +8,14 @@ import {
   FlatList,
 } from "react-native";
 import { loadFont } from "../misc/loadFont";
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 import { SvgXml } from "react-native-svg";
 import { SVGnext, SVGprevious } from "../misc/loadSVG";
 import { useNavigation } from "@react-navigation/native";
+import * as Progress from "react-native-progress";
 
 const AddPhotoScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -47,17 +51,32 @@ const AddPhotoScreen = () => {
 
   return (
     <View style={styles.container} ref={containerRef}>
+      <View style={styles.progressBarContainer}>
+        <Progress.Bar progress={0.4} width={wp(90)} color="#FF6D00" />
+      </View>
       <View style={styles.titleContainer}>
         <Text style={styles.logoText}>Add your first photo!</Text>
         <Text style={styles.description}>
-        This is something to make you known for other students like you. Of course, you can definitely change it later.
+          This is something to make you known for other students like you. Of
+          course, you can definitely change it later.
         </Text>
       </View>
-      <TouchableOpacity style={styles.nextIconContainer} onPress={goToNextScreen}>
+      <TouchableOpacity
+        style={styles.nextIconContainer}
+        onPress={goToNextScreen}
+      >
         <SvgXml xml={SVGnext} width={45} height={45} style={styles.nextIcon} />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.previousIconContainer} onPress={() => navigation.navigate("ProgramScreen")}>
-        <SvgXml xml={SVGprevious} width={45} height={45} style={styles.previousIcon} />
+      <TouchableOpacity
+        style={styles.previousIconContainer}
+        onPress={() => navigation.navigate("ProgramScreen")}
+      >
+        <SvgXml
+          xml={SVGprevious}
+          width={45}
+          height={45}
+          style={styles.previousIcon}
+        />
       </TouchableOpacity>
     </View>
   );
@@ -66,6 +85,16 @@ const AddPhotoScreen = () => {
 export default AddPhotoScreen;
 
 const styles = StyleSheet.create({
+  progressBarContainer: {
+    position: "absolute",
+    top: 0, 
+    left: 0, 
+    right: 0, 
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: hp(2),
+    zIndex: 1, 
+  },
   logoText: {
     fontFamily: "lato-regular",
     fontSize: wp(8),
@@ -157,10 +186,10 @@ const styles = StyleSheet.create({
   },
   nextIcon: {
     tintColor: "#FFFFFF",
-    paddingRight: wp(20)
+    paddingRight: wp(20),
   },
   previousIcon: {
     tintColor: "#FFFFFF",
-    paddingLeft: wp(20)
+    paddingLeft: wp(20),
   },
 });
