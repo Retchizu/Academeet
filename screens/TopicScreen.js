@@ -13,6 +13,8 @@ import {
 } from "react-native-responsive-screen";
 import { SvgXml } from "react-native-svg";
 import { SVGnext, SVGprevious } from "../misc/loadSVG";
+import { useNavigation } from "@react-navigation/native";
+import * as Progress from "react-native-progress";
 
 const topics = [
   { key: 1, label: "Programming" },
@@ -28,6 +30,7 @@ const topics = [
 const TopicScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
   const [selectedTopics, setSelectedTopics] = useState([]);
+  const navigation = useNavigation();
 
   useEffect(() => {
     loadFont().then(() => setFontLoaded(true));
@@ -39,6 +42,9 @@ const TopicScreen = () => {
 
   return (
     <View style={styles.container}>
+      <View style={styles.progressBarContainer}>
+        <Progress.Bar progress={0.9} width={wp(90)} color="#FF6D00" />
+      </View>
       <View style={styles.textContainer}>
         <Text style={styles.title}>Choose a Topic</Text>
         <Text style={styles.description}>
@@ -66,24 +72,24 @@ const TopicScreen = () => {
           ))}
         </View>
       </ScrollView>
-      <View style={styles.bottomButtonsContainer}>
-        <TouchableOpacity style={styles.previousIconContainer}>
-          <SvgXml
-            xml={SVGprevious}
-            width={45}
-            height={45}
-            style={styles.previousIcon}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.nextIconContainer}>
-          <SvgXml
-            xml={SVGnext}
-            width={45}
-            height={45}
-            style={styles.nextIcon}
-          />
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity
+        style={styles.nextIconContainer}
+        onPress={() => navigation.navigate("TopicScreen")}
+      >
+        <SvgXml xml={SVGnext} width={45} height={45} style={styles.nextIcon} />
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.previousIconContainer}
+        onPress={() => navigation.navigate("InterestScreen")}
+      >
+        <SvgXml
+          xml={SVGprevious}
+          width={45}
+          height={45}
+          style={styles.previousIcon}
+        />
+      </TouchableOpacity>
+
     </View>
   );
 };
@@ -119,21 +125,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: wp(7),
     paddingBottom: hp(1),
   },
-  bottomButtonsContainer: {
-    flexDirection: "row",
-    position: "absolute",
-    bottom: hp(2),
-    right: 0,
-    left: 0,
-    justifyContent: "space-between",
-    paddingHorizontal: wp(10),
-  },
-  nextIcon: {
-    tintColor: "#FFFFFF",
-  },
-  previousIcon: {
-    tintColor: "#FFFFFF",
-  },
   button: {
     backgroundColor: "white",
     borderRadius: wp(5),
@@ -155,4 +146,32 @@ const styles = StyleSheet.create({
     borderRadius: wp(5),
     borderWidth: wp(0.2),
   },
+  nextIconContainer: {
+    position: "absolute",
+    bottom: hp(5),
+    right: wp(2),
+  },
+  previousIconContainer: {
+    position: "absolute",
+    bottom: hp(5),
+    left: wp(2),
+  },
+  nextIcon: {
+    tintColor: "#FFFFFF",
+    paddingRight: wp(20)
+  },
+  previousIcon: {
+    tintColor: "#FFFFFF",
+    paddingLeft: wp(20)
+  },
+  progressBarContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: hp(2),
+  },
+
 });

@@ -6,12 +6,15 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { SvgXml } from "react-native-svg";
-import { SVGnext } from "../misc/loadSVG";
+import { SVGnext, SVGprevious } from "../misc/loadSVG";
 import GenderButton from "../components/GenderButton";
+import { useNavigation } from "@react-navigation/native";
+import * as Progress from "react-native-progress";
 
 const GenderScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
   const [selectedGender, setSelectedGender] = useState("");
+  const navigation = useNavigation();
 
   useEffect(() => {
     loadFont().then(() => setFontLoaded(true));
@@ -27,6 +30,9 @@ const GenderScreen = () => {
 
   return (
     <View style={styles.container}>
+      <View style={styles.progressBarContainer}>
+        <Progress.Bar progress={0.5} width={wp(90)} color="#FF6D00" />
+      </View>
       <View style={styles.textContainer}>
         <Text style={styles.title}>How do you {"\n"}identify?</Text>
         <Text style={styles.description}>Everyone's welcome on Academeet</Text>
@@ -50,9 +56,20 @@ const GenderScreen = () => {
       </View>
       <TouchableOpacity
         style={styles.nextIconContainer}
-        onPress={goToNextScreen}
+        onPress={() => navigation.navigate("InterestScreen")}
       >
         <SvgXml xml={SVGnext} width={45} height={45} style={styles.nextIcon} />
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.previousIconContainer}
+        onPress={() => navigation.navigate("AddPhotoScreen")}
+      >
+        <SvgXml
+          xml={SVGprevious}
+          width={45}
+          height={45}
+          style={styles.previousIcon}
+        />
       </TouchableOpacity>
     </View>
   );
@@ -64,27 +81,30 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#023E8A",
-    justifyContent: "top",
+    justifyContent: "center",
     alignItems: "flex-start",
     paddingLeft: wp(10),
-    paddingTop: hp(8),
   },
   textContainer: {
-    marginHorizontal: wp(5),
-    marginVertical: hp(5),
+    position: "absolute",
+    top: hp(7),
+    alignItems: "flex-start",
+    paddingLeft: wp(8),
   },
   title: {
     fontFamily: "lato-regular",
-    fontSize: wp(7),
+    fontSize: wp(8),
     color: "#FFFFFF",
     textAlign: "left",
-    marginBottom: hp(3),
+    paddingRight: wp(18),
   },
   description: {
     fontFamily: "lato-light",
     fontSize: wp(4),
     color: "#FFFFFF",
+    marginTop: hp(1),
     textAlign: "left",
+    paddingRight: wp(18),
   },
   buttonContainer: {
     marginHorizontal: wp(7),
@@ -98,5 +118,23 @@ const styles = StyleSheet.create({
   nextIcon: {
     tintColor: "#FFFFFF",
     paddingRight: wp(20),
+  },
+  previousIcon: {
+    tintColor: "#FFFFFF",
+    paddingLeft: wp(20)
+  },
+  previousIconContainer: {
+    position: "absolute",
+    bottom: hp(5),
+    left: wp(2),
+  },
+  progressBarContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: hp(2),
   },
 });

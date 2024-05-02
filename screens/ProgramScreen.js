@@ -15,8 +15,6 @@ import {
 import { SvgXml } from "react-native-svg";
 import { dropDown, SVGnext, SVGprevious } from "../misc/loadSVG";
 import { useNavigation } from "@react-navigation/native";
-import AddPhotoScreen from "./AddPhotoScreen";
-import NameScreen from "./NameScreen";
 import * as Progress from "react-native-progress";
 
 const ProgramScreen = () => {
@@ -28,14 +26,12 @@ const ProgramScreen = () => {
     "Information Technology",
     "Information System",
     "Multimedia Arts",
-    "Entrepreneurship",
-    "Broadcasting",
-
   ];
   programs.sort();
 
   const containerRef = useRef(null);
   const navigation = useNavigation();
+  
 
   useEffect(() => {
     loadFont().then(() => setFontLoaded(true));
@@ -59,7 +55,6 @@ const ProgramScreen = () => {
       <View style={styles.progressBarContainer}>
         <Progress.Bar progress={0.3} width={wp(90)} color="#FF6D00" />
       </View>
-
       <View style={styles.titleContainer}>
         <Text style={styles.logoText}>How about your program?</Text>
         <Text style={styles.description}>
@@ -210,11 +205,11 @@ const styles = StyleSheet.create({
   },
   nextIcon: {
     tintColor: "#FFFFFF",
-    paddingRight: wp(20),
+    paddingRight: wp(20)
   },
   previousIcon: {
     tintColor: "#FFFFFF",
-    paddingLeft: wp(20),
+    paddingLeft: wp(20)
   },
   progressBarContainer: {
     position: "absolute",
