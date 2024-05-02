@@ -11,19 +11,26 @@ const InterestScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
   const [name, setName] = useState("");
   const [selectedTraits, setSelectedTraits] = useState([]);
-
+  const [progressValue, setProgressValue] = useState(0.4);
   const navigation = useNavigation();
 
   useEffect(() => {
     loadFont().then(() => setFontLoaded(true));
   }, []);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setProgressValue(0.5);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, []);
+
   const toggleTrait = (trait) => {
-    // Check if the trait is already selected
+
     if (selectedTraits.includes(trait)) {
-      setSelectedTraits(selectedTraits.filter(item => item !== trait)); // Deselect the trait
+      setSelectedTraits(selectedTraits.filter(item => item !== trait));
     } else {
-      setSelectedTraits([...selectedTraits, trait]); // Select the trait
+      setSelectedTraits([...selectedTraits, trait]); 
     }
   };
 
@@ -72,15 +79,13 @@ const InterestScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.progressBarContainer}>
-        <Progress.Bar progress={0.7} width={wp(90)} color="#FF6D00" />
+        <Progress.Bar progress={progressValue} width={wp(90)} color="#FF6D00" />
       </View>
 
       <View style={styles.titleContainer}>
         <Text style={styles.logoText}>Tell us more about yourself!</Text>
         <Text style={styles.description}>This will help you to present yourself {"\n"}in a way where you can show your {"\n"}interest to others.</Text>
         <Text style={styles.onlyText}> Choose 5 personal traits </Text>
-
-        {/* Display the personality traits */}
         <View style={styles.traitsContainer}>
           {personalityTraits.map((trait, index) => (
             <TouchableOpacity

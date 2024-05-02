@@ -21,6 +21,7 @@ const ProgramScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
   const [selectedProgram, setSelectedProgram] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [progressValue, setProgressValue] = useState(0.1);
   const programs = [
     "Computer Science",
     "Information Technology",
@@ -31,10 +32,16 @@ const ProgramScreen = () => {
 
   const containerRef = useRef(null);
   const navigation = useNavigation();
-  
 
   useEffect(() => {
     loadFont().then(() => setFontLoaded(true));
+  }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setProgressValue(0.2); 
+    }, 500); 
+    return () => clearTimeout(timer);
   }, []);
 
   if (!fontLoaded) {
@@ -53,7 +60,7 @@ const ProgramScreen = () => {
   return (
     <View style={styles.container} ref={containerRef}>
       <View style={styles.progressBarContainer}>
-        <Progress.Bar progress={0.3} width={wp(90)} color="#FF6D00" />
+        <Progress.Bar progress={progressValue} width={wp(90)} color="#FF6D00" />
       </View>
       <View style={styles.titleContainer}>
         <Text style={styles.logoText}>How about your program?</Text>
@@ -205,11 +212,11 @@ const styles = StyleSheet.create({
   },
   nextIcon: {
     tintColor: "#FFFFFF",
-    paddingRight: wp(20)
+    paddingRight: wp(20),
   },
   previousIcon: {
     tintColor: "#FFFFFF",
-    paddingLeft: wp(20)
+    paddingLeft: wp(20),
   },
   progressBarContainer: {
     position: "absolute",
