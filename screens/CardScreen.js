@@ -37,59 +37,62 @@ const CardScreen = () => {
   });
 
   const renderUsers = () => {
-    return users.reverse().map((item, i) => {
-      if (i < currentIndex) {
-        return null;
-      } else if (i === currentIndex) {
-        return (
-          <Animated.View
-            {...panResponder.panHandlers}
-            key={item.id}
-            style={{
-              transform: position.getTranslateTransform(),
-              height: screenHeight - hp(10),
-              width: screenWidth,
-              padding: wp(5),
-              position: "absolute",
-            }}
-          >
-            <Image
+    return users
+      .map((item, i) => {
+        console.log(i);
+        if (i < currentIndex) {
+          return null;
+        } else if (i === currentIndex) {
+          return (
+            <Animated.View
+              {...panResponder.panHandlers}
+              key={item.id}
               style={{
-                flex: 1,
-                height: null,
-                width: null,
-                resizeMode: "cover",
-                borderRadius: wp(8),
+                transform: position.getTranslateTransform(),
+                height: screenHeight - hp(10),
+                width: screenWidth,
+                padding: wp(5),
+                position: "absolute",
               }}
-              source={item.uri}
-            />
-          </Animated.View>
-        );
-      } else {
-        return (
-          <Animated.View
-            key={item.id}
-            style={{
-              height: screenHeight - hp(10),
-              width: screenWidth,
-              padding: wp(5),
-              position: "absolute",
-            }}
-          >
-            <Image
+            >
+              <Image
+                style={{
+                  flex: 1,
+                  height: null,
+                  width: null,
+                  resizeMode: "cover",
+                  borderRadius: wp(8),
+                }}
+                source={item.uri}
+              />
+            </Animated.View>
+          );
+        } else {
+          return (
+            <Animated.View
+              key={item.id}
               style={{
-                flex: 1,
-                height: null,
-                width: null,
-                resizeMode: "cover",
-                borderRadius: wp(8),
+                height: screenHeight - hp(10),
+                width: screenWidth,
+                padding: wp(5),
+                position: "absolute",
               }}
-              source={item.uri}
-            />
-          </Animated.View>
-        );
-      }
-    });
+            >
+              <Image
+                style={{
+                  flex: 1,
+                  height: null,
+                  width: null,
+                  resizeMode: "cover",
+                  borderRadius: wp(8),
+                }}
+                source={item.uri}
+              />
+            </Animated.View>
+          );
+        }
+      })
+      .reverse();
   };
 
   return (
