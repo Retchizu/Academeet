@@ -15,9 +15,17 @@ const GenderScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
   const [selectedGender, setSelectedGender] = useState("");
   const navigation = useNavigation();
+  const [progressValue, setProgressValue] = useState(0.3); 
 
   useEffect(() => {
     loadFont().then(() => setFontLoaded(true));
+  }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setProgressValue(0.4);
+    }, 500);
+    return () => clearTimeout(timer);
   }, []);
 
   if (!fontLoaded) {
@@ -31,28 +39,27 @@ const GenderScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.progressBarContainer}>
-        <Progress.Bar progress={0.5} width={wp(90)} color="#FF6D00" />
+        <Progress.Bar progress={progressValue} width={wp(90)} color="#FF6D00" />
       </View>
       <View style={styles.textContainer}>
         <Text style={styles.title}>How do you {"\n"}identify?</Text>
         <Text style={styles.description}>Everyone's welcome on Academeet</Text>
       </View>
       <View style={styles.buttonContainer}>
-        <GenderButton
-          label="Man"
-          selectedGender={selectedGender}
-          onPress={() => setSelectedGender("Man")}
-        />
-        <GenderButton
-          label="Woman"
-          selectedGender={selectedGender}
-          onPress={() => setSelectedGender("Woman")}
-        />
-        <GenderButton
-          label="Non-binary"
-          selectedGender={selectedGender}
-          onPress={() => setSelectedGender("Non-binary")}
-        />
+        <TouchableOpacity onPress={() => setSelectedGender("Man")}>
+          <GenderButton
+            label="Man"
+            selectedGender={selectedGender}
+            onPress={() => setSelectedGender("Man")}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setSelectedGender("Woman")}>
+          <GenderButton
+            label="Woman"
+            selectedGender={selectedGender}
+            onPress={() => setSelectedGender("Woman")}
+          />
+        </TouchableOpacity>
       </View>
       <TouchableOpacity
         style={styles.nextIconContainer}
@@ -121,7 +128,7 @@ const styles = StyleSheet.create({
   },
   previousIcon: {
     tintColor: "#FFFFFF",
-    paddingLeft: wp(20)
+    paddingLeft: wp(20),
   },
   previousIconContainer: {
     position: "absolute",

@@ -31,9 +31,18 @@ const TopicScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
   const [selectedTopics, setSelectedTopics] = useState([]);
   const navigation = useNavigation();
+  const [progressValue, setProgressValue] = useState(0.5);
+
 
   useEffect(() => {
     loadFont().then(() => setFontLoaded(true));
+  }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setProgressValue(0.6);
+    }, 500);
+    return () => clearTimeout(timer);
   }, []);
 
   if (!fontLoaded) {
@@ -43,7 +52,7 @@ const TopicScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.progressBarContainer}>
-        <Progress.Bar progress={0.9} width={wp(90)} color="#FF6D00" />
+        <Progress.Bar progress={progressValue} width={wp(90)} color="#FF6D00" />
       </View>
       <View style={styles.textContainer}>
         <Text style={styles.title}>Choose a Topic</Text>
