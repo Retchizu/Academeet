@@ -14,13 +14,18 @@ import NameScreen from "./screens/NameScreen";
 import GenderScreen from "./screens/GenderScreen";
 import TopicScreen from "./screens/TopicScreen";
 import InterestScreen from "./screens/InterestScreen";
+import CardScreen from "./screens/CardScreen";
 
 const Stack = createNativeStackNavigator();
 
 const App = () => (
   <NavigationContainer>
-
-    <Stack.Navigator initialRouteName="NameScreen">
+    <Stack.Navigator initialRouteName="CardScreen">
+      <Stack.Screen
+        name="CardScreen"
+        component={CardScreen}
+        options={{ headerShown: false, statusBarHidden: true }}
+      />
       <Stack.Screen
         name="TopicScreen"
         component={TopicScreen}
