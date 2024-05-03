@@ -19,40 +19,29 @@ import * as Progress from "react-native-progress";
 
 const AddPhotoScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
-  const [selectedProgram, setSelectedProgram] = useState("");
-
   const containerRef = useRef(null);
   const navigation = useNavigation();
+  const [progressValue, setProgressValue] = useState(0.2); 
 
   useEffect(() => {
     loadFont().then(() => setFontLoaded(true));
+  }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setProgressValue(0.3); 
+    }, 500);
+    return () => clearTimeout(timer);
   }, []);
 
   if (!fontLoaded) {
     return null;
   }
 
-  const handleSelectProgram = (program) => {
-    setSelectedProgram(program);
-    setShowModal(false);
-  };
-
-  const handlePress = () => {
-    setShowModal(true);
-  };
-
-  const goToNextScreen = () => {
-    navigation.navigate("NextScreen");
-  };
-
-  const goToPreviousScreen = () => {
-    navigation.navigate("PreviousScreen");
-  };
-
   return (
     <View style={styles.container} ref={containerRef}>
       <View style={styles.progressBarContainer}>
-        <Progress.Bar progress={0.4} width={wp(90)} color="#FF6D00" />
+        <Progress.Bar progress={progressValue} width={wp(90)} color="#FF6D00" />
       </View>
       <View style={styles.titleContainer}>
         <Text style={styles.logoText}>Add your first photo!</Text>
@@ -63,7 +52,7 @@ const AddPhotoScreen = () => {
       </View>
       <TouchableOpacity
         style={styles.nextIconContainer}
-        onPress={goToNextScreen}
+        onPress={() => navigation.navigate("GenderScreen")}
       >
         <SvgXml xml={SVGnext} width={45} height={45} style={styles.nextIcon} />
       </TouchableOpacity>
@@ -87,13 +76,13 @@ export default AddPhotoScreen;
 const styles = StyleSheet.create({
   progressBarContainer: {
     position: "absolute",
-    top: 0, 
-    left: 0, 
-    right: 0, 
+    top: 0,
+    left: 0,
+    right: 0,
     justifyContent: "center",
     alignItems: "center",
     paddingVertical: hp(2),
-    zIndex: 1, 
+    zIndex: 1,
   },
   logoText: {
     fontFamily: "lato-regular",

@@ -66,7 +66,6 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     textAlign: "left",
     paddingRight: wp(25),
-    paddingTop: hp(1),
   },
   description: {
     fontFamily: "lato-light",
@@ -84,7 +83,7 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     position: "absolute",
-    top: hp(15), 
+    top: hp(7), 
     alignItems: "flex-start",
     paddingLeft: wp(5),
   },
@@ -95,7 +94,6 @@ const styles = StyleSheet.create({
     borderWidth: wp(0.3),
     borderColor: "#414042",
     borderRadius: wp(5),
-    marginTop: hp(3),
     marginHorizontal: wp(4),
     paddingHorizontal: wp(4),
     paddingVertical: hp(1),

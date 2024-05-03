@@ -11,13 +11,32 @@ import ReminderScreen from "./screens/ReminderScreen";
 import ProgramScreen from "./screens/ProgramScreen";
 import AddPhotoScreen from "./screens/AddPhotoScreen";
 import NameScreen from "./screens/NameScreen";
-
+import GenderScreen from "./screens/GenderScreen";
+import TopicScreen from "./screens/TopicScreen";
+import InterestScreen from "./screens/InterestScreen";
+import CardScreen from "./screens/CardScreen";
 
 const Stack = createNativeStackNavigator();
 
 const App = () => (
   <NavigationContainer>
-    <Stack.Navigator initialRouteName="NameScreen">
+    <Stack.Navigator initialRouteName="CardScreen">
+      <Stack.Screen
+        name="CardScreen"
+        component={CardScreen}
+        options={{ headerShown: false, statusBarHidden: true }}
+      />
+      <Stack.Screen
+        name="TopicScreen"
+        component={TopicScreen}
+        options={{ headerShown: false, statusBarHidden: true }}
+      />
+      <Stack.Screen
+        name="GenderScreen"
+        component={GenderScreen}
+        options={{ headerShown: false, statusBarHidden: true }}
+      />
+
       <Stack.Screen
         name="ReminderScreen"
         component={ReminderScreen}
@@ -28,7 +47,7 @@ const App = () => (
         component={BlurScreen}
         options={{ headerShown: false, statusBarHidden: true }}
       />
-    
+
       <Stack.Screen
         name="SplashScreen"
         component={SplashScren}
@@ -62,6 +81,11 @@ const App = () => (
       <Stack.Screen
         name="NameScreen"
         component={NameScreen}
+        options={{ headerShown: false, statusBarHidden: true }}
+      />
+      <Stack.Screen
+        name="InterestScreen"
+        component={InterestScreen}
         options={{ headerShown: false, statusBarHidden: true }}
       />
     </Stack.Navigator>
