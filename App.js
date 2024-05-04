@@ -25,6 +25,7 @@ const App = () => (
       initialRouteName="RegisterScreen"
       screenOptions={{ headerShown: false, statusBarHidden: true }}
     >
+      <Stack.Screen name="LogInScreen" component={LogInScreen} />
       <Stack.Screen name="CardScreen" component={CardScreen} />
       <Stack.Screen name="TopicScreen" component={TopicScreen} />
       <Stack.Screen name="GenderScreen" component={GenderScreen} />
@@ -32,7 +33,6 @@ const App = () => (
       <Stack.Screen name="BlurScreen" component={BlurScreen} />
       <Stack.Screen name="SplashScreen" component={SplashScren} />
       <Stack.Screen name="LandingScreen" component={LandingScreen} />
-      <Stack.Screen name="LogInScreen" component={LogInScreen} />
       <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
       <Stack.Screen name="ProgramScreen" component={ProgramScreen} />
       <Stack.Screen name="AddPhotoScreen" component={AddPhotoScreen} />

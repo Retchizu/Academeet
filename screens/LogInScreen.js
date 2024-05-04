@@ -15,14 +15,19 @@ import {
 import { SVGLogo } from "../misc/loadSVG";
 import { useNavigation } from "@react-navigation/native";
 import { Entypo } from "@expo/vector-icons";
+import { Formik } from "formik";
+import * as Yup from "yup";
+import {
+  isValidEmail,
+  isValidObjField,
+  validationSchema,
+} from "../methods/validator";
 
-const LogInScreen = () => {
+const LoginScreen = () => {
   const navigation = useNavigation();
 
   const [fontLoaded, setFontLoaded] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
 
   useEffect(() => {
     loadFont().then(() => setFontLoaded(true));
@@ -32,59 +37,90 @@ const LogInScreen = () => {
     return null;
   }
 
+  const initialValues = {
+    username: "",
+    password: "",
+  };
+
+  const attemptLogin = (values, formikActions) => {
+    // no functionality yet
+  };
+
   return (
     <View style={styles.container}>
       <SvgXml xml={SVGLogo} />
       <Text style={styles.logoText}>academeet</Text>
-      <View style={styles.textInputContainer}>
-        <TextInput
-          style={styles.inputField}
-          onChangeText={(text) => setUsername(text)}
-          value={username}
-          placeholder="Username"
-          placeholderTextColor="#6D6D6D"
-        />
-        <View style={styles.passwordInputContainer}>
-          <TextInput
-            style={styles.inputField}
-            onChangeText={(text) => setPassword(text)}
-            value={password}
-            placeholder="Password"
-            placeholderTextColor="#6D6D6D"
-            secureTextEntry={!showPassword}
-          />
-          <TouchableOpacity
-            onPress={() => setShowPassword(!showPassword)}
-            style={styles.eyeIconContainer}
-          >
-            <Entypo
-              name={showPassword ? "eye" : "eye-with-line"}
-              size={24}
-              color="#6D6D6D"
+      <Formik
+        initialValues={initialValues}
+        onSubmit={attemptLogin}
+        validationSchema={validationSchema}
+      >
+        {({
+          values,
+          handleChange,
+          errors,
+          touched,
+          handleSubmit,
+          handleBlur,
+        }) => (
+          <View style={styles.textInputContainer}>
+            {touched.username && errors.username && (
+              <Text style={styles.errorMessage}>{errors.username}</Text>
+            )}
+            <TextInput
+              style={styles.inputField}
+              onChangeText={handleChange("username")}
+              value={values.username}
+              placeholder="Username"
+              placeholderTextColor="#6D6D6D"
+              onBlur={handleBlur("username")}
             />
-          </TouchableOpacity>
-        </View>
-      </View>
-      <View style={styles.loginButtonContainer}>
-        <TouchableOpacity style={[styles.button, styles.loginButton]}>
-          <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
-      </View>
+            {touched.password && errors.password && (
+              <Text style={styles.errorMessage}>{errors.password}</Text>
+            )}
+            <View style={styles.passwordInputContainer}>
+              <TextInput
+                style={styles.inputField}
+                onChangeText={handleChange("password")}
+                value={values.password}
+                placeholder="Password"
+                placeholderTextColor="#6D6D6D"
+                secureTextEntry={!showPassword}
+                onBlur={handleBlur("password")}
+              />
+              <TouchableOpacity
+                onPress={() => setShowPassword(!showPassword)}
+                style={styles.eyeIconContainer}
+              >
+                <Entypo
+                  name={showPassword ? "eye" : "eye-with-line"}
+                  size={24}
+                  color="#6D6D6D"
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.loginButtonContainer}>
+              <TouchableOpacity
+                style={[styles.button, styles.loginButton]}
+                onPress={handleSubmit}
+              >
+                <Text style={styles.buttonText}>Login</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+      </Formik>
       <View style={styles.registerContainer}>
-        <Text style={styles.registerText}>
-          Don't have an account yet?{" "}
-          <TouchableOpacity
-            onPress={() => navigation.navigate("RegisterScreen")}
-          >
-            <Text style={styles.registerLink}>Register here.</Text>
-          </TouchableOpacity>
-        </Text>
+        <Text style={styles.registerText}>Don't have an account yet? </Text>
+        <TouchableOpacity onPress={() => navigation.navigate("RegisterScreen")}>
+          <Text style={styles.registerLink}>Register here.</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
 };
 
-export default LogInScreen;
+export default LoginScreen;
 
 const styles = StyleSheet.create({
   inputField: {
@@ -130,7 +166,10 @@ const styles = StyleSheet.create({
   },
   loginButtonContainer: {
     marginTop: hp(4),
+    justifyContent: "center",
+    alignItems: "center",
   },
+
   button: {
     paddingVertical: hp(1.6),
     paddingHorizontal: wp(6),
@@ -161,6 +200,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     marginBottom: hp(4),
     flexDirection: "row",
+    alignItems: "center",
   },
   registerText: {
     fontFamily: "lato-light",
@@ -171,5 +211,13 @@ const styles = StyleSheet.create({
     fontFamily: "lato-regular",
     fontSize: wp(3.5),
     color: "#FFFFFF",
+  },
+  errorMessage: {
+    color: "#FF9E00",
+    fontFamily: "lato-regular",
+    fontSize: wp(3),
+    textAlign: "right",
+    marginHorizontal: wp(4),
+    marginVertical: hp(0.5),
   },
 });
