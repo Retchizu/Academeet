@@ -34,7 +34,7 @@ const TabNavigator = () => (
         right: 20,
         left: 20,
         elevation: 0,
-        backgroundColor: "#0077B6", // Changed background color
+        backgroundColor: "#0077B6", 
         borderTopWidth: 0,
         borderRadius: 20,
       },
@@ -42,7 +42,7 @@ const TabNavigator = () => (
         marginBottom: 5,
       },
       tabBarActiveTintColor: "#FF9E00",
-      tabBarInactiveTintColor: "#FFF", // Changed icon color to white
+      tabBarInactiveTintColor: "#FFF",
       tabBarShowLabel: false,
       tabBarLabelStyle: {
         fontSize: 12,
