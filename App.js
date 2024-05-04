@@ -17,6 +17,7 @@ import InterestScreen from "./screens/InterestScreen";
 import CardScreen from "./screens/CardScreen";
 import DisplayingPhotoScreen from "./screens/DisplayingPhotoScreen";
 import YearLevelScreen from "./screens/YearLevelScreen";
+import ProfileScreen from "./screens/ProfileScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -105,12 +106,3 @@ const App = () => (
 );
 
 export default App;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

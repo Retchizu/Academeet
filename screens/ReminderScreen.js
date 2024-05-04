@@ -56,7 +56,10 @@ const ReminderScreen = () => {
           Pixel Quest (Developers).
         </Text>
       </View>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate("CardScreen")}
+      >
         <Text style={styles.buttonText}>I agree</Text>
       </TouchableOpacity>
     </View>

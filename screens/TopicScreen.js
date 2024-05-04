@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -5,7 +6,6 @@ import {
   View,
   ScrollView,
 } from "react-native";
-import React, { useState, useEffect } from "react";
 import { loadFont } from "../misc/loadFont";
 import {
   widthPercentageToDP as wp,
@@ -16,15 +16,33 @@ import { SVGnext, SVGprevious } from "../misc/loadSVG";
 import { useNavigation } from "@react-navigation/native";
 import * as Progress from "react-native-progress";
 
-const topics = [
-  { key: 1, label: "Programming" },
-  { key: 2, label: "Animation" },
-  { key: 3, label: "Networking" },
-  { key: 4, label: "React Native" },
-  { key: 5, label: "Mongo DB" },
-  { key: 6, label: "Design" },
-  { key: 7, label: "" },
-  { key: 8, label: "Others" },
+const topicsLanguage = [
+  { key: 1, label: "Java" },
+  { key: 2, label: "Python" },
+  { key: 3, label: "C++" },
+  { key: 4, label: "JavaScript" },
+  { key: 5, label: "Ruby" },
+  { key: 6, label: "Swift" },
+  { key: 7, label: "Artificial Intelligence" },
+  { key: 9, label: "Data Science" },
+  { key: 10, label: "Machine Learning" },
+  { key: 11, label: "Cybersecurity" },
+  { key: 12, label: "Web Development" },
+  { key: 13, label: "Mobile App Development" },
+  { key: 14, label: "Blockchain" },
+  { key: 15, label: "Internet of Things" },
+  { key: 16, label: "Cloud Computing" },
+  { key: 17, label: "Augmented Reality/ Virtual Reality" },
+  { key: 18, label: "Quantum Computing" },
+  { key: 19, label: "Agile Methodology" },
+  { key: 20, label: "DevOps" },
+  { key: 21, label: "Software Testing" },
+  { key: 22, label: "Software Architecture" },
+  { key: 23, label: "Finance & Technology" },
+  { key: 24, label: "Healthcare & Technology" },
+  { key: 25, label: "Gaming & Technology" },
+  { key: 26, label: "Education Technology" },
+  { key: 27, label: "E-commerce & Technology" },
 ];
 
 const TopicScreen = () => {
@@ -48,38 +66,50 @@ const TopicScreen = () => {
     return null;
   }
 
+  const toggleTopic = (topic) => {
+    if (selectedTopics.includes(topic)) {
+      setSelectedTopics(selectedTopics.filter((item) => item !== topic));
+    } else {
+      if (selectedTopics.length < 5) {
+        setSelectedTopics([...selectedTopics, topic]);
+      } else {
+        alert("You can only select up to 5 topics.");
+      }
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.progressBarContainer}>
         <Progress.Bar progress={progressValue} width={wp(90)} color="#FF6D00" />
       </View>
-      <View style={styles.textContainer}>
-        <Text style={styles.title}>Choose a Topic</Text>
+
+      <View style={styles.titleContainer}>
+        <Text style={styles.logoText}>Choose a Topic</Text>
         <Text style={styles.description}>
           This is the aspect that will match you with {"\n"}other students.
         </Text>
+        <Text style={styles.onlyText}>
+          {" "}
+          Choose 5 topics you are interested in{" "}
+        </Text>
       </View>
-      <ScrollView style={styles.scrollContainer}>
-        <View style={styles.buttonContainer}>
-          {topics.map((item) => (
-            <View key={item.key} style={styles.button}>
-              <Text style={styles.label}>{item.label}</Text>
-              <TouchableOpacity onPress={() => {}}>
-                <View
-                  style={[
-                    styles.genderIndicator,
-                    {
-                      backgroundColor: selectedTopics.includes(item.label)
-                        ? "#FF9E00"
-                        : "white",
-                    },
-                  ]}
-                />
-              </TouchableOpacity>
-            </View>
-          ))}
-        </View>
+
+      <ScrollView style={styles.topicsContainer}>
+        {topicsLanguage.map((topic) => (
+          <TouchableOpacity
+            key={topic.key}
+            style={[
+              styles.topicButton,
+              selectedTopics.includes(topic.label) && styles.topicSelected,
+            ]}
+            onPress={() => toggleTopic(topic.label)}
+          >
+            <Text style={styles.topicText}>{topic.label}</Text>
+          </TouchableOpacity>
+        ))}
       </ScrollView>
+
       <TouchableOpacity
         style={styles.nextIconContainer}
         onPress={() => navigation.navigate("ReminderScreen")}
@@ -107,51 +137,53 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#023E8A",
-    paddingTop: hp(8),
-    paddingHorizontal: wp(10),
   },
-  textContainer: {
-    marginBottom: hp(3),
+  progressBarContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: hp(2),
   },
-  title: {
+  titleContainer: {
+    paddingHorizontal: wp(5),
+    paddingTop: hp(5),
+  },
+  logoText: {
     fontFamily: "lato-regular",
-    fontSize: wp(7),
+    fontSize: wp(8),
     color: "#FFFFFF",
-    marginBottom: hp(3),
+    textAlign: "left",
   },
   description: {
     fontFamily: "lato-light",
     fontSize: wp(4),
     color: "#FFFFFF",
+    marginTop: hp(1),
+    textAlign: "left",
   },
-  scrollContainer: {
-    flex: 1,
-    marginBottom: hp(9),
-  },
-  buttonContainer: {
-    paddingHorizontal: wp(7),
-    paddingBottom: hp(1),
-  },
-  button: {
-    backgroundColor: "white",
-    borderRadius: wp(5),
-    padding: wp(3),
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginVertical: wp(2),
-    width: wp(65),
-  },
-  label: {
+  onlyText: {
+    fontFamily: "lato-light",
     fontSize: wp(4),
-    color: "#6D6D6D",
-    textAlign: "center",
-    textAlignVertical: "center",
+    color: "#FFFFFF",
+    marginTop: hp(3),
+    textAlign: "left",
   },
-  genderIndicator: {
-    width: wp(10),
-    height: wp(8),
+  topicsContainer: {
+    marginTop: hp(2),
+    paddingHorizontal: wp(5),
+  },
+  topicButton: {
+    backgroundColor: "#FFFFFF",
+    paddingVertical: hp(1),
+    paddingHorizontal: wp(4),
     borderRadius: wp(5),
-    borderWidth: wp(0.2),
+    margin: wp(1),
+  },
+  topicSelected: {
+    backgroundColor: "#FF6D00",
+  },
+  topicText: {
+    fontFamily: "lato-light",
+    fontSize: wp(4),
   },
   nextIconContainer: {
     position: "absolute",
