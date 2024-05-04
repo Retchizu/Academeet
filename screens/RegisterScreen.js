@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   TextInput,
   KeyboardAvoidingView,
+  ScrollView,
 } from "react-native";
 import { loadFont } from "../misc/loadFont";
 import { SvgXml } from "react-native-svg";
@@ -50,12 +51,7 @@ const RegisterScreen = () => {
   };
 
   return (
-    <View
-      style={styles.container}
-      enabled
-      keyboardVerticalOffset={-500}
-      behavior="padding"
-    >
+    <ScrollView style={styles.container}>
       <Formik
         initialValues={userCredential}
         onSubmit={registerAccount}
@@ -185,7 +181,7 @@ const RegisterScreen = () => {
           );
         }}
       </Formik>
-    </View>
+    </ScrollView>
   );
 };
 
