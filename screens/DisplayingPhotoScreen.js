@@ -6,62 +6,28 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { SvgXml } from "react-native-svg";
-import { SVGaddImageButton, SVGnext, SVGprevious } from "../misc/loadSVG";
-import { useNavigation } from "@react-navigation/native";
+import { SVGnext, SVGprevious, SVGImage } from "../misc/loadSVG";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import * as Progress from "react-native-progress";
-import * as ImagePicker from "expo-image-picker";
 
-const AddPhotoScreen = () => {
+const DisplayingPhotoScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
   const containerRef = useRef(null);
   const navigation = useNavigation();
-  const [progressValue, setProgressValue] = useState(0.2);
-  const [hasGalleryPermission, setHasGalleryPermission] = useState(null);
-  const [image, setImage] = useState(null);
-
-  useEffect(() => {
-    (async () => {
-      const galleryStatus =
-        await ImagePicker.requestMediaLibraryPermissionsAsync();
-      setHasGalleryPermission(galleryStatus.status === "granted");
-    })();
-  }, []);
-
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 4],
-      quality: 1,
-    });
-
-    console.log(result);
-
-    if (!result.cancelled) {
-      setImage(result.assets[0].uri);
-    }
-  };
-
-  useEffect(() => {
-    loadFont().then(() => setFontLoaded(true));
-  }, []);
+  const [progressValue, setProgressValue] = useState(0.3);
+  const route = useRoute();
+  const uri = route.params?.uri;
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setProgressValue(0.3);
+      setProgressValue(0.35);
     }, 500);
     return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
-    if (image) {
-      navigation.navigate("DisplayingPhotoScreen", { uri: image });
-    }
-  }, [image, navigation]);
-
-  if (hasGalleryPermission === false) {
-    return <Text>No access to Internal Storage</Text>;
-  }
+    loadFont().then(() => setFontLoaded(true));
+  }, []);
 
   if (!fontLoaded) {
     return null;
@@ -79,16 +45,11 @@ const AddPhotoScreen = () => {
           course, you can definitely change it later.
         </Text>
       </View>
-      <View>
-        <TouchableOpacity onPress={pickImage}>
-          <SvgXml
-            xml={SVGaddImageButton}
-            width={147}
-            height={134}
-            style={{ marginTop: 30 }}
-          />
-        </TouchableOpacity>
+      <View style={styles.imageContainer}>
+        <SvgXml xml={SVGImage} width={350} height={438} />
+        {uri && <Image source={{ uri }} style={styles.image} />}
       </View>
+
       <TouchableOpacity
         style={styles.nextIconContainer}
         onPress={() => navigation.navigate("GenderScreen")}
@@ -109,8 +70,7 @@ const AddPhotoScreen = () => {
     </View>
   );
 };
-
-export default AddPhotoScreen;
+export default DisplayingPhotoScreen;
 
 const styles = StyleSheet.create({
   progressBarContainer: {
@@ -150,15 +110,15 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     paddingLeft: wp(5),
   },
-  nextIconContainer: {
-    position: "absolute",
-    bottom: hp(5),
-    right: wp(2),
-  },
   previousIconContainer: {
     position: "absolute",
     bottom: hp(5),
     left: wp(2),
+  },
+  nextIconContainer: {
+    position: "absolute",
+    bottom: hp(5),
+    right: wp(2),
   },
   nextIcon: {
     tintColor: "#FFFFFF",
@@ -167,5 +127,17 @@ const styles = StyleSheet.create({
   previousIcon: {
     tintColor: "#FFFFFF",
     paddingLeft: wp(20),
+  },
+  imageContainer: {
+    marginTop: hp(5),
+    position: "relative",
+  },
+  image: {
+    position: "absolute",
+    top: wp(13),
+    left: wp(5),
+    width: wp(75),
+    height: hp(40),
+    borderRadius: 10,
   },
 });
