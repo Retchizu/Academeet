@@ -40,7 +40,7 @@ const ProfileScreen = () => {
 
   return (
     <View style={styles.container} ref={containerRef}>
-
+      <Text>Profile</Text>
     </View>
   );
 };
