@@ -16,12 +16,18 @@ import TopicScreen from "./screens/TopicScreen";
 import InterestScreen from "./screens/InterestScreen";
 import CardScreen from "./screens/CardScreen";
 import DisplayingPhotoScreen from "./screens/DisplayingPhotoScreen";
+import YearLevelScreen from "./screens/YearLevelScreen";
 
 const Stack = createNativeStackNavigator();
 
 const App = () => (
   <NavigationContainer>
-    <Stack.Navigator initialRouteName="AddPhotoScreen">
+    <Stack.Navigator initialRouteName="NameScreen">
+      <Stack.Screen
+        name="YearLevelScreen"
+        component={YearLevelScreen}
+        options={{ headerShown: false, statusBarHidden: true }}
+      />
       <Stack.Screen
         name="DisplayingPhotoScreen"
         component={DisplayingPhotoScreen}

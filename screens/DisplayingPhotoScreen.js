@@ -14,13 +14,13 @@ const DisplayingPhotoScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
   const containerRef = useRef(null);
   const navigation = useNavigation();
-  const [progressValue, setProgressValue] = useState(0.3);
+  const [progressValue, setProgressValue] = useState(0.4);
   const route = useRoute();
   const uri = route.params?.uri;
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setProgressValue(0.35);
+      setProgressValue(0.45);
     }, 500);
     return () => clearTimeout(timer);
   }, []);
@@ -134,8 +134,8 @@ const styles = StyleSheet.create({
   },
   image: {
     position: "absolute",
-    top: wp(13),
-    left: wp(5),
+    top: wp(13.6),
+    left: wp(6.1),
     width: wp(75),
     height: hp(40),
     borderRadius: 10,

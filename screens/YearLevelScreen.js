@@ -17,18 +17,18 @@ import { dropDown, SVGnext, SVGprevious } from "../misc/loadSVG";
 import { useNavigation } from "@react-navigation/native";
 import * as Progress from "react-native-progress";
 
-const ProgramScreen = () => {
+const YearLevelScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
-  const [selectedProgram, setSelectedProgram] = useState("");
+  const [selectedYear, setSelectedYear] = useState("");
   const [showModal, setShowModal] = useState(false);
-  const [progressValue, setProgressValue] = useState(0.2);
-  const programs = [
-    "Computer Science",
-    "Information Technology",
-    "Information System",
-    "Multimedia Arts",
+  const [progressValue, setProgressValue] = useState(0.1);
+  const year = [
+    { key: 1, label: "Freshman" },
+    { key: 2, label: "Sophomore" },
+    { key: 3, label: "Junior" },
+    { key: 4, label: "Senior" },
   ];
-  programs.sort();
+  year.sort();
 
   const containerRef = useRef(null);
   const navigation = useNavigation();
@@ -39,7 +39,7 @@ const ProgramScreen = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setProgressValue(0.3);
+      setProgressValue(0.2);
     }, 500);
     return () => clearTimeout(timer);
   }, []);
@@ -48,8 +48,8 @@ const ProgramScreen = () => {
     return null;
   }
 
-  const handleSelectProgram = (program) => {
-    setSelectedProgram(program);
+  const handleSelectYear = (year) => {
+    setSelectedYear(year.label);
     setShowModal(false);
   };
 
@@ -63,15 +63,15 @@ const ProgramScreen = () => {
         <Progress.Bar progress={progressValue} width={wp(90)} color="#FF6D00" />
       </View>
       <View style={styles.titleContainer}>
-        <Text style={styles.logoText}>How about your program?</Text>
+        <Text style={styles.logoText}>What year are you in?</Text>
         <Text style={styles.description}>
-          So we can narrow down the people you might meet.
+          So we can help you find people within the same bracket.
         </Text>
       </View>
       <TouchableOpacity style={styles.pickerContainer} onPress={handlePress}>
         <View style={styles.pickerContent}>
           <Text style={styles.inputField}>
-            {selectedProgram || "Select your program"}
+            {selectedYear || "Select your year level"}
           </Text>
           <SvgXml xml={dropDown} width={wp(4)} height={wp(4)} />
         </View>
@@ -83,13 +83,13 @@ const ProgramScreen = () => {
         >
           <View style={styles.dropdownModal}>
             <FlatList
-              data={programs}
+              data={year}
               renderItem={({ item }) => (
                 <TouchableOpacity
                   style={styles.optionItem}
-                  onPress={() => handleSelectProgram(item)}
+                  onPress={() => handleSelectYear(item)}
                 >
-                  <Text style={styles.optionText}>{item}</Text>
+                  <Text style={styles.optionText}>{item.label}</Text>
                 </TouchableOpacity>
               )}
               keyExtractor={(item, index) => index.toString()}
@@ -99,7 +99,7 @@ const ProgramScreen = () => {
       </Modal>
       <TouchableOpacity
         style={styles.nextIconContainer}
-        onPress={() => navigation.navigate("AddPhotoScreen")}
+        onPress={() => navigation.navigate("ProgramScreen")}
       >
         <SvgXml xml={SVGnext} width={45} height={45} style={styles.nextIcon} />
       </TouchableOpacity>
@@ -118,7 +118,7 @@ const ProgramScreen = () => {
   );
 };
 
-export default ProgramScreen;
+export default YearLevelScreen;
 
 const styles = StyleSheet.create({
   logoText: {

@@ -7,11 +7,20 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+import * as Progress from "react-native-progress";
 
 const ReminderScreen = () => {
+  const [progressValue, setProgressValue] = useState(0.8);
   const [fontLoaded, setFontLoaded] = useState(false);
   useEffect(() => {
     loadFont().then(() => setFontLoaded(true));
+  }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setProgressValue(1);
+    }, 500);
+    return () => clearTimeout(timer);
   }, []);
 
   if (!fontLoaded) {
@@ -22,6 +31,9 @@ const ReminderScreen = () => {
   // This window won't show again.
   return (
     <View style={styles.container}>
+      <View style={styles.progressBarContainer}>
+        <Progress.Bar progress={progressValue} width={wp(90)} color="#FF6D00" />
+      </View>
       <View style={styles.content}>
         <View style={styles.logoContainer}>
           <SvgXml xml={SVGLogo} style={styles.logo} />
@@ -101,5 +113,14 @@ const styles = StyleSheet.create({
     fontFamily: "lato-light",
     fontSize: wp(4),
     color: "#FFFFFF",
+  },
+  progressBarContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: hp(2),
   },
 });

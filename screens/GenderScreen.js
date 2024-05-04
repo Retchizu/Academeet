@@ -15,7 +15,7 @@ const GenderScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
   const [selectedGender, setSelectedGender] = useState("");
   const navigation = useNavigation();
-  const [progressValue, setProgressValue] = useState(0.3); 
+  const [progressValue, setProgressValue] = useState(0.45);
 
   useEffect(() => {
     loadFont().then(() => setFontLoaded(true));
@@ -23,7 +23,7 @@ const GenderScreen = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setProgressValue(0.4);
+      setProgressValue(0.5);
     }, 500);
     return () => clearTimeout(timer);
   }, []);

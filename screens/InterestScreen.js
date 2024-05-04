@@ -1,7 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, TextInput } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
 import { loadFont } from "../misc/loadFont";
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 import { SvgXml } from "react-native-svg";
 import { SVGnext, SVGprevious } from "../misc/loadSVG";
 import { useNavigation } from "@react-navigation/native";
@@ -11,7 +20,7 @@ const InterestScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
   const [name, setName] = useState("");
   const [selectedTraits, setSelectedTraits] = useState([]);
-  const [progressValue, setProgressValue] = useState(0.4);
+  const [progressValue, setProgressValue] = useState(0.5);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -20,17 +29,16 @@ const InterestScreen = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setProgressValue(0.5);
+      setProgressValue(0.7);
     }, 500);
     return () => clearTimeout(timer);
   }, []);
 
   const toggleTrait = (trait) => {
-
     if (selectedTraits.includes(trait)) {
-      setSelectedTraits(selectedTraits.filter(item => item !== trait));
+      setSelectedTraits(selectedTraits.filter((item) => item !== trait));
     } else {
-      setSelectedTraits([...selectedTraits, trait]); 
+      setSelectedTraits([...selectedTraits, trait]);
     }
   };
 
@@ -84,7 +92,10 @@ const InterestScreen = () => {
 
       <View style={styles.titleContainer}>
         <Text style={styles.logoText}>Tell us more about yourself!</Text>
-        <Text style={styles.description}>This will help you to present yourself {"\n"}in a way where you can show your {"\n"}interest to others.</Text>
+        <Text style={styles.description}>
+          This will help you to present yourself {"\n"}in a way where you can
+          show your {"\n"}interest to others.
+        </Text>
         <Text style={styles.onlyText}> Choose 5 personal traits </Text>
         <View style={styles.traitsContainer}>
           {personalityTraits.map((trait, index) => (
@@ -157,7 +168,7 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     position: "absolute",
-    top: hp(7), 
+    top: hp(7),
     alignItems: "flex-start",
     paddingLeft: wp(5),
   },
@@ -214,11 +225,11 @@ const styles = StyleSheet.create({
   },
   previousIcon: {
     tintColor: "#FFFFFF",
-    paddingLeft: wp(20)
+    paddingLeft: wp(20),
   },
   progressBarContainer: {
     position: "absolute",
-    top: 0, 
+    top: 0,
     left: 0,
     right: 0,
     justifyContent: "center",

@@ -1,9 +1,18 @@
 // NameScreen.js
 
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, TextInput } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
 import { loadFont } from "../misc/loadFont";
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 import { SvgXml } from "react-native-svg";
 import { SVGnext } from "../misc/loadSVG";
 import { useNavigation } from "@react-navigation/native";
@@ -19,9 +28,8 @@ const NameScreen = () => {
     loadFont().then(() => setFontLoaded(true));
   }, []);
 
-
   const goToNextScreen = () => {
-    navigation.navigate("ProgramScreen");
+    navigation.navigate("YearLevelScreen");
   };
 
   if (!fontLoaded) {
@@ -83,7 +91,7 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     position: "absolute",
-    top: hp(7), 
+    top: hp(7),
     alignItems: "flex-start",
     paddingLeft: wp(5),
   },
@@ -115,7 +123,7 @@ const styles = StyleSheet.create({
   },
   progressBarContainer: {
     position: "absolute",
-    top: 0, 
+    top: 0,
     left: 0,
     right: 0,
     justifyContent: "center",

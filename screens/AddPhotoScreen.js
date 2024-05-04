@@ -15,7 +15,7 @@ const AddPhotoScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
   const containerRef = useRef(null);
   const navigation = useNavigation();
-  const [progressValue, setProgressValue] = useState(0.2);
+  const [progressValue, setProgressValue] = useState(0.3);
   const [hasGalleryPermission, setHasGalleryPermission] = useState(null);
   const [image, setImage] = useState(null);
 
@@ -48,7 +48,7 @@ const AddPhotoScreen = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setProgressValue(0.3);
+      setProgressValue(0.4);
     }, 500);
     return () => clearTimeout(timer);
   }, []);

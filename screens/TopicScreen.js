@@ -31,8 +31,7 @@ const TopicScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
   const [selectedTopics, setSelectedTopics] = useState([]);
   const navigation = useNavigation();
-  const [progressValue, setProgressValue] = useState(0.5);
-
+  const [progressValue, setProgressValue] = useState(0.7);
 
   useEffect(() => {
     loadFont().then(() => setFontLoaded(true));
@@ -40,7 +39,7 @@ const TopicScreen = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setProgressValue(0.6);
+      setProgressValue(0.8);
     }, 500);
     return () => clearTimeout(timer);
   }, []);
@@ -83,7 +82,7 @@ const TopicScreen = () => {
       </ScrollView>
       <TouchableOpacity
         style={styles.nextIconContainer}
-        onPress={() => navigation.navigate("TopicScreen")}
+        onPress={() => navigation.navigate("ReminderScreen")}
       >
         <SvgXml xml={SVGnext} width={45} height={45} style={styles.nextIcon} />
       </TouchableOpacity>
@@ -98,7 +97,6 @@ const TopicScreen = () => {
           style={styles.previousIcon}
         />
       </TouchableOpacity>
-
     </View>
   );
 };
@@ -167,11 +165,11 @@ const styles = StyleSheet.create({
   },
   nextIcon: {
     tintColor: "#FFFFFF",
-    paddingRight: wp(20)
+    paddingRight: wp(20),
   },
   previousIcon: {
     tintColor: "#FFFFFF",
-    paddingLeft: wp(20)
+    paddingLeft: wp(20),
   },
   progressBarContainer: {
     position: "absolute",
@@ -182,5 +180,4 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: hp(2),
   },
-
 });
