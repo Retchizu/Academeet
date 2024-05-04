@@ -7,8 +7,10 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+import { useNavigation } from "@react-navigation/native";
 
 const ReminderScreen = () => {
+  const navigation = useNavigation();
   const [fontLoaded, setFontLoaded] = useState(false);
   useEffect(() => {
     loadFont().then(() => setFontLoaded(true));
@@ -17,6 +19,7 @@ const ReminderScreen = () => {
   if (!fontLoaded) {
     return null;
   }
+  
 
   // Todo: Make it so that when the user already agreed,
   // This window won't show again.
@@ -44,7 +47,9 @@ const ReminderScreen = () => {
           Pixel Quest (Developers).
         </Text>
       </View>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button}
+      onPress={() => navigation.navigate("CardScreen")}
+      >
         <Text style={styles.buttonText}>I agree</Text>
       </TouchableOpacity>
     </View>

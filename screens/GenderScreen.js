@@ -1,5 +1,5 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useState, useEffect } from "react";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { loadFont } from "../misc/loadFont";
 import {
   widthPercentageToDP as wp,
@@ -7,15 +7,14 @@ import {
 } from "react-native-responsive-screen";
 import { SvgXml } from "react-native-svg";
 import { SVGnext, SVGprevious } from "../misc/loadSVG";
-import GenderButton from "../components/GenderButton";
 import { useNavigation } from "@react-navigation/native";
 import * as Progress from "react-native-progress";
 
 const GenderScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
   const [selectedGender, setSelectedGender] = useState("");
+  const [progressValue, setProgressValue] = useState(0.3);
   const navigation = useNavigation();
-  const [progressValue, setProgressValue] = useState(0.3); 
 
   useEffect(() => {
     loadFont().then(() => setFontLoaded(true));
@@ -42,24 +41,35 @@ const GenderScreen = () => {
         <Progress.Bar progress={progressValue} width={wp(90)} color="#FF6D00" />
       </View>
       <View style={styles.textContainer}>
-        <Text style={styles.title}>How do you {"\n"}identify?</Text>
+        <Text style={styles.title}>How do you identify?</Text>
         <Text style={styles.description}>Everyone's welcome on Academeet</Text>
+        <View style={styles.genderContainer}>
+          <View style= {{top:wp (40)}}>
+          <View style={styles.genderOptionWrapper}>
+            <TouchableOpacity
+              style={[
+                styles.genderOption,
+                { paddingHorizontal: wp(11) },
+                selectedGender === "Man" && styles.selectedGenderOption,
+              ]}
+              onPress={() => setSelectedGender("Man")}
+            >
+              <Text style={styles.genderOptionText}>Man</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.genderOptionWrapper}>
+            <TouchableOpacity
+              style={[
+                styles.genderOption,
+                selectedGender === "Woman" && styles.selectedGenderOption,
+              ]}
+              onPress={() => setSelectedGender("Woman")}
+            >
+              <Text style={styles.genderOptionText}>Woman</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={() => setSelectedGender("Man")}>
-          <GenderButton
-            label="Man"
-            selectedGender={selectedGender}
-            onPress={() => setSelectedGender("Man")}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setSelectedGender("Woman")}>
-          <GenderButton
-            label="Woman"
-            selectedGender={selectedGender}
-            onPress={() => setSelectedGender("Woman")}
-          />
-        </TouchableOpacity>
       </View>
       <TouchableOpacity
         style={styles.nextIconContainer}
@@ -113,9 +123,27 @@ const styles = StyleSheet.create({
     textAlign: "left",
     paddingRight: wp(18),
   },
-  buttonContainer: {
-    marginHorizontal: wp(7),
-    marginVertical: hp(5),
+  genderContainer: {
+    marginTop: hp(2),
+    flexDirection: "column",
+  },
+  genderOptionWrapper: {
+    paddingLeft: wp(25),
+    alignItems: "center", // Center the option horizontally
+  },
+  genderOption: {
+    backgroundColor: "#FFFFFF",
+    paddingVertical: hp(1),
+    paddingHorizontal: wp(8),
+    borderRadius: wp(5),
+    marginVertical: hp(1),
+  },
+  selectedGenderOption: {
+    backgroundColor: "#FF6D00",
+  },
+  genderOptionText: {
+    fontFamily: "lato-light",
+    fontSize: wp(5),
   },
   nextIconContainer: {
     position: "absolute",

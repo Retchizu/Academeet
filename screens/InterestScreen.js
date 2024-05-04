@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, TextInput } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { loadFont } from "../misc/loadFont";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { SvgXml } from "react-native-svg";
@@ -9,7 +9,6 @@ import * as Progress from "react-native-progress";
 
 const InterestScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
-  const [name, setName] = useState("");
   const [selectedTraits, setSelectedTraits] = useState([]);
   const [progressValue, setProgressValue] = useState(0.4);
   const navigation = useNavigation();
@@ -26,16 +25,15 @@ const InterestScreen = () => {
   }, []);
 
   const toggleTrait = (trait) => {
-
     if (selectedTraits.includes(trait)) {
       setSelectedTraits(selectedTraits.filter(item => item !== trait));
     } else {
-      setSelectedTraits([...selectedTraits, trait]); 
+      if (selectedTraits.length < 5) {
+        setSelectedTraits([...selectedTraits, trait]);
+      } else {
+        alert("You can only select up to 5 traits.");
+      }
     }
-  };
-
-  const goToNextScreen = () => {
-    navigation.navigate("ProgramScreen");
   };
 
   if (!fontLoaded) {
@@ -43,38 +41,36 @@ const InterestScreen = () => {
   }
 
   const personalityTraits = [
-    "Curious",
-    "Creative",
-    "Confident",
-    "Empathetic",
-    "Organized",
-    "Adventurous",
-    "Analytical",
-    "Ambitious",
-    "Diligent",
-    "Adaptable",
-    "Detail-oriented",
-    "Motivated",
-    "Patient",
-    "Optimistic",
-    "Collaborative",
-    "Resilient",
-    "Independent",
-    "Friendly",
-    "Energetic",
-    "Calm",
-    "Communicative",
-    "Perseverant",
-    "Innovative",
-    "Resourceful",
-    "Punctual",
-    "Responsible",
-    "Flexible",
-    "Honest",
-    "Proactive",
-    "Sociable",
+    { key: 1, label: "Curious" },
+    { key: 2, label: "Creative" },
+    { key: 3, label: "Confident" },
+    { key: 4, label: "Empathetic" },
+    { key: 5, label: "Organized" },
+    { key: 6, label: "Adventurous" },
+    { key: 7, label: "Analytical" },
+    { key: 8, label: "Ambitious" },
+    { key: 9, label: "Diligent" },
+    { key: 10, label: "Adaptable" },
+    { key: 11, label: "Detail-oriented" },
+    { key: 12, label: "Motivated" },
+    { key: 13, label: "Patient" },
+    { key: 14, label: "Optimistic" },
+    { key: 15, label: "Collaborative" },
+    { key: 16, label: "Resilient" },
+    { key: 17, label: "Independent" },
+    { key: 18, label: "Friendly" },
+    { key: 19, label: "Energetic" },
+    { key: 20, label: "Calm" },
+    { key: 21, label: "Communicative" },
+    { key: 22, label: "Perseverant" },
+    { key: 23, label: "Innovative" },
+    { key: 24, label: "Punctual" },
+    { key: 25, label: "Responsible" },
+    { key: 26, label: "Flexible" },
+    { key: 27, label: "Proactive" },
+    { key: 29, label: "Resourceful" },
   ];
-  personalityTraits.sort();
+  personalityTraits.sort((a, b) => a.label.localeCompare(b.label));
 
   return (
     <View style={styles.container}>
@@ -84,19 +80,21 @@ const InterestScreen = () => {
 
       <View style={styles.titleContainer}>
         <Text style={styles.logoText}>Tell us more about yourself!</Text>
-        <Text style={styles.description}>This will help you to present yourself {"\n"}in a way where you can show your {"\n"}interest to others.</Text>
+        <Text style={styles.description}>
+          This will help you to present yourself in a way where you can show your interest to others.
+        </Text>
         <Text style={styles.onlyText}> Choose 5 personal traits </Text>
         <View style={styles.traitsContainer}>
           {personalityTraits.map((trait, index) => (
             <TouchableOpacity
-              key={index}
+              key={trait.key}
               style={[
                 styles.traitButton,
-                selectedTraits.includes(trait) && styles.traitSelected,
+                selectedTraits.includes(trait.label) && styles.traitSelected,
               ]}
-              onPress={() => toggleTrait(trait)}
+              onPress={() => toggleTrait(trait.label)}
             >
-              <Text style={styles.traitText}>{trait}</Text>
+              <Text style={styles.traitText}>{trait.label}</Text>
             </TouchableOpacity>
           ))}
         </View>
@@ -157,7 +155,7 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     position: "absolute",
-    top: hp(7), 
+    top: hp(7),
     alignItems: "flex-start",
     paddingLeft: wp(5),
   },
@@ -180,24 +178,6 @@ const styles = StyleSheet.create({
     fontFamily: "lato-light",
     fontSize: wp(4),
   },
-  inputField: {
-    fontFamily: "lato-light",
-    width: wp(65),
-    height: hp(6),
-    borderWidth: wp(0.3),
-    borderColor: "#414042",
-    borderRadius: wp(5),
-    marginTop: hp(3),
-    marginHorizontal: wp(4),
-    paddingHorizontal: wp(4),
-    paddingVertical: hp(1),
-    backgroundColor: "#FFFFFF",
-    fontSize: wp(4),
-  },
-  textInputContainer: {
-    alignSelf: "center",
-    padding: hp(2),
-  },
   previousIconContainer: {
     position: "absolute",
     bottom: hp(5),
@@ -214,11 +194,11 @@ const styles = StyleSheet.create({
   },
   previousIcon: {
     tintColor: "#FFFFFF",
-    paddingLeft: wp(20)
+    paddingLeft: wp(20),
   },
   progressBarContainer: {
     position: "absolute",
-    top: 0, 
+    top: 0,
     left: 0,
     right: 0,
     justifyContent: "center",
