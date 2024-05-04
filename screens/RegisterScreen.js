@@ -5,6 +5,7 @@ import {
   View,
   TouchableOpacity,
   TextInput,
+  KeyboardAvoidingView,
 } from "react-native";
 import { loadFont } from "../misc/loadFont";
 import { SvgXml } from "react-native-svg";
@@ -15,6 +16,12 @@ import {
 import { SVGLogo } from "../misc/loadSVG";
 import { useNavigation } from "@react-navigation/native";
 import { Entypo } from "@expo/vector-icons";
+import {
+  isValidEmail,
+  isValidObjField,
+  validationSchema,
+} from "../methods/validator";
+import { Formik } from "formik";
 
 const RegisterScreen = () => {
   const navigation = useNavigation();
@@ -22,10 +29,13 @@ const RegisterScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const userCredential = {
+    email: "",
+    userName: "",
+    password: "",
+    confirmPassword: "",
+  };
 
   useEffect(() => {
     loadFont().then(() => setFontLoaded(true));
@@ -35,79 +45,146 @@ const RegisterScreen = () => {
     return null;
   }
 
+  const registerAccount = (values, formikActions) => {
+    console.log(values);
+  };
+
   return (
-    <View style={styles.container}>
-      <SvgXml xml={SVGLogo} />
-      <Text style={styles.logoText}>academeet</Text>
-      <View style={styles.textInputContainer}>
-        <TextInput
-          style={styles.inputField}
-          onChangeText={(text) => setUsername(text)}
-          value={username}
-          placeholder="Username"
-          placeholderTextColor="#6D6D6D"
-        />
-        <TextInput
-          style={styles.inputField}
-          onChangeText={(text) => setEmail(text)}
-          value={email}
-          placeholder="Email"
-          placeholderTextColor="#6D6D6D"
-        />
-        <View style={styles.passwordInputContainer}>
-          <TextInput
-            style={styles.inputField}
-            onChangeText={(text) => setPassword(text)}
-            value={password}
-            placeholder="Password"
-            placeholderTextColor="#6D6D6D"
-            secureTextEntry={!showPassword}
-          />
-          <TouchableOpacity
-            onPress={() => setShowPassword(!showPassword)}
-            style={styles.eyeIconContainer}
-          >
-            <Entypo
-              name={showPassword ? "eye" : "eye-with-line"}
-              size={24}
-              color="#6D6D6D"
-            />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.passwordInputContainer}>
-          <TextInput
-            style={styles.inputField}
-            onChangeText={(text) => setConfirmPassword(text)}
-            value={confirmPassword}
-            placeholder="Confirm Password"
-            placeholderTextColor="#6D6D6D"
-            secureTextEntry={!showConfirmPassword}
-          />
-          <TouchableOpacity
-            onPress={() => setShowConfirmPassword(!showConfirmPassword)}
-            style={styles.eyeIconContainer}
-          >
-            <Entypo
-              name={showConfirmPassword ? "eye" : "eye-with-line"}
-              size={24}
-              color="#6D6D6D"
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
-      <View style={styles.registerButtonContainer}>
-        <TouchableOpacity style={[styles.button, styles.registerButton]}>
-          <Text style={styles.buttonText}>Register</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.registerTextContainer}>
-        <Text style={styles.registerText}>
-          Already have an account?{" "}
-          <TouchableOpacity onPress={() => navigation.navigate("LogInScreen")}>
-            <Text style={styles.registerLink}>Login here.</Text>
-          </TouchableOpacity>
-        </Text>
-      </View>
+    <View
+      style={styles.container}
+      enabled
+      keyboardVerticalOffset={-500}
+      behavior="padding"
+    >
+      <Formik
+        initialValues={userCredential}
+        onSubmit={registerAccount}
+        validationSchema={validationSchema}
+      >
+        {({
+          values,
+          handleChange,
+          errors,
+          touched,
+          handleBlur,
+          handleSubmit,
+          isSubmitting,
+        }) => {
+          const { userName, email, password, confirmPassword } = values;
+          return (
+            <>
+              <View style={styles.centerView}>
+                <SvgXml xml={SVGLogo} />
+                <Text style={styles.logoText}>academeet</Text>
+              </View>
+
+              <View style={styles.textInputContainer}>
+                {touched.userName && errors.userName && (
+                  <Text style={styles.errorMessage}>{errors.userName}</Text>
+                )}
+                <TextInput
+                  style={styles.inputField}
+                  onChangeText={handleChange("userName")}
+                  value={userName}
+                  placeholder="Username"
+                  placeholderTextColor="#6D6D6D"
+                  onBlur={handleBlur("userName")}
+                />
+                {touched.email && errors.email && (
+                  <Text style={styles.errorMessage}>{errors.email}</Text>
+                )}
+                <TextInput
+                  style={styles.inputField}
+                  onChangeText={handleChange("email")}
+                  value={email}
+                  placeholder="Email"
+                  placeholderTextColor="#6D6D6D"
+                  onBlur={handleBlur("email")}
+                />
+                {touched.password && errors.password && (
+                  <Text style={styles.errorMessage}>{errors.password}</Text>
+                )}
+                <View style={styles.passwordInputContainer}>
+                  <TextInput
+                    style={styles.passwordInputField}
+                    onChangeText={handleChange("password")}
+                    value={password}
+                    placeholder="Password"
+                    placeholderTextColor="#6D6D6D"
+                    secureTextEntry={!showPassword}
+                    onBlur={handleBlur("password")}
+                    error={touched.password && errors.password}
+                  />
+                  <TouchableOpacity
+                    onPress={() => setShowPassword(!showPassword)}
+                    style={styles.eyeIconContainer}
+                  >
+                    <Entypo
+                      name={showPassword ? "eye" : "eye-with-line"}
+                      size={24}
+                      color="#6D6D6D"
+                    />
+                  </TouchableOpacity>
+                </View>
+                {touched.confirmPassword && errors.confirmPassword && (
+                  <Text style={styles.errorMessage}>
+                    {errors.confirmPassword}
+                  </Text>
+                )}
+                <View style={styles.passwordInputContainer}>
+                  <TextInput
+                    style={styles.passwordInputField}
+                    onChangeText={handleChange("confirmPassword")}
+                    value={confirmPassword}
+                    placeholder="Confirm Password"
+                    placeholderTextColor="#6D6D6D"
+                    secureTextEntry={!showConfirmPassword}
+                    onBlur={handleBlur("confirmPassword")}
+                  />
+                  <TouchableOpacity
+                    onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+                    style={styles.eyeIconContainer}
+                  >
+                    <Entypo
+                      name={showConfirmPassword ? "eye" : "eye-with-line"}
+                      size={24}
+                      color="#6D6D6D"
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              <View style={{ alignItems: "center" }}>
+                <View style={styles.registerButtonContainer}>
+                  <TouchableOpacity
+                    style={[styles.button, styles.registerButton]}
+                    onPress={() => handleSubmit()}
+                  >
+                    <Text style={styles.buttonText}>Register</Text>
+                  </TouchableOpacity>
+                </View>
+
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    marginTop: hp(2),
+                  }}
+                >
+                  <Text style={styles.registerText}>
+                    Already have an account?{" "}
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate("LogInScreen")}
+                  >
+                    <Text style={styles.registerLink}>Login here.</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </>
+          );
+        }}
+      </Formik>
     </View>
   );
 };
@@ -115,45 +192,51 @@ const RegisterScreen = () => {
 export default RegisterScreen;
 
 const styles = StyleSheet.create({
+  centerView: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: hp(5),
+  },
   inputField: {
     fontFamily: "lato-light",
-    width: wp(65),
-    height: hp(6),
     borderWidth: wp(0.3),
     borderColor: "#414042",
     borderRadius: wp(5),
-    marginTop: hp(3),
-    marginHorizontal: wp(4),
+    marginVertical: hp(2),
     paddingHorizontal: wp(4),
     paddingVertical: hp(1),
     backgroundColor: "#FFFFFF",
-    fontSize: wp(4),
+    fontSize: hp(3),
+  },
+  passwordInputField: {
+    flex: 1,
+    fontSize: hp(3),
+    fontFamily: "lato-light",
   },
   textInputContainer: {
     fontFamily: "lato-light",
     fontSize: wp(4),
     color: "#414042",
-    alignSelf: "center",
-    padding: hp(2),
+    marginHorizontal: wp(12),
   },
   passwordInputContainer: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
+    borderRadius: wp(5),
+    marginBottom: 10,
+    backgroundColor: "#FFFFFF",
+    padding: wp(2),
+    marginVertical: hp(2),
   },
-  eyeIconContainer: {
-    position: "absolute",
-    right: wp(7),
-    top: hp(4.5),
-  },
+  eyeIconContainer: { marginRight: wp(2) },
   logoText: {
     fontFamily: "lato-bold",
     fontSize: wp(8),
     color: "#FF9E00",
   },
   container: {
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#023E8A",
+    backgroundColor: "#023E8A", //
     flex: 1,
   },
   registerButtonContainer: {
@@ -172,9 +255,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    width: wp(30),
-    justifyContent: "center",
-    alignItems: "center",
   },
   registerButton: {
     backgroundColor: "#0077B6",
@@ -184,12 +264,7 @@ const styles = StyleSheet.create({
     fontSize: wp(4),
     color: "#FFFFFF",
   },
-  registerTextContainer: {
-    position: "absolute",
-    bottom: 0,
-    marginBottom: hp(4),
-    flexDirection: "row",
-  },
+
   registerText: {
     fontFamily: "lato-light",
     fontSize: wp(3.5),
@@ -199,5 +274,13 @@ const styles = StyleSheet.create({
     fontFamily: "lato-regular",
     fontSize: wp(3.5),
     color: "#FFFFFF",
+  },
+  errorMessage: {
+    color: "#FF9E00",
+    fontFamily: "lato-regular",
+    fontSize: wp(3),
+    textAlign: "right",
+    marginHorizontal: wp(8),
+    marginVertical: hp(0.2),
   },
 });

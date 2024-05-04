@@ -21,90 +21,26 @@ const Stack = createNativeStackNavigator();
 
 const App = () => (
   <NavigationContainer>
-    <Stack.Navigator initialRouteName="ProfileScreen">
-      <Stack.Screen
-        name="CardScreen"
-        component={CardScreen}
-        options={{ headerShown: false, statusBarHidden: true }}
-      />
-      <Stack.Screen
-        name="TopicScreen"
-        component={TopicScreen}
-        options={{ headerShown: false, statusBarHidden: true }}
-      />
-      <Stack.Screen
-        name="GenderScreen"
-        component={GenderScreen}
-        options={{ headerShown: false, statusBarHidden: true }}
-      />
-
-      <Stack.Screen
-        name="ReminderScreen"
-        component={ReminderScreen}
-        options={{ headerShown: false, statusBarHidden: true }}
-      />
-      <Stack.Screen
-        name="BlurScreen"
-        component={BlurScreen}
-        options={{ headerShown: false, statusBarHidden: true }}
-      />
-
-      <Stack.Screen
-        name="SplashScreen"
-        component={SplashScren}
-        options={{ headerShown: false, statusBarHidden: true }}
-      />
-      <Stack.Screen
-        name="LandingScreen"
-        component={LandingScreen}
-        options={{ headerShown: false, statusBarHidden: true }}
-      />
-      <Stack.Screen
-        name="LogInScreen"
-        component={LogInScreen}
-        options={{ headerShown: false, statusBarHidden: true }}
-      />
-      <Stack.Screen
-        name="RegisterScreen"
-        component={RegisterScreen}
-        options={{ headerShown: false, statusBarHidden: true }}
-      />
-      <Stack.Screen
-        name="ProgramScreen"
-        component={ProgramScreen}
-        options={{ headerShown: false, statusBarHidden: true }}
-      />
-      <Stack.Screen
-        name="AddPhotoScreen"
-        component={AddPhotoScreen}
-        options={{ headerShown: false, statusBarHidden: true }}
-      />
-      <Stack.Screen
-        name="NameScreen"
-        component={NameScreen}
-        options={{ headerShown: false, statusBarHidden: true }}
-      />
-      <Stack.Screen
-        name="InterestScreen"
-        component={InterestScreen}
-        options={{ headerShown: false, statusBarHidden: true }}
-      />
-      <Stack.Screen
-        name="ProfileScreen"
-        component={ProfileScreen}
-        options={{ headerShown: false, statusBarHidden: true }}
-      />
+    <Stack.Navigator
+      initialRouteName="RegisterScreen"
+      screenOptions={{ headerShown: false, statusBarHidden: true }}
+    >
+      <Stack.Screen name="CardScreen" component={CardScreen} />
+      <Stack.Screen name="TopicScreen" component={TopicScreen} />
+      <Stack.Screen name="GenderScreen" component={GenderScreen} />
+      <Stack.Screen name="ReminderScreen" component={ReminderScreen} />
+      <Stack.Screen name="BlurScreen" component={BlurScreen} />
+      <Stack.Screen name="SplashScreen" component={SplashScren} />
+      <Stack.Screen name="LandingScreen" component={LandingScreen} />
+      <Stack.Screen name="LogInScreen" component={LogInScreen} />
+      <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+      <Stack.Screen name="ProgramScreen" component={ProgramScreen} />
+      <Stack.Screen name="AddPhotoScreen" component={AddPhotoScreen} />
+      <Stack.Screen name="NameScreen" component={NameScreen} />
+      <Stack.Screen name="InterestScreen" component={InterestScreen} />
+      <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
     </Stack.Navigator>
   </NavigationContainer>
 );
 
 export default App;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

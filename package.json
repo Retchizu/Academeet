@@ -11,18 +11,21 @@
   "dependencies": {
     "@react-native-picker/picker": "^2.6.1",
     "@react-navigation/native-stack": "^6.9.26",
-    "@shopify/react-native-skia": "^0.1.221",
+    "@shopify/react-native-skia": "^0.1.241",
     "expo": "^50.0.17",
     "expo-blur": "~12.9.2",
     "expo-font": "~11.10.3",
     "expo-status-bar": "~1.11.1",
+    "firebase": "^10.11.1",
+    "formik": "^2.4.6",
     "react": "18.2.0",
     "react-native": "0.73.6",
     "react-native-dropdown-picker": "^5.4.6",
     "react-native-progress": "^5.0.1",
     "react-native-responsive-screen": "^1.4.2",
     "react-native-svg": "^14.1.0",
-    "react-native-svg-transformer": "^1.3.0"
+    "react-native-svg-transformer": "^1.3.0",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
