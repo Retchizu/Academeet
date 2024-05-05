@@ -13,15 +13,15 @@ import { SVGLogo } from "../misc/loadSVG";
 import { Text, useFont } from "@shopify/react-native-skia";
 
 const TestScreen = () => {
-   const fontSize = 32;
-   const font = useFont(require("../fonts/Lato-Regular.ttf"), fontSize);
-   return (
-     <Canvas style={{ flex: 1 }}>
-       <Fill color="white" />
-           <Text x={0} y={fontSize} text="Hello World" font={font} />
-           <Blur blur={6} />
-     </Canvas>
-   );
+  const fontSize = 32;
+  const font = useFont(require("../fonts/Lato-Regular.ttf"), fontSize);
+  return (
+    <Canvas style={{ flex: 1 }}>
+      <Fill color="white" />
+      <Text x={0} y={fontSize} text="Hello World" font={font} />
+      <Blur blur={6} />
+    </Canvas>
+  );
 };
 
 export default TestScreen;

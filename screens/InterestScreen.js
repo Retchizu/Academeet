@@ -1,7 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
 import { loadFont } from "../misc/loadFont";
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 import { SvgXml } from "react-native-svg";
 import { SVGnext, SVGprevious } from "../misc/loadSVG";
 import { useNavigation } from "@react-navigation/native";
@@ -10,7 +19,7 @@ import * as Progress from "react-native-progress";
 const InterestScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
   const [selectedTraits, setSelectedTraits] = useState([]);
-  const [progressValue, setProgressValue] = useState(0.4);
+  const [progressValue, setProgressValue] = useState(0.5);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -19,20 +28,16 @@ const InterestScreen = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setProgressValue(0.5);
+      setProgressValue(0.7);
     }, 500);
     return () => clearTimeout(timer);
   }, []);
 
   const toggleTrait = (trait) => {
     if (selectedTraits.includes(trait)) {
-      setSelectedTraits(selectedTraits.filter(item => item !== trait));
+      setSelectedTraits(selectedTraits.filter((item) => item !== trait));
     } else {
-      if (selectedTraits.length < 5) {
-        setSelectedTraits([...selectedTraits, trait]);
-      } else {
-        alert("You can only select up to 5 traits.");
-      }
+      setSelectedTraits([...selectedTraits, trait]);
     }
   };
 
@@ -81,7 +86,9 @@ const InterestScreen = () => {
       <View style={styles.titleContainer}>
         <Text style={styles.logoText}>Tell us more about yourself!</Text>
         <Text style={styles.description}>
-          This will help you to present yourself in a way where you can show your interest to others.
+          This will help you to present yourself {"\n"}in a way where you can
+          show your {"\n"}interest to others. This will help you to present
+          yourself in a way where you can show your interest to others.
         </Text>
         <Text style={styles.onlyText}> Choose 5 personal traits </Text>
         <View style={styles.traitsContainer}>
