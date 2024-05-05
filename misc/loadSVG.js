@@ -18,7 +18,7 @@ const SVGLogo = `
 </svg>
 
 `;
-const SVGnext =`<svg width="97" height="89" viewBox="0 0 97 89" fill="none" xmlns="http://www.w3.org/2000/svg">
+const SVGnext = `<svg width="97" height="89" viewBox="0 0 97 89" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g filter="url(#filter0_d_387_344)">
 <rect x="4" width="89" height="81" rx="30" fill="#FF9E00"/>
 </g>
@@ -100,4 +100,27 @@ const reminderSVG = `<svg width="126" height="120" viewBox="0 0 126 120" fill="n
 </svg>
 `;
 
-export { SVGLogo, SVGnext, SVGprevious, dropDown, inactiveLogo, reminderSVG };
+
+const SVGaddImageButton = `
+<svg width="147" height="134" viewBox="0 0 147 134" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="147" height="134" rx="40" fill="white"/>
+<g clip-path="url(#clip0_0_1)">
+<path d="M95 66H75V46H73V66H53V68H73V88H75V68H95V66Z" fill="#6D6D6D"/>
+</g>
+<defs>
+<clipPath id="clip0_0_1">
+<rect width="42" height="42" fill="white" transform="translate(53 46)"/>
+</clipPath>
+</defs>
+</svg>
+`;
+
+const SVGImage = `
+<svg width="399" height="438" viewBox="0 0 399 438" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="399" height="438" rx="40" fill="white"/>
+</svg>
+
+`;
+
+export { SVGLogo, SVGnext, SVGprevious, dropDown, SVGaddImageButton, SVGImage };
+

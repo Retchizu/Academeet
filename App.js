@@ -14,6 +14,8 @@ import AddPhotoScreen from "./screens/AddPhotoScreen";
 import NameScreen from "./screens/NameScreen";
 import InterestScreen from "./screens/InterestScreen";
 import CardScreen from "./screens/CardScreen";
+import DisplayingPhotoScreen from "./screens/DisplayingPhotoScreen";
+import YearLevelScreen from "./screens/YearLevelScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import ChatScreen from "./screens/ChatScreen";
 import { FontAwesome } from "@expo/vector-icons";
@@ -133,6 +135,22 @@ const App = () => (
       <Stack.Screen name="NameScreen" component={NameScreen} />
       <Stack.Screen name="InterestScreen" component={InterestScreen} />
       <Stack.Screen name="ReminderScreen" component={ReminderScreen} />
+
+      <Stack.Screen
+        name="YearLevelScreen"
+        component={YearLevelScreen}
+ 
+      />
+      <Stack.Screen
+        name="DisplayingPhotoScreen"
+        component={DisplayingPhotoScreen}
+      /> 
+          
+      <Stack.Screen
+        name="CardScreen" component={CardScreen}
+      />
+
+
     </Stack.Navigator>
   </NavigationContainer>
 );

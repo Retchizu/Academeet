@@ -13,8 +13,8 @@ import * as Progress from "react-native-progress";
 const GenderScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
   const [selectedGender, setSelectedGender] = useState("");
-  const [progressValue, setProgressValue] = useState(0.3);
   const navigation = useNavigation();
+  const [progressValue, setProgressValue] = useState(0.45);
 
   useEffect(() => {
     loadFont().then(() => setFontLoaded(true));
@@ -22,7 +22,7 @@ const GenderScreen = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setProgressValue(0.4);
+      setProgressValue(0.5);
     }, 500);
     return () => clearTimeout(timer);
   }, []);
@@ -44,32 +44,32 @@ const GenderScreen = () => {
         <Text style={styles.title}>How do you identify?</Text>
         <Text style={styles.description}>Everyone's welcome on Academeet</Text>
         <View style={styles.genderContainer}>
-          <View style= {{top:wp (40)}}>
-          <View style={styles.genderOptionWrapper}>
-            <TouchableOpacity
-              style={[
-                styles.genderOption,
-                { paddingHorizontal: wp(11) },
-                selectedGender === "Man" && styles.selectedGenderOption,
-              ]}
-              onPress={() => setSelectedGender("Man")}
-            >
-              <Text style={styles.genderOptionText}>Man</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.genderOptionWrapper}>
-            <TouchableOpacity
-              style={[
-                styles.genderOption,
-                selectedGender === "Woman" && styles.selectedGenderOption,
-              ]}
-              onPress={() => setSelectedGender("Woman")}
-            >
-              <Text style={styles.genderOptionText}>Woman</Text>
-            </TouchableOpacity>
+          <View style={{ top: wp(40) }}>
+            <View style={styles.genderOptionWrapper}>
+              <TouchableOpacity
+                style={[
+                  styles.genderOption,
+                  { paddingHorizontal: wp(11) },
+                  selectedGender === "Man" && styles.selectedGenderOption,
+                ]}
+                onPress={() => setSelectedGender("Man")}
+              >
+                <Text style={styles.genderOptionText}>Man</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.genderOptionWrapper}>
+              <TouchableOpacity
+                style={[
+                  styles.genderOption,
+                  selectedGender === "Woman" && styles.selectedGenderOption,
+                ]}
+                onPress={() => setSelectedGender("Woman")}
+              >
+                <Text style={styles.genderOptionText}>Woman</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-      </View>
       </View>
       <TouchableOpacity
         style={styles.nextIconContainer}
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
   },
   genderOptionWrapper: {
     paddingLeft: wp(25),
-    alignItems: "center", // Center the option horizontally
+    alignItems: "center",
   },
   genderOption: {
     backgroundColor: "#FFFFFF",

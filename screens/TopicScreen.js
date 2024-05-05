@@ -49,7 +49,7 @@ const TopicScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
   const [selectedTopics, setSelectedTopics] = useState([]);
   const navigation = useNavigation();
-  const [progressValue, setProgressValue] = useState(0.5);
+  const [progressValue, setProgressValue] = useState(0.7);
 
   useEffect(() => {
     loadFont().then(() => setFontLoaded(true));
@@ -57,7 +57,7 @@ const TopicScreen = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setProgressValue(0.6);
+      setProgressValue(0.8);
     }, 500);
     return () => clearTimeout(timer);
   }, []);
@@ -89,7 +89,10 @@ const TopicScreen = () => {
         <Text style={styles.description}>
           This is the aspect that will match you with {"\n"}other students.
         </Text>
-        <Text style={styles.onlyText}> Choose 5 topics you are interested in </Text>
+        <Text style={styles.onlyText}>
+          {" "}
+          Choose 5 topics you are interested in{" "}
+        </Text>
       </View>
 
       <ScrollView style={styles.topicsContainer}>
@@ -117,7 +120,12 @@ const TopicScreen = () => {
         style={styles.previousIconContainer}
         onPress={() => navigation.navigate("InterestScreen")}
       >
-        <SvgXml xml={SVGprevious} width={45} height={45} style={styles.previousIcon} />
+        <SvgXml
+          xml={SVGprevious}
+          width={45}
+          height={45}
+          style={styles.previousIcon}
+        />
       </TouchableOpacity>
     </View>
   );
@@ -189,8 +197,19 @@ const styles = StyleSheet.create({
   },
   nextIcon: {
     tintColor: "#FFFFFF",
+    paddingRight: wp(20),
   },
   previousIcon: {
     tintColor: "#FFFFFF",
+    paddingLeft: wp(20),
+  },
+  progressBarContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: hp(2),
   },
 });
