@@ -51,7 +51,7 @@ const NameScreen = () => {
           style={styles.inputField}
           onChangeText={(text) => setName(text)}
           value={name}
-          placeholder="Enter your name here"
+          placeholder="Enter your full name here"
           placeholderTextColor="#6D6D6D"
         />
       </View>

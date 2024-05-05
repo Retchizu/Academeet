@@ -1,17 +1,26 @@
 import React, { useState, useEffect, useRef } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Modal, TextInput, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Modal,
+  FlatList,
+} from "react-native";
 import { loadFont } from "../misc/loadFont";
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+import { SvgXml } from "react-native-svg";
+import { dropDown, SVGnext, SVGprevious } from "../misc/loadSVG";
 import { useNavigation } from "@react-navigation/native";
-import img1 from "../misc/Rompek.png";
+import * as Progress from "react-native-progress";
 
-const ProfileScreen = () => {
+const ProgramScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
+  const [selectedProgram, setSelectedProgram] = useState("");
   const [showModal, setShowModal] = useState(false);
-
-  const [bioText, setBioText] = useState("");
-  const [userBio, setUserBio] = useState("");
-
   const [progressValue, setProgressValue] = useState(0.2);
   const programs = [
     "Computer Science",
@@ -21,15 +30,12 @@ const ProfileScreen = () => {
   ];
   programs.sort();
 
-
   const containerRef = useRef(null);
   const navigation = useNavigation();
-  const [bio, setBio] = useState("");
 
   useEffect(() => {
     loadFont().then(() => setFontLoaded(true));
   }, []);
-
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -42,145 +48,183 @@ const ProfileScreen = () => {
     return null;
   }
 
-  const handleAddBio = () => {
-    setShowModal(true);
+  const handleSelectProgram = (program) => {
+    setSelectedProgram(program);
+    setShowModal(false);
   };
 
-  const saveBio = () => {
-    setUserBio(bioText); // Save the typed bio
-    setBioText(""); // Clear the input field after saving
-    setShowModal(false);
+  const handlePress = () => {
+    setShowModal(true);
   };
 
   return (
     <View style={styles.container} ref={containerRef}>
-      <View style={styles.content}>
-        <Image source={img1} style={styles.profilePic} />
-        <Text style={styles.nameText}>Romnoel Petracorta</Text>
-        <Text style={styles.infoText}>BS Computer Science</Text>
+      <View style={styles.progressBarContainer}>
+        <Progress.Bar progress={progressValue} width={wp(90)} color="#FF6D00" />
       </View>
-
-      <TouchableOpacity onPress={handleAddBio} style={styles.addBioContainer}>
-        {userBio ? (
-          <Text style={styles.userBio}>{userBio}</Text>
-        ) : (
-          <Text style={styles.addBio}>Add Bio</Text>
-        )}
-      </TouchableOpacity>
-
-      <Modal visible={showModal} transparent animationType="slide">
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <TextInput
-              style={styles.bioInput}
-              multiline
-              placeholder="Type your bio here..."
-              value={bioText}
-              onChangeText={(text) => setBioText(text)}
-            />
-            <TouchableOpacity style={styles.saveButton} onPress={saveBio}>
-              <Text style={styles.saveButtonText}>Save</Text>
-            </TouchableOpacity>
-          </View>
+      <View style={styles.titleContainer}>
+        <Text style={styles.logoText}>Select Your Program</Text>
+        <Text style={styles.description}>
+          So we can help you find people within the same field.
+        </Text>
+      </View>
+      <TouchableOpacity style={styles.pickerContainer} onPress={handlePress}>
+        <View style={styles.pickerContent}>
+          <Text style={styles.inputField}>
+            {selectedProgram || "Select your program"}
+          </Text>
+          <SvgXml xml={dropDown} width={wp(4)} height={wp(4)} />
         </View>
+      </TouchableOpacity>
+      <Modal visible={showModal} transparent={true} animationType="fade">
+        <TouchableOpacity
+          style={styles.modalContainer}
+          onPress={() => setShowModal(false)}
+        >
+          <View style={styles.dropdownModal}>
+            <FlatList
+              data={programs}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  style={styles.optionItem}
+                  onPress={() => handleSelectProgram(item)}
+                >
+                  <Text style={styles.optionText}>{item}</Text>
+                </TouchableOpacity>
+              )}
+              keyExtractor={(item, index) => index.toString()}
+            />
+          </View>
+        </TouchableOpacity>
       </Modal>
-
-      <View style={styles.personalInfoContainer}>
-        <Text style={styles.sectionText}>Personal Information</Text>
-        <Text style={styles.sectionText}>Email</Text>
-        <Text style={styles.sectionText}>Personal Traits</Text>
-        <Text style={styles.sectionText}>Topics Interested in</Text>
-      </View>
+      <TouchableOpacity
+        style={styles.nextIconContainer}
+        onPress={() => navigation.navigate("ProfileScreen")}
+      >
+        <SvgXml xml={SVGnext} width={45} height={45} style={styles.nextIcon} />
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.previousIconContainer}
+        onPress={() => navigation.navigate("YearLevelScreen")}
+      >
+        <SvgXml
+          xml={SVGprevious}
+          width={45}
+          height={45}
+          style={styles.previousIcon}
+        />
+      </TouchableOpacity>
     </View>
   );
 };
 
-export default ProfileScreen;
+export default ProgramScreen;
 
 const styles = StyleSheet.create({
+  logoText: {
+    fontFamily: "lato-regular",
+    fontSize: wp(8),
+    color: "#FFFFFF",
+    textAlign: "left",
+    paddingRight: wp(18),
+  },
+  description: {
+    fontFamily: "lato-light",
+    fontSize: wp(4),
+    color: "#FFFFFF",
+    marginTop: hp(1),
+    textAlign: "left",
+    paddingRight: wp(18),
+  },
   container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#023E8A",
   },
-  content: {
-    alignItems: "center", 
-    marginBottom: hp(2),
+  titleContainer: {
+    position: "absolute",
+    top: hp(7),
+    alignItems: "flex-start",
+    paddingLeft: wp(5),
   },
-  nameText: {
-    fontFamily: "lato-bold",
-    fontSize: wp(6),
-    color: "#FFFFFF",
-    textAlign: "center",
+  pickerContainer: {
+    width: wp(70),
+    height: hp(5),
+    position: "relative",
+    zIndex: 1,
   },
-  infoText: {
+  pickerContent: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
+    height: "100%",
+    backgroundColor: "#FFFFFF",
+    borderRadius: hp(2),
+    borderWidth: wp(0.3),
+    borderColor: "#CCCCCC",
+    paddingHorizontal: wp(2),
+  },
+  inputField: {
+    color: "#414042",
     fontFamily: "lato-regular",
     fontSize: wp(4),
-    color: "#FFFFFF",
-    textAlign: "center",
-    marginTop: hp(1),
-  },
-  sectionText: {
-    fontFamily: "lato-bold",
-    fontSize: wp(5),
-    color: "#FFFFFF",
-    marginTop: hp(3),
-  },
-  profilePic: {
-    marginBottom: hp(1),
-    width: wp(40), // Adjust image width as needed
-    height: wp(40), // Adjust image height as needed
-  },
-  addBioContainer: {
-    marginTop: hp(2),
-    borderRadius: 20,
-    paddingHorizontal: 15,
-  },
-  addBio: {
-    fontFamily: "lato-regular",
-    fontSize: wp(4),
-    color: "#FFFFFF",
-    textDecorationLine: "underline",
-  },
-  userBio: {
-    fontFamily: "lato-regular",
-    fontSize: wp(4),
-    color: "#FFFFFF",
+    flex: 1,
   },
   modalContainer: {
     flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
-  modalContent: {
+  dropdownModal: {
+    position: "absolute",
+    left: wp(15),
+    top: hp(46),
+    width: wp(70),
+    maxHeight: hp(30),
     backgroundColor: "#FFFFFF",
-    padding: wp(5),
-    borderRadius: wp(2),
-    width: wp(80),
-  },
-  bioInput: {
-    fontFamily: "lato-regular",
-    fontSize: wp(4),
-    color: "#000000",
-    textAlignVertical: "top",
-    minHeight: hp(20),
-    borderWidth: 1,
+    borderRadius: hp(2),
+    borderWidth: wp(0.3),
     borderColor: "#CCCCCC",
-    borderRadius: wp(2),
-    padding: wp(2),
-    marginBottom: hp(2),
+    zIndex: 2,
   },
-  saveButton: {
-    backgroundColor: "#023E8A",
-    padding: wp(3),
-    borderRadius: wp(2),
-    alignItems: "center",
+  optionItem: {
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#CCCCCC",
   },
-  saveButtonText: {
-    fontFamily: "lato-bold",
+  optionText: {
     fontSize: wp(4),
-    color: "#FFFFFF",
+    color: "#414042",
+    paddingHorizontal: wp(2),
+  },
+  nextIconContainer: {
+    position: "absolute",
+    bottom: hp(5),
+    right: wp(2),
+  },
+  previousIconContainer: {
+    position: "absolute",
+    bottom: hp(5),
+    left: wp(2),
+  },
+  nextIcon: {
+    tintColor: "#FFFFFF",
+    paddingRight: wp(20),
+  },
+  previousIcon: {
+    tintColor: "#FFFFFF",
+    paddingLeft: wp(20),
+  },
+  progressBarContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: hp(2),
   },
 });
