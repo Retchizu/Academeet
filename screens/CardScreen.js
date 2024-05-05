@@ -13,6 +13,11 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+import {
+  SafeAreaProvider,
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 
 const users = [
   {
@@ -52,7 +57,7 @@ const CardScreen = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const position = new Animated.ValueXY();
   const [fontLoaded, setFontLoaded] = useState(false);
-  
+  const insets = useSafeAreaInsets();
 
   useEffect(() => {
     loadFont().then(() => setFontLoaded(true));
@@ -171,11 +176,11 @@ const CardScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.topSpacer} />
       <View style={styles.cardContainer}>{renderUsers()}</View>
       <View style={styles.bottomSpacer} />
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -185,7 +190,7 @@ const styles = StyleSheet.create({
     fontSize: wp(7),
     color: "black",
     marginBottom: hp(1),
-    marginRight: wp(1)
+    marginRight: wp(1),
   },
   userProgram: {
     fontFamily: "lato-regular",
@@ -235,8 +240,10 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: wp(5),
     position: "absolute",
-    height: screenHeight - hp(10),
-    width: screenWidth,
+    top: hp(1), 
+    bottom: hp(5), 
+    left: 0,
+    right: 0,
   },
   image: {
     flex: 1,
