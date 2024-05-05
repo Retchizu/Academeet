@@ -116,12 +116,9 @@ const TabNavigator = () => {
 const App = () => (
   <NavigationContainer>
     <Stack.Navigator
-      initialRouteName="InterestScreen"
-      screenOptions={{
-        headerShown: false,
-        statusBarHidden: false,
-        statusBarColor: "#023E8A",
-      }}
+      initialRouteName="TopicScreen"
+      screenOptions={{ headerShown: false, statusBarHidden: true }}
+
     >
       <Stack.Screen name="TabNavigator" component={TabNavigator} />
       <Stack.Screen name="TopicScreen" component={TopicScreen} />

@@ -163,7 +163,6 @@ const RegisterScreen = () => {
                   style={{
                     flexDirection: "row",
                     alignItems: "center",
-                    marginTop: hp(2),
                   }}
                 >
                   <Text style={styles.registerText}>
@@ -190,14 +189,17 @@ const styles = StyleSheet.create({
   centerView: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: hp(5),
+    marginTop: hp(15),
   },
   inputField: {
     fontFamily: "lato-light",
+    width: wp(65),
+    height: hp(6),
     borderWidth: wp(0.3),
     borderColor: "#414042",
     borderRadius: wp(5),
-    marginVertical: hp(2),
+    marginTop: hp(3),
+    marginHorizontal: wp(4),
     paddingHorizontal: wp(4),
     paddingVertical: hp(1),
     backgroundColor: "#FFFFFF",
@@ -212,19 +214,30 @@ const styles = StyleSheet.create({
     fontFamily: "lato-light",
     fontSize: wp(4),
     color: "#414042",
-    marginHorizontal: wp(12),
+    alignSelf: "center",
+    padding: hp(2),
   },
   passwordInputContainer: {
+    width: wp(65),
+    height: hp(6),
+    borderWidth: wp(0.3),
+    borderColor: "#414042",
+    borderRadius: wp(5),
+    marginTop: hp(3),
+    marginHorizontal: wp(4),
+    paddingHorizontal: wp(4),
+    paddingVertical: hp(1),
+    backgroundColor: "#FFFFFF",
+    fontSize: wp(4),
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    borderRadius: wp(5),
     marginBottom: 10,
-    backgroundColor: "#FFFFFF",
-    padding: wp(2),
-    marginVertical: hp(2),
   },
-  eyeIconContainer: { marginRight: wp(2) },
+  eyeIconContainer: { 
+    marginRight: wp(2) 
+  },
+  
   logoText: {
     fontFamily: "lato-bold",
     fontSize: wp(8),
@@ -254,6 +267,7 @@ const styles = StyleSheet.create({
   },
   registerButton: {
     backgroundColor: "#0077B6",
+    bottom: hp(3),
   },
   buttonText: {
     fontFamily: "lato-light",

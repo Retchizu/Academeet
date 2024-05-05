@@ -1,46 +1,123 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Modal,
-  FlatList,
-} from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Modal, TextInput, Image } from "react-native";
 import { loadFont } from "../misc/loadFont";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
-import { SvgXml } from "react-native-svg";
-import { SVGnext, SVGprevious } from "../misc/loadSVG";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { useNavigation } from "@react-navigation/native";
-import * as Progress from "react-native-progress";
+import img1 from "../misc/Rompek.png";
+
+
+const data = [
+  {
+    key: 1, name: "Romnoel Petracorta", 
+    program: "Computer Science",
+    email: "Lychee@gmail.com",  
+    yearLevel: "Sophomore",
+    gender: "Male",
+    characteristics: ["Curious", "Creative", "Sociable", "Adaptable", "Nigger"],
+    topicsInterestedIn: ["Java", "CyberSecurity", "Mobile Application", "Game Dev"]
+  }
+]
 
 const ProfileScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [bioText, setBioText] = useState("");
+  const [userBio, setUserBio] = useState("");
   const containerRef = useRef(null);
   const navigation = useNavigation();
-  const [progressValue, setProgressValue] = useState(0.2); 
 
   useEffect(() => {
     loadFont().then(() => setFontLoaded(true));
-  }, []);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setProgressValue(0.3); 
-    }, 500);
-    return () => clearTimeout(timer);
   }, []);
 
   if (!fontLoaded) {
     return null;
   }
 
+  const handleAddBio = () => {
+    setShowModal(true);
+  };
+
+  const saveBio = () => {
+    setUserBio(bioText); // Save the typed bio
+    setBioText(""); // Clear the input field after saving
+    setShowModal(false);
+  };
+
   return (
     <View style={styles.container} ref={containerRef}>
-      <Text>Profile</Text>
+      <View style={styles.content}>
+        <Image source={img1} style={styles.profilePic} />
+        <Text style={styles.nameText}>{data[0].name}</Text>
+        <Text style={styles.infoText}>{data[0].program}</Text>
+        <TouchableOpacity onPress={handleAddBio}>
+          <Text style={styles.addBio}>{userBio ? userBio : "Add Bio"}</Text>
+        </TouchableOpacity>
+
+        <View style={styles.secondContainer}>
+          <Text style={[{ 
+            alignSelf: "flex-start", 
+            marginBottom: hp(1), 
+            fontSize: wp(4),
+            fontFamily: "lato-bold",
+            color: "#FFFFFF",
+            }]}>
+              Personal Information
+              </Text>
+          <View style={styles.personalInfoContainer}>
+            <View style={styles.emailContainer}>
+              <Text style={[styles.infoText]}>Email:</Text>
+              <Text style={[styles.sectionText, { flex: 2, textAlign: "right" }]}>{data[0].email}</Text>
+            </View>
+            <View style={styles.infoContainer}>
+              <Text style={[styles.infoText]}>Year Level:</Text>
+              <Text style={[styles.sectionText, { flex: 2, textAlign: "right" }]}>{data[0].yearLevel}</Text>
+            </View>
+            <View style={styles.infoContainer}>
+              <Text style={[styles.infoText]}>Gender:</Text>
+              <Text style={[styles.sectionText, { flex: 2, textAlign: "right" }]}>{data[0].gender}</Text>
+            </View>
+
+          </View>
+          <Text style={[{ 
+            alignSelf: "flex-start", 
+            fontSize: wp(4),
+            fontFamily: "lato-bold",
+            color: "#FFFFFF",
+            marginTop: wp(4)
+            }]}>
+              Miscallaneous
+              </Text>
+          <View style={styles.personalInfoContainer}>
+          <View style={styles.infoContainer}>
+              <Text style={[styles.infoText]}>Characteristics:</Text>
+              <Text style={[styles.sectionText, { flex: 2, textAlign: "right" }]}>{data[0].characteristics.join(", ")}</Text>
+            </View>
+            <View style={styles.infoContainer}>
+              <Text style={[styles.infoText]}>Interests:</Text>
+              <Text style={[styles.sectionText, { flex: 2, textAlign: "right" }]}>{data[0].topicsInterestedIn.join(", ")}</Text>
+            </View>
+          </View>
+        </View>
+            
+      </View>
+
+      <Modal visible={showModal} transparent animationType="slide">
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <TextInput
+              style={styles.bioInput}
+              multiline
+              placeholder="Type your bio here..."
+              value={bioText}
+              onChangeText={(text) => setBioText(text)}
+            />
+            <TouchableOpacity style={styles.saveButton} onPress={saveBio}>
+              <Text style={styles.saveButtonText}>Save</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -48,111 +125,111 @@ const ProfileScreen = () => {
 export default ProfileScreen;
 
 const styles = StyleSheet.create({
-  progressBarContainer: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingVertical: hp(2),
-    zIndex: 1,
-  },
-  logoText: {
-    fontFamily: "lato-regular",
-    fontSize: wp(8),
-    color: "#FFFFFF",
-    textAlign: "left",
-    paddingRight: wp(18),
-  },
-  description: {
-    fontFamily: "lato-light",
-    fontSize: wp(4),
-    color: "#FFFFFF",
-    marginTop: hp(1),
-    textAlign: "left",
-    paddingRight: wp(18),
-  },
   container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#023E8A",
   },
-  titleContainer: {
-    position: "absolute",
-    top: hp(7),
-    alignItems: "flex-start",
-    paddingLeft: wp(5),
+  content: {
+    alignItems: "center", 
+    marginBottom: hp(10), // Reduced marginBottom
   },
-  pickerContainer: {
-    width: wp(70),
-    height: hp(5),
-    position: "relative",
-    zIndex: 1,
+  nameText: {
+    fontFamily: "lato-bold",
+    fontSize: wp(6),
+    color: "#FFFFFF",
+    textAlign: "center",
   },
-  pickerContent: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: "100%",
-    height: "100%",
-    backgroundColor: "#FFFFFF",
-    borderRadius: hp(2),
-    borderWidth: wp(0.3),
-    borderColor: "#CCCCCC",
-    paddingHorizontal: wp(2),
-  },
-  inputField: {
-    color: "#414042",
+  infoText: {
     fontFamily: "lato-regular",
     fontSize: wp(4),
-    flex: 1,
+    color: "#FFFFFF",
+    textAlign: "left",
+    marginTop: hp(1),
+  },
+  sectionText: {
+    fontFamily: "lato-bold",
+    fontSize: wp(3),
+    color: "#FFFFFF",
+    marginTop: hp(1),
+    textAlign: "left",
+    marginLeft: wp(5), // Align text to the left
+  },
+  profilePic: {
+    marginBottom: hp(1),
+    marginTop: hp(3),
+    width: wp(40), // Adjust image width as needed
+    height: wp(40), // Adjust image height as needed
+  },
+  addBio: {
+    fontFamily: "lato-regular",
+    fontSize: wp(3),
+    color: "#FFFFFF",
+    marginTop: hp(1), // Moved closer to the Personal Information
   },
   modalContainer: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
-  dropdownModal: {
-    position: "absolute",
-    left: wp(15),
-    top: hp(46),
-    width: wp(70),
-    maxHeight: hp(30),
+  modalContent: {
     backgroundColor: "#FFFFFF",
+    padding: wp(5),
+    borderRadius: wp(2),
+    width: wp(80),
+  },
+  bioInput: {
+    fontFamily: "lato-regular",
+    fontSize: wp(4),
+    color: "#000000",
+    textAlignVertical: "top",
+    minHeight: hp(20),
+    borderWidth: 1,
+    borderColor: "#CCCCCC",
+    borderRadius: wp(2),
+    padding: wp(2),
+    marginBottom: hp(2),
+  },
+  saveButton: {
+    backgroundColor: "#023E8A",
+    padding: wp(3),
+    borderRadius: wp(2),
+    alignItems: "center",
+  },
+  saveButtonText: {
+    fontFamily: "lato-bold",
+    fontSize: wp(4),
+    color: "#FFFFFF",
+  },
+  personalInfoContainer: {
+    marginTop: hp(1), // Moved closer to the Add Bio button
+    width: wp(80),
+    backgroundColor: "#0077B6",
     borderRadius: hp(2),
     borderWidth: wp(0.3),
-    borderColor: "#CCCCCC",
-    zIndex: 2,
+    borderColor: "#0077B6",
+    padding: wp(3),
   },
-  optionItem: {
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#CCCCCC",
+  secondContainer: {
+    marginTop: hp(5),
   },
-  optionText: {
-    fontSize: wp(4),
-    color: "#414042",
-    paddingHorizontal: wp(2),
+  emailContainer: {
+    flexDirection: "row", // Arrange children horizontally
+    justifyContent: "space-between", // Align children to the start and end of the container
+    alignItems: "center", // Align children vertically
+    borderBottomWidth: 0.5, // Add a thin line at the bottom
+    borderBottomColor: "#FFFFFF", // Set the color of the line
+    paddingBottom: hp(1), // Add padding to improve visual appearance
   },
-  nextIconContainer: {
-    position: "absolute",
-    bottom: hp(5),
-    right: wp(2),
-  },
-  previousIconContainer: {
-    position: "absolute",
-    bottom: hp(5),
-    left: wp(2),
-  },
-  nextIcon: {
-    tintColor: "#FFFFFF",
-    paddingRight: wp(20),
-  },
-  previousIcon: {
-    tintColor: "#FFFFFF",
-    paddingLeft: wp(20),
+  infoContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: hp(1),
+    borderBottomWidth: 0.5,
+    borderBottomColor: "#FFFFFF",
+    paddingBottom: hp(1),
   },
 });

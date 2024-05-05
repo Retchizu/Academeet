@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FF6D00",
   },
   genderOptionText: {
-    fontFamily: "lato-light",
+    fontFamily: "lato-regular",
     fontSize: wp(5),
   },
   nextIconContainer: {

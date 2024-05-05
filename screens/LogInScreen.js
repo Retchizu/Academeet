@@ -143,6 +143,7 @@ const styles = StyleSheet.create({
     color: "#414042",
     alignSelf: "center",
     padding: hp(2),
+    marginBottom: hp(2),
   },
   passwordInputContainer: {
     flexDirection: "row",
@@ -164,11 +165,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#023E8A",
     flex: 1,
   },
+
+
   loginButtonContainer: {
     marginTop: hp(4),
     justifyContent: "center",
     alignItems: "center",
   },
+
 
   button: {
     paddingVertical: hp(1.6),
@@ -197,10 +201,11 @@ const styles = StyleSheet.create({
   },
   registerContainer: {
     position: "absolute",
-    bottom: 0,
-    marginBottom: hp(4),
+    marginBottom: hp(1),
     flexDirection: "row",
+
     alignItems: "center",
+
   },
   registerText: {
     fontFamily: "lato-light",
@@ -211,7 +216,13 @@ const styles = StyleSheet.create({
     fontFamily: "lato-regular",
     fontSize: wp(3.5),
     color: "#FFFFFF",
+
   },
+  centerView: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
   errorMessage: {
     color: "#FF9E00",
     fontFamily: "lato-regular",
