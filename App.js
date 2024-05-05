@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -18,78 +18,108 @@ import ProfileScreen from "./screens/ProfileScreen";
 import ChatScreen from "./screens/ChatScreen";
 import { FontAwesome } from "@expo/vector-icons";
 import { SvgXml } from "react-native-svg";
-import { SVGLogo } from "./misc/loadSVG";
+import { SVGLogo, inactiveLogo } from "./misc/loadSVG";
+import { Blur } from "@shopify/react-native-skia";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const TabNavigator = () => (
-  <Tab.Navigator
-    screenOptions={{
-      headerShown: false,
-      tabBarStyle: {
-        position: "absolute",
-        height: 70,
-        bottom: 25,
-        right: 20,
-        left: 20,
-        elevation: 0,
-        backgroundColor: "#0077B6", 
-        borderTopWidth: 0,
-        borderRadius: 20,
-      },
-      tabBarIconStyle: {
-        marginBottom: 5,
-      },
-      tabBarActiveTintColor: "#FF9E00",
-      tabBarInactiveTintColor: "#FFF",
-      tabBarShowLabel: false,
-      tabBarLabelStyle: {
-        fontSize: 12,
-        marginTop: -5,
-      },
-    }}
-  >
-    <Tab.Screen
-      name="ProfileScreen"
-      component={ProfileScreen}
-      options={{
-        tabBarIcon: ({ color, size }) => (
-          <FontAwesome name="user" size={size} color={color} />
-        ),
+const TabNavigator = () => {
+  const [activeTab, setActiveTab] = useState("ProfileScreen");
+
+  const handleTabPress = (tabName) => {
+    setActiveTab(tabName);
+  };
+
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: {
+          position: "absolute",
+          height: 70,
+          bottom: 25,
+          right: 20,
+          left: 20,
+          elevation: 0,
+          backgroundColor: "#0077B6",
+          borderTopWidth: 0,
+          borderRadius: 20,
+        },
+        tabBarIconStyle: {
+          marginBottom: 5,
+        },
+        tabBarActiveTintColor: "#FF9E00",
+        tabBarInactiveTintColor: "#FFF",
+        tabBarShowLabel: false,
+        tabBarLabelStyle: {
+          fontSize: 12,
+          marginTop: -5,
+        },
       }}
-    />
-    <Tab.Screen
-      name="CardScreen"
-      component={CardScreen}
-      options={{
-        tabBarIcon: ({ color, size }) => (
-          <SvgXml
-            xml={SVGLogo}
-            width={size * 2.5}
-            height={size * 2.5}
-            fill={color}
-          />
-        ),
-      }}
-    />
-    <Tab.Screen
-      name="ChatScreen"
-      component={ChatScreen}
-      options={{
-        tabBarIcon: ({ color, size }) => (
-          <FontAwesome name="comment" size={size} color={color} />
-        ),
-      }}
-    />
-  </Tab.Navigator>
-);
+    >
+      <Tab.Screen
+        name="ProfileScreen"
+        component={ProfileScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome name="user" size={size} color={color} />
+          ),
+        }}
+        listeners={{
+          tabPress: () => handleTabPress("ProfileScreen"),
+        }}
+      />
+      <Tab.Screen
+        name="InterestScreen"
+        component={CardScreen}
+        options={{
+          tabBarIcon: ({ color, size }) =>
+            activeTab === "CardScreen" ? (
+              <SvgXml
+                xml={SVGLogo}
+                width={size * 2.5}
+                height={size * 2.5}
+                fill={color}
+              />
+            ) : (
+              <SvgXml
+                xml={inactiveLogo}
+                width={size * 2.5}
+                height={size * 2.5}
+                fill={color}
+              />
+            ),
+        }}
+        listeners={{
+          tabPress: () => handleTabPress("CardScreen"),
+        }}
+      />
+      <Tab.Screen
+        name="ChatScreen"
+        component={ChatScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome name="comment" size={size} color={color} />
+          ),
+        }}
+        listeners={{
+          tabPress: () => handleTabPress("ChatScreen"),
+        }}
+      />
+    </Tab.Navigator>
+  );
+};
 
 const App = () => (
   <NavigationContainer>
     <Stack.Navigator
-      initialRouteName="TabNavigator"
-      screenOptions={{ headerShown: false }}
+      initialRouteName="InterestScreen"
+      screenOptions={{
+        headerShown: false,
+        statusBarHidden: false,
+        statusBarColor: "#023E8A",
+      }}
     >
       <Stack.Screen name="TabNavigator" component={TabNavigator} />
       <Stack.Screen name="TopicScreen" component={TopicScreen} />

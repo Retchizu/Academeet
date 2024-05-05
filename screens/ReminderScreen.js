@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React, { useState, useEffect } from "react";
 import { SvgXml } from "react-native-svg";
-import { SVGLogo } from "../misc/loadSVG";
+import { reminderSVG } from "../misc/loadSVG";
 import { loadFont } from "../misc/loadFont";
 import {
   widthPercentageToDP as wp,
@@ -27,7 +27,7 @@ const ReminderScreen = () => {
     <View style={styles.container}>
       <View style={styles.content}>
         <View style={styles.logoContainer}>
-          <SvgXml xml={SVGLogo} style={styles.logo} />
+          <SvgXml xml={reminderSVG} style={styles.logo} />
         </View>
         <Text style={styles.heading}>Before you swipe</Text>
         <Text style={styles.text}>
@@ -80,14 +80,14 @@ const styles = StyleSheet.create({
     marginBottom: hp(0.2),
   },
   heading: {
-    fontFamily: "lato-light",
+    fontFamily: "lato-regular",
     fontSize: wp(6),
     color: "#FFFFFF",
     marginBottom: hp(3),
   },
   text: {
     fontFamily: "lato-light",
-    fontSize: wp(4),
+    fontSize: wp(5),
     color: "#FFFFFF",
     marginBottom: hp(2),
     textAlign: "justify",
