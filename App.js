@@ -22,6 +22,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { SvgXml } from "react-native-svg";
 import { SVGLogo, inactiveLogo } from "./misc/loadSVG";
 import { Blur } from "@shopify/react-native-skia";
+import LoginScreen from "./screens/LogInScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -116,9 +117,8 @@ const TabNavigator = () => {
 const App = () => (
   <NavigationContainer>
     <Stack.Navigator
-      initialRouteName="TopicScreen"
+      initialRouteName="RegisterScreen"
       screenOptions={{ headerShown: false, statusBarHidden: true }}
-
     >
       <Stack.Screen name="TabNavigator" component={TabNavigator} />
       <Stack.Screen name="TopicScreen" component={TopicScreen} />
@@ -132,22 +132,15 @@ const App = () => (
       <Stack.Screen name="NameScreen" component={NameScreen} />
       <Stack.Screen name="InterestScreen" component={InterestScreen} />
       <Stack.Screen name="ReminderScreen" component={ReminderScreen} />
+      <Stack.Screen name="LogInScreen" component={LoginScreen} />
 
-      <Stack.Screen
-        name="YearLevelScreen"
-        component={YearLevelScreen}
- 
-      />
+      <Stack.Screen name="YearLevelScreen" component={YearLevelScreen} />
       <Stack.Screen
         name="DisplayingPhotoScreen"
         component={DisplayingPhotoScreen}
-      /> 
-          
-      <Stack.Screen
-        name="CardScreen" component={CardScreen}
       />
 
-
+      <Stack.Screen name="CardScreen" component={CardScreen} />
     </Stack.Navigator>
   </NavigationContainer>
 );

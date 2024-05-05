@@ -15,20 +15,17 @@ import {
 import { SVGLogo } from "../misc/loadSVG";
 import { useNavigation } from "@react-navigation/native";
 import { Entypo } from "@expo/vector-icons";
-import { Formik } from "formik";
-import * as Yup from "yup";
-import {
-  isValidEmail,
-  isValidObjField,
-  validationSchema,
-} from "../methods/validator";
+import { auth, db } from "../firebaseConfig";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const LoginScreen = () => {
   const navigation = useNavigation();
-
   const [fontLoaded, setFontLoaded] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
+  const [logInCredential, setLogInCredential] = useState({
+    userName: "",
+    password: "",
+  });
   useEffect(() => {
     loadFont().then(() => setFontLoaded(true));
   }, []);
@@ -37,79 +34,75 @@ const LoginScreen = () => {
     return null;
   }
 
-  const initialValues = {
-    username: "",
-    password: "",
+  const handleOnChangeTextLogIn = (property, value) => {
+    setLogInCredential({ ...logInCredential, [property]: value });
   };
 
-  const attemptLogin = (values, formikActions) => {
-    // no functionality yet
+  console.log(logInCredential.userName, logInCredential.password);
+
+  const logInUser = async () => {
+    if (logInCredential.userName && logInCredential.password) {
+      try {
+        const docRef = await db
+          .collection("User")
+          .doc(logInCredential.userName)
+          .get();
+        const userEmail = docRef.data();
+        await auth.signInWithEmailAndPassword(
+          userEmail.email,
+          logInCredential.password
+        );
+        await AsyncStorage.setItem("email", userEmail.email);
+        await AsyncStorage.setItem("password", password);
+        navigation.replace("CardScreen");
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
   };
 
   return (
     <View style={styles.container}>
       <SvgXml xml={SVGLogo} />
       <Text style={styles.logoText}>academeet</Text>
-      <Formik
-        initialValues={initialValues}
-        onSubmit={attemptLogin}
-        validationSchema={validationSchema}
-      >
-        {({
-          values,
-          handleChange,
-          errors,
-          touched,
-          handleSubmit,
-          handleBlur,
-        }) => (
-          <View style={styles.textInputContainer}>
-            {touched.username && errors.username && (
-              <Text style={styles.errorMessage}>{errors.username}</Text>
-            )}
-            <TextInput
-              style={styles.inputField}
-              onChangeText={handleChange("username")}
-              value={values.username}
-              placeholder="Username"
-              placeholderTextColor="#6D6D6D"
-              onBlur={handleBlur("username")}
+      <View style={styles.textInputContainer}>
+        <TextInput
+          value={logInCredential.userName}
+          style={styles.inputField}
+          placeholder="Username"
+          placeholderTextColor="#6D6D6D"
+          onChangeText={(text) => handleOnChangeTextLogIn("userName", text)}
+        />
+
+        <View style={styles.passwordInputContainer}>
+          <TextInput
+            style={styles.inputField}
+            placeholder="Password"
+            placeholderTextColor="#6D6D6D"
+            secureTextEntry={!showPassword}
+            value={logInCredential.password}
+            onChangeText={(text) => handleOnChangeTextLogIn("password", text)}
+          />
+          <TouchableOpacity
+            onPress={() => setShowPassword(!showPassword)}
+            style={styles.eyeIconContainer}
+          >
+            <Entypo
+              name={showPassword ? "eye" : "eye-with-line"}
+              size={24}
+              color="#6D6D6D"
             />
-            {touched.password && errors.password && (
-              <Text style={styles.errorMessage}>{errors.password}</Text>
-            )}
-            <View style={styles.passwordInputContainer}>
-              <TextInput
-                style={styles.inputField}
-                onChangeText={handleChange("password")}
-                value={values.password}
-                placeholder="Password"
-                placeholderTextColor="#6D6D6D"
-                secureTextEntry={!showPassword}
-                onBlur={handleBlur("password")}
-              />
-              <TouchableOpacity
-                onPress={() => setShowPassword(!showPassword)}
-                style={styles.eyeIconContainer}
-              >
-                <Entypo
-                  name={showPassword ? "eye" : "eye-with-line"}
-                  size={24}
-                  color="#6D6D6D"
-                />
-              </TouchableOpacity>
-            </View>
-            <View style={styles.loginButtonContainer}>
-              <TouchableOpacity
-                style={[styles.button, styles.loginButton]}
-                onPress={handleSubmit}
-              >
-                <Text style={styles.buttonText}>Login</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        )}
-      </Formik>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.loginButtonContainer}>
+          <TouchableOpacity
+            style={[styles.button, styles.loginButton]}
+            onPress={() => logInUser()}
+          >
+            <Text style={styles.buttonText}>Login</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
       <View style={styles.registerContainer}>
         <Text style={styles.registerText}>Don't have an account yet? </Text>
         <TouchableOpacity onPress={() => navigation.navigate("RegisterScreen")}>
@@ -166,13 +159,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
-
   loginButtonContainer: {
     marginTop: hp(4),
     justifyContent: "center",
     alignItems: "center",
   },
-
 
   button: {
     paddingVertical: hp(1.6),
@@ -200,12 +191,10 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
   },
   registerContainer: {
-    position: "absolute",
     marginBottom: hp(1),
     flexDirection: "row",
 
     alignItems: "center",
-
   },
   registerText: {
     fontFamily: "lato-light",
@@ -216,19 +205,9 @@ const styles = StyleSheet.create({
     fontFamily: "lato-regular",
     fontSize: wp(3.5),
     color: "#FFFFFF",
-
   },
   centerView: {
     justifyContent: "center",
     alignItems: "center",
-  },
-
-  errorMessage: {
-    color: "#FF9E00",
-    fontFamily: "lato-regular",
-    fontSize: wp(3),
-    textAlign: "right",
-    marginHorizontal: wp(4),
-    marginVertical: hp(0.5),
   },
 });
