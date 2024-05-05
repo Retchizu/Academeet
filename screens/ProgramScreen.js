@@ -8,14 +8,34 @@ import img1 from "../misc/Rompek.png";
 const ProfileScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
   const [showModal, setShowModal] = useState(false);
+
   const [bioText, setBioText] = useState("");
   const [userBio, setUserBio] = useState("");
+
+  const [progressValue, setProgressValue] = useState(0.2);
+  const programs = [
+    "Computer Science",
+    "Information Technology",
+    "Information System",
+    "Multimedia Arts",
+  ];
+  programs.sort();
+
+
   const containerRef = useRef(null);
   const navigation = useNavigation();
   const [bio, setBio] = useState("");
 
   useEffect(() => {
     loadFont().then(() => setFontLoaded(true));
+  }, []);
+
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setProgressValue(0.3);
+    }, 500);
+    return () => clearTimeout(timer);
   }, []);
 
   if (!fontLoaded) {

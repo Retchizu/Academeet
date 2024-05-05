@@ -1,33 +1,42 @@
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React, { useState, useEffect } from "react";
 import { SvgXml } from "react-native-svg";
-import { SVGLogo } from "../misc/loadSVG";
+import { reminderSVG } from "../misc/loadSVG";
 import { loadFont } from "../misc/loadFont";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import { useNavigation } from "@react-navigation/native";
+import * as Progress from "react-native-progress";
 
 const ReminderScreen = () => {
-  const navigation = useNavigation();
+  const [progressValue, setProgressValue] = useState(0.8);
   const [fontLoaded, setFontLoaded] = useState(false);
   useEffect(() => {
     loadFont().then(() => setFontLoaded(true));
   }, []);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setProgressValue(1);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, []);
+
   if (!fontLoaded) {
     return null;
   }
-  
 
   // Todo: Make it so that when the user already agreed,
   // This window won't show again.
   return (
     <View style={styles.container}>
+      <View style={styles.progressBarContainer}>
+        <Progress.Bar progress={progressValue} width={wp(90)} color="#FF6D00" />
+      </View>
       <View style={styles.content}>
         <View style={styles.logoContainer}>
-          <SvgXml xml={SVGLogo} style={styles.logo} />
+          <SvgXml xml={reminderSVG} style={styles.logo} />
         </View>
         <Text style={styles.heading}>Before you swipe</Text>
         <Text style={styles.text}>
@@ -47,8 +56,9 @@ const ReminderScreen = () => {
           Pixel Quest (Developers).
         </Text>
       </View>
-      <TouchableOpacity style={styles.button}
-      onPress={() => navigation.navigate("CardScreen")}
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate("CardScreen")}
       >
         <Text style={styles.buttonText}>I agree</Text>
       </TouchableOpacity>
@@ -80,14 +90,14 @@ const styles = StyleSheet.create({
     marginBottom: hp(0.2),
   },
   heading: {
-    fontFamily: "lato-light",
+    fontFamily: "lato-regular",
     fontSize: wp(6),
     color: "#FFFFFF",
     marginBottom: hp(3),
   },
   text: {
     fontFamily: "lato-light",
-    fontSize: wp(4),
+    fontSize: wp(5),
     color: "#FFFFFF",
     marginBottom: hp(2),
     textAlign: "justify",
@@ -106,5 +116,14 @@ const styles = StyleSheet.create({
     fontFamily: "lato-light",
     fontSize: wp(4),
     color: "#FFFFFF",
+  },
+  progressBarContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: hp(2),
   },
 });

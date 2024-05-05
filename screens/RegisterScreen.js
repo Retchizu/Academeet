@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   TextInput,
   KeyboardAvoidingView,
-  ScrollView,
 } from "react-native";
 import { loadFont } from "../misc/loadFont";
 import { SvgXml } from "react-native-svg";
@@ -51,7 +50,7 @@ const RegisterScreen = () => {
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <KeyboardAvoidingView style={styles.container} behavior="padding">
       <Formik
         initialValues={userCredential}
         onSubmit={registerAccount}
@@ -180,7 +179,7 @@ const RegisterScreen = () => {
           );
         }}
       </Formik>
-    </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -204,11 +203,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: wp(4),
     paddingVertical: hp(1),
     backgroundColor: "#FFFFFF",
-    fontSize: wp(4),
+    fontSize: hp(3.5), // Changed font size
   },
   passwordInputField: {
     flex: 1,
-    fontSize: hp(2),
+    fontSize: hp(3.5), // Changed font size
     fontFamily: "lato-light",
   },
   textInputContainer: {
@@ -245,8 +244,9 @@ const styles = StyleSheet.create({
     color: "#FF9E00",
   },
   container: {
-    backgroundColor: "#023E8A", //
+    backgroundColor: "#023E8A",
     flex: 1,
+    justifyContent: "center", // Centering vertically
   },
   registerButtonContainer: {
     marginTop: hp(4),
@@ -274,7 +274,6 @@ const styles = StyleSheet.create({
     fontSize: wp(4),
     color: "#FFFFFF",
   },
-
   registerText: {
     fontFamily: "lato-light",
     fontSize: wp(3.5),
