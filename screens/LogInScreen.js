@@ -34,8 +34,10 @@ const LogInScreen = () => {
 
   return (
     <View style={styles.container}>
-      <SvgXml xml={SVGLogo} />
-      <Text style={styles.logoText}>academeet</Text>
+        <View style={styles.centerView}>
+          <SvgXml xml={SVGLogo} />
+          <Text style={styles.logoText}>academeet</Text>
+        </View>
       <View style={styles.textInputContainer}>
         <TextInput
           style={styles.inputField}
@@ -70,16 +72,22 @@ const LogInScreen = () => {
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.registerContainer}>
-        <Text style={styles.registerText}>
-          Don't have an account yet?{" "}
-          <TouchableOpacity
-            onPress={() => navigation.navigate("RegisterScreen")}
-          >
-            <Text style={styles.registerLink}>Register here.</Text>
-          </TouchableOpacity>
-        </Text>
-      </View>
+      <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    marginTop: hp(22),
+                  }}
+                >
+                  <Text style={styles.registerText}>
+                    Don't have an account yet?{" "}
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate("RegisterScreen")}
+                  >
+                    <Text style={styles.registerLink}>Register here</Text>
+                  </TouchableOpacity>
+                </View>
     </View>
   );
 };
@@ -107,6 +115,7 @@ const styles = StyleSheet.create({
     color: "#414042",
     alignSelf: "center",
     padding: hp(2),
+    marginBottom: hp(2),
   },
   passwordInputContainer: {
     flexDirection: "row",
@@ -128,9 +137,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#023E8A",
     flex: 1,
   },
-  loginButtonContainer: {
-    marginTop: hp(4),
-  },
+
   button: {
     paddingVertical: hp(1.6),
     paddingHorizontal: wp(6),
@@ -158,9 +165,9 @@ const styles = StyleSheet.create({
   },
   registerContainer: {
     position: "absolute",
-    bottom: 0,
-    marginBottom: hp(4),
+    marginBottom: hp(1),
     flexDirection: "row",
+    alignItems: "center", 
   },
   registerText: {
     fontFamily: "lato-light",
@@ -171,5 +178,11 @@ const styles = StyleSheet.create({
     fontFamily: "lato-regular",
     fontSize: wp(3.5),
     color: "#FFFFFF",
+
   },
+  centerView: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  
 });

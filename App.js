@@ -22,7 +22,7 @@ const Stack = createNativeStackNavigator();
 const App = () => (
   <NavigationContainer>
     <Stack.Navigator
-      initialRouteName="RegisterScreen"
+      initialRouteName="ProfileScreen"
       screenOptions={{ headerShown: false, statusBarHidden: true }}
     >
       <Stack.Screen name="CardScreen" component={CardScreen} />
