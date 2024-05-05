@@ -92,7 +92,7 @@ const TopicScreen = () => {
         <Text style={styles.onlyText}> Choose 5 topics you are interested in </Text>
       </View>
 
-      <ScrollView style={styles.topicsContainer}>
+      <View style={styles.topicsContainer}>
         {topicsLanguage.map((topic) => (
           <TouchableOpacity
             key={topic.key}
@@ -105,7 +105,7 @@ const TopicScreen = () => {
             <Text style={styles.topicText}>{topic.label}</Text>
           </TouchableOpacity>
         ))}
-      </ScrollView>
+      </View>
 
       <TouchableOpacity
         style={styles.nextIconContainer}
@@ -160,8 +160,10 @@ const styles = StyleSheet.create({
     textAlign: "left",
   },
   topicsContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
     marginTop: hp(2),
-    paddingHorizontal: wp(5),
+    marginLeft: wp(5),
   },
   topicButton: {
     backgroundColor: "#FFFFFF",
@@ -174,23 +176,25 @@ const styles = StyleSheet.create({
     backgroundColor: "#FF6D00",
   },
   topicText: {
-    fontFamily: "lato-light",
-    fontSize: wp(4),
-  },
-  nextIconContainer: {
-    position: "absolute",
-    bottom: hp(5),
-    right: wp(2),
+    fontFamily: "lato-regular",
+    fontSize: wp(3.5),
   },
   previousIconContainer: {
     position: "absolute",
     bottom: hp(5),
     left: wp(2),
   },
+  nextIconContainer: {
+    position: "absolute",
+    bottom: hp(5),
+    right: wp(2),
+  },
   nextIcon: {
     tintColor: "#FFFFFF",
+    paddingRight: wp(20),
   },
   previousIcon: {
     tintColor: "#FFFFFF",
+    paddingLeft: wp(20),
   },
 });

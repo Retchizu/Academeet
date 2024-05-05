@@ -175,8 +175,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#FF6D00",
   },
   traitText: {
-    fontFamily: "lato-light",
-    fontSize: wp(4),
+    fontFamily: "lato-regular",
+    fontSize: wp(3.5),
   },
   previousIconContainer: {
     position: "absolute",
