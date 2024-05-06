@@ -63,7 +63,7 @@ const ReminderScreen = () => {
           ...user,
           imageUri: url,
         });
-      console.log("Uploaded"); // change to toast later
+      console.log("Uploaded"); // change to toast later (toast)
       navigation.dispatch(
         CommonActions.reset({
           index: 1,
@@ -71,7 +71,7 @@ const ReminderScreen = () => {
         })
       );
     } catch (error) {
-      console.log(error.message); // change to toast later
+      console.log(error.message); // change to toast later(toast)
     }
   };
   const saveDataToDatabase = () => {

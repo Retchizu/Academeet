@@ -84,7 +84,7 @@ const TopicScreen = () => {
   console.log(user);
   const goToNextScreen = () => {
     if (!selectedTopics.length) {
-      console.log("Please select atlesast 1 topic");
+      console.log("Please select atlesast 1 topic"); //toast
       return;
     }
     putAttribute("userTopic", selectedTopics);

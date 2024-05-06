@@ -33,7 +33,7 @@ const NameScreen = () => {
 
   const goToNextScreen = () => {
     if (!name.trim()) {
-      console.log("Please enter your name");
+      console.log("Please enter your name"); //toast
       return;
     }
 

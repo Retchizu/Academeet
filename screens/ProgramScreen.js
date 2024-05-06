@@ -57,12 +57,12 @@ const ProgramScreen = () => {
 
   const handleSelectProgram = (program) => {
     setSelectedProgram(program.label);
-    console.log("Selected program:", program.label);
+    console.log("Selected program:", program.label); //for testing
   };
 
   const goToNextScreen = () => {
     if (!selectedProgram.trim()) {
-      console.log("Please select a program");
+      console.log("Please select a program"); //toast
       return;
     }
     putAttribute("userProgram", selectedProgram);

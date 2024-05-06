@@ -58,7 +58,7 @@ const RegisterScreen = () => {
       setLoading(true);
       const isUserNameUnique = await distinctUserName(values.userName);
       if (!isUserNameUnique) {
-        console.log(`${values.userName} is already taken`);
+        console.log(`${values.userName} is already taken`); //toast
         setLoading(false);
         return;
       }
@@ -82,7 +82,7 @@ const RegisterScreen = () => {
         formikActions.setSubmitting(false);
       }
     } catch (error) {
-      console.log(error.message);
+      console.log(error.message); // toast
     } finally {
       setLoading(false);
     }

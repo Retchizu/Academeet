@@ -35,7 +35,7 @@ const GenderScreen = () => {
 
   const goToNextScreen = () => {
     if (!selectedGender.trim()) {
-      console.log("Please identify your gender");
+      console.log("Please identify your gender"); //toast
       return;
     }
     putAttribute("userGender", selectedGender);

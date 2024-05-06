@@ -88,7 +88,7 @@ const InterestScreen = () => {
   console.log("user with traits", user.selectedTraits);
   const goToNextScreen = () => {
     if (!selectedTraits.length) {
-      console.log("Please select atleast 1 trait");
+      console.log("Please select atleast 1 trait"); //toast
       return;
     }
     if (user.selectedTrait && user.selectedTrait.length) {

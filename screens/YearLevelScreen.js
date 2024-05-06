@@ -54,9 +54,9 @@ const YearLevelScreen = () => {
   console.log("selected", selectedYear);
 
   const goToNextScreen = () => {
-    console.log("Selected year:", selectedYear);
+    console.log("Selected year:", selectedYear); //for testing
     if (!selectedYear.trim()) {
-      console.log("Please select your year");
+      console.log("Please select your year"); // toast
       return;
     }
     putAttribute("yearLevel", selectedYear);

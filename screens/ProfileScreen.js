@@ -20,24 +20,6 @@ import img1 from "../misc/Rompek.png";
 import { useUserContext } from "../context/UserContext";
 import { db, storage } from "../firebaseConfig";
 
-const data = [
-  {
-    key: 1,
-    name: "Romnoel Petracorta",
-    program: "Computer Science",
-    email: "Lychee@gmail.com",
-    yearLevel: "Sophomore",
-    gender: "Male",
-    characteristics: ["Curious", "Creative", "Sociable", "Adaptable", "Nigger"],
-    topicsInterestedIn: [
-      "Java",
-      "CyberSecurity",
-      "Mobile Application",
-      "Game Dev",
-    ],
-  },
-];
-
 const ProfileScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
   const [showModal, setShowModal] = useState(false);

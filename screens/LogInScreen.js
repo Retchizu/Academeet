@@ -93,10 +93,12 @@ const LoginScreen = () => {
           }
         }
       } catch (error) {
-        console.log(error.message);
+        console.log(error.message); //toast
       } finally {
         setLoading(false);
       }
+    } else {
+      console.log("Please complete the missing fields"); //toast
     }
   };
 
