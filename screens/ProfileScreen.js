@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
   },
   content: {
     alignItems: "center",
-    marginBottom: hp(10), // Reduced marginBottom
+    marginBottom: hp(15), // Reduced marginBottom
   },
   nameText: {
     fontFamily: "lato-bold",
@@ -229,7 +229,8 @@ const styles = StyleSheet.create({
     marginLeft: wp(5), // Align text to the left
   },
   profilePic: {
-    marginBottom: hp(1),
+    borderRadius: wp(5),
+    marginBottom: hp(2),
     marginTop: hp(3),
     width: wp(40), // Adjust image width as needed
     height: wp(40), // Adjust image height as needed
@@ -238,7 +239,7 @@ const styles = StyleSheet.create({
     fontFamily: "lato-regular",
     fontSize: wp(3),
     color: "#FFFFFF",
-    marginTop: hp(1), // Moved closer to the Personal Information
+    marginTop: hp(2), // Moved closer to the Personal Information
   },
   modalContainer: {
     flex: 1,
