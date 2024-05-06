@@ -123,7 +123,6 @@ const App = () => (
         <Stack.Screen name="TabNavigator" component={TabNavigator} />
         <Stack.Screen name="TopicScreen" component={TopicScreen} />
         <Stack.Screen name="GenderScreen" component={GenderScreen} />
-        <Stack.Screen name="BlurScreen" component={BlurScreen} />
         <Stack.Screen name="SplashScreen" component={SplashScren} />
         <Stack.Screen name="LandingScreen" component={LandingScreen} />
         <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
