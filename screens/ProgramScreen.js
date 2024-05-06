@@ -26,10 +26,13 @@ const ProgramScreen = () => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([
-    { label: "Computer Science", value: "CS" },
-    { label: "Information Technology", value: "IT" },
-    { label: "Information System", value: "IS" },
-    { label: " Entertainment & Multimedia Computing", value: "EMC" },
+    { label: "Computer Science", value: "Computer Science" },
+    { label: "Information Technology", value: "Information Technology" },
+    { label: "Information System", value: "Information System" },
+    {
+      label: "Entertainment & Multimedia Computing",
+      value: "Entertainment & Multimedia Computing",
+    },
   ]);
   items.sort();
 

@@ -10,8 +10,6 @@ import { SVGaddImageButton, SVGnext, SVGprevious } from "../misc/loadSVG";
 import { useNavigation } from "@react-navigation/native";
 import * as Progress from "react-native-progress";
 import * as ImagePicker from "expo-image-picker";
-import { storage } from "../firebaseConfig";
-import * as FileSystem from "expo-file-system";
 
 const AddPhotoScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -69,30 +67,6 @@ const AddPhotoScreen = () => {
     return null;
   }
 
-  /* const handleImageUpload = async () => {
-    try {
-      const { uri } = await FileSystem.getInfoAsync(image);
-      const blob = await new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        xhr.onload = () => {
-          resolve(xhr.response);
-        };
-        xhr.onerror = (e) => {
-          reject(new TypeError("Network request failed"));
-        };
-        xhr.responseType = "blob";
-        xhr.open("GET", uri, true);
-        xhr.send(null);
-      });
-
-      const fileName = image.substring(image.lastIndexOf("/" + 1));
-      const ref = storage.ref().child(fileName);
-      await ref.put(blob);
-      console.log("Uploaded");
-    } catch (error) {
-      console.log(error.message);
-    }
-  }; */
   return (
     <View style={styles.container} ref={containerRef}>
       <View style={styles.progressBarContainer}>

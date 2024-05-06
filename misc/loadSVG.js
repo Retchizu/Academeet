@@ -129,4 +129,5 @@ export {
   SVGaddImageButton,
   SVGImage,
   reminderSVG,
+  inactiveLogo,
 };

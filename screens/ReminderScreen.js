@@ -8,10 +8,17 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import * as Progress from "react-native-progress";
+import { useUserContext } from "../context/UserContext";
+import { db, storage } from "../firebaseConfig";
+import * as FileSystem from "expo-file-system";
+import { useNavigation, CommonActions } from "@react-navigation/native";
 
 const ReminderScreen = () => {
   const [progressValue, setProgressValue] = useState(0.8);
   const [fontLoaded, setFontLoaded] = useState(false);
+  const { user } = useUserContext();
+
+  const navigation = useNavigation();
   useEffect(() => {
     loadFont().then(() => setFontLoaded(true));
   }, []);
@@ -27,8 +34,46 @@ const ReminderScreen = () => {
     return null;
   }
 
+  const handleImageUpload = async () => {
+    try {
+      const { uri } = await FileSystem.getInfoAsync(user.imageUri);
+      const blob = await new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.onload = () => {
+          resolve(xhr.response);
+        };
+        xhr.onerror = (e) => {
+          reject(new TypeError("Network request failed"));
+        };
+        xhr.responseType = "blob";
+        xhr.open("GET", uri, true);
+        xhr.send(null);
+      });
+
+      const fileName = user.imageUri.substring(user.imageUri.lastIndexOf("/"));
+
+      const ref = storage.ref().child(`users${fileName}`);
+      await ref.put(blob);
+      await db
+        .collection("User")
+        .doc(user.userName)
+        .update({
+          ...user,
+          imageUri: `users${fileName}`,
+        });
+      console.log("Uploaded"); // change to toast later
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 1,
+          routes: [{ name: "TabNavigator" }],
+        })
+      );
+    } catch (error) {
+      console.log(error.message); // change to toast later
+    }
+  };
   const saveDataToDatabase = () => {
-    //hell nuh bruv
+    handleImageUpload();
   };
 
   // Todo: Make it so that when the user already agreed,
@@ -62,7 +107,7 @@ const ReminderScreen = () => {
       </View>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate("CardScreen")}
+        onPress={() => saveDataToDatabase()}
       >
         <Text style={styles.buttonText}>I agree</Text>
       </TouchableOpacity>
