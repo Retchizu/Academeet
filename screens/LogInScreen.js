@@ -66,11 +66,11 @@ const LoginScreen = () => {
           .get();
         if (data.exists) {
           const {
+            userName,
             email,
             fullName,
             selectedTrait,
             userGender,
-            userName,
             userProgram,
             userTopic,
             yearLevel,
@@ -88,6 +88,7 @@ const LoginScreen = () => {
             setUser(data.data());
             navigation.replace("TabNavigator");
           } else {
+            setUser(data.data());
             navigation.replace("NameScreen");
           }
         }

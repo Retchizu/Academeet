@@ -54,12 +54,14 @@ const ReminderScreen = () => {
 
       const ref = storage.ref().child(`users${fileName}`);
       await ref.put(blob);
+      const url = await ref.getDownloadURL();
+      console.log(url);
       await db
         .collection("User")
         .doc(user.userName)
         .update({
           ...user,
-          imageUri: `users${fileName}`,
+          imageUri: url,
         });
       console.log("Uploaded"); // change to toast later
       navigation.dispatch(
