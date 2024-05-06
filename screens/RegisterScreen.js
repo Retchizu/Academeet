@@ -5,8 +5,7 @@ import {
   View,
   TouchableOpacity,
   TextInput,
-  KeyboardAvoidingView,
-  ScrollView,
+  ActivityIndicator,
 } from "react-native";
 import { loadFont } from "../misc/loadFont";
 import { SvgXml } from "react-native-svg";
@@ -17,14 +16,14 @@ import {
 import { SVGLogo } from "../misc/loadSVG";
 import { useNavigation } from "@react-navigation/native";
 import { Entypo } from "@expo/vector-icons";
+import { auth, db } from "../firebaseConfig";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   isValidEmail,
   isValidObjField,
   validationSchema,
 } from "../methods/validator";
 import { Formik } from "formik";
-import { auth, db } from "../firebaseConfig";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const RegisterScreen = () => {
   const navigation = useNavigation();
@@ -32,13 +31,7 @@ const RegisterScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
-  const userRegisterCredential = {
-    email: "",
-    userName: "",
-    password: "",
-    confirmPassword: "",
-  };
+  const [loading, setLoading] = useState(false); 
 
   useEffect(() => {
     loadFont().then(() => setFontLoaded(true));
@@ -58,10 +51,11 @@ const RegisterScreen = () => {
 
   const registerAccount = async (values, formikActions) => {
     try {
-      console.log(values.email);
+      setLoading(true); 
       const isUserNameUnique = await distinctUserName(values.userName);
       if (!isUserNameUnique) {
         console.log(`${values.userName} is already taken`);
+        setLoading(false);
         return;
       }
       const userCredential = await auth.createUserWithEmailAndPassword(
@@ -84,13 +78,20 @@ const RegisterScreen = () => {
       }
     } catch (error) {
       console.log(error.message);
+    } finally {
+      setLoading(false); 
     }
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <Formik
-        initialValues={userRegisterCredential}
+        initialValues={{
+          email: "",
+          userName: "",
+          password: "",
+          confirmPassword: "",
+        }}
         onSubmit={registerAccount}
         validationSchema={validationSchema}
       >
@@ -146,7 +147,6 @@ const RegisterScreen = () => {
                     placeholderTextColor="#6D6D6D"
                     secureTextEntry={!showPassword}
                     onBlur={handleBlur("password")}
-                    error={touched.password && errors.password}
                   />
                   <TouchableOpacity
                     onPress={() => setShowPassword(!showPassword)}
@@ -190,18 +190,15 @@ const RegisterScreen = () => {
               <View style={{ alignItems: "center" }}>
                 <View style={styles.registerButtonContainer}>
                   <TouchableOpacity
-                    style={
-                      !isSubmitting
-                        ? [styles.button, styles.registerButton]
-                        : [
-                            styles.button,
-                            styles.registerButton,
-                            { opacity: 0.5 },
-                          ]
-                    }
-                    onPress={() => handleSubmit()}
+                    style={[styles.button, styles.registerButton]}
+                    onPress={handleSubmit}
+                    disabled={isSubmitting} 
                   >
-                    <Text style={styles.buttonText}>Register</Text>
+                    {isSubmitting ? (
+                      <ActivityIndicator size="small" color="#FFFFFF" />
+                    ) : (
+                      <Text style={styles.buttonText}>Register</Text>
+                    )}
                   </TouchableOpacity>
                 </View>
 
@@ -225,7 +222,7 @@ const RegisterScreen = () => {
           );
         }}
       </Formik>
-    </ScrollView>
+    </View>
   );
 };
 
@@ -249,11 +246,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: wp(4),
     paddingVertical: hp(1),
     backgroundColor: "#FFFFFF",
-    fontSize: hp(2.5), // Changed font size
+    fontSize: hp(2.5), 
   },
   passwordInputField: {
     flex: 1,
-    fontSize: hp(2.5), // Changed font size
+    fontSize: hp(2.5), 
     fontFamily: "lato-light",
   },
   textInputContainer: {

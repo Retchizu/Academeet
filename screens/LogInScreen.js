@@ -5,6 +5,7 @@ import {
   View,
   TouchableOpacity,
   TextInput,
+  ActivityIndicator,
 } from "react-native";
 import { loadFont } from "../misc/loadFont";
 import { SvgXml } from "react-native-svg";
@@ -27,6 +28,7 @@ const LoginScreen = () => {
     userName: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const { setUser } = useUserContext();
   useEffect(() => {
@@ -46,6 +48,7 @@ const LoginScreen = () => {
   const logInUser = async () => {
     if (logInCredential.userName && logInCredential.password) {
       try {
+        setLoading(true);
         const docRef = await db
           .collection("User")
           .doc(logInCredential.userName)
@@ -61,6 +64,8 @@ const LoginScreen = () => {
         navigation.replace("NameScreen");
       } catch (error) {
         console.log(error.message);
+      } finally {
+        setLoading(false);
       }
     }
   };
@@ -102,8 +107,13 @@ const LoginScreen = () => {
           <TouchableOpacity
             style={[styles.button, styles.loginButton]}
             onPress={() => logInUser()}
+            disabled={loading} 
           >
-            <Text style={styles.buttonText}>Login</Text>
+            {loading ? (
+              <ActivityIndicator size="small" color="#FFFFFF" />
+            ) : (
+              <Text style={styles.buttonText}>Login</Text>
+            )}
           </TouchableOpacity>
         </View>
       </View>
