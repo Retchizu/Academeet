@@ -25,7 +25,7 @@ import {
   validationSchema,
 } from "../methods/validator";
 import { Formik } from "formik";
-import { UserContextProvider } from "../context/UserContext";
+import { UserContextProvider, useUserContext } from "../context/UserContext";
 
 const RegisterScreen = () => {
   const navigation = useNavigation();
@@ -34,7 +34,7 @@ const RegisterScreen = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { setUser } = UserContextProvider();
+  const { setUser } = useUserContext();
 
   useEffect(() => {
     loadFont().then(() => setFontLoaded(true));

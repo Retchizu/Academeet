@@ -25,10 +25,10 @@ const YearLevelScreen = () => {
   const [progressValue, setProgressValue] = useState(0.1);
   const [open, setOpen] = useState(false);
   const [year, setYear] = useState([
-    { label: "Freshman", value: "freshman" },
-    { label: "Sophomore", value: "sophomore" },
-    { label: "Junior", value: "junior" },
-    { label: "Senior", value: "senior" },
+    { label: "Freshman", value: "Freshman" },
+    { label: "Sophomore", value: "Sophomore" },
+    { label: "Junior", value: "Junior" },
+    { label: "Senior", value: "Senior" },
   ]);
 
   const { putAttribute, user, removeAttribute } = useUserContext();
