@@ -17,6 +17,7 @@ import { dropDown, SVGnext, SVGprevious } from "../misc/loadSVG";
 import { useNavigation } from "@react-navigation/native";
 import * as Progress from "react-native-progress";
 import DropDownPicker from "react-native-dropdown-picker";
+import { useUserContext } from "../context/UserContext";
 
 const ProgramScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -34,6 +35,7 @@ const ProgramScreen = () => {
 
   const containerRef = useRef(null);
   const navigation = useNavigation();
+  const { putAttribute, user, removeAttribute } = useUserContext();
 
   useEffect(() => {
     loadFont().then(() => setFontLoaded(true));
@@ -50,10 +52,10 @@ const ProgramScreen = () => {
     return null;
   }
 
-   const handleSelectProgram = (program) => {
-     setSelectedProgram(program.label);
-     console.log("Selected program:", program.label); 
-   };
+  const handleSelectProgram = (program) => {
+    setSelectedProgram(program.label);
+    console.log("Selected program:", program.label);
+  };
 
   const goToNextScreen = () => {
     if (!selectedProgram.trim()) {
@@ -70,6 +72,7 @@ const ProgramScreen = () => {
     }
     navigation.goBack();
   };
+
   return (
     <View style={styles.container} ref={containerRef}>
       <View style={styles.progressBarContainer}>
@@ -83,18 +86,17 @@ const ProgramScreen = () => {
       </View>
       <DropDownPicker
         open={open}
-        value={value}
+        value={selectedProgram}
         items={items}
         setOpen={setOpen}
-        setValue={setValue}
+        setValue={setSelectedProgram}
         setItems={setItems}
         containerStyle={styles.pickerContainer}
         style={styles.inputField}
         dropDownStyle={styles.dropdownStyle}
         labelStyle={styles.labelStyle}
         dropDownItemStyle={styles.dropDownItemStyle}
-        onChangeItem={(items) => handleSelectProgram(items)}
-        placeholder="Select your enrolled program"
+        placeholder="Select your year level"
       />
       <TouchableOpacity
         style={styles.nextIconContainer}
