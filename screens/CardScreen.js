@@ -7,6 +7,7 @@ import {
   Image,
   Dimensions,
   PanResponder,
+  TouchableOpacity,
 } from "react-native";
 import { loadFont } from "../misc/loadFont";
 import {
@@ -18,6 +19,8 @@ import {
   SafeAreaView,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
+import { SvgXml } from "react-native-svg";
+import { SVGLogo, pendingSVG, settingSVG } from "../misc/loadSVG";
 
 const users = [
   {
@@ -94,11 +97,11 @@ const CardScreen = () => {
     onPanResponderRelease: (evt, gestureState) => {
       if (gestureState.dx > 100) {
         // Swipe to the right
-        // If swiped to right, store the name of the user to the likedCards array 
+        // If swiped to right, store the name of the user to the likedCards array
         setLikedCards([...likedCards, users[currentIndex].name]);
       } else if (gestureState.dx < -100) {
         // Swipe to the left
-        // Vice versa 
+        // Vice versa
         setPassedCards([...passedCards, users[currentIndex].name]);
       }
 
@@ -210,14 +213,62 @@ const CardScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.topSpacer} />
-      <View style={styles.cardContainer}>{renderUsers()}</View>
-      <View style={styles.bottomSpacer} />
+      <View style={styles.header}>
+        <TouchableOpacity
+          onPress={() => {
+            console.log("clicked pending ");
+          }}
+        >
+          <SvgXml
+            xml={pendingSVG}
+            style={[styles.svgIcon, styles.svgIconLeft]}
+          />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>academeet</Text>
+        <TouchableOpacity
+          onPress={() => {
+            console.log("Clicked settings");
+          }}
+        >
+          <SvgXml
+            xml={settingSVG}
+            style={[styles.svgIcon, styles.svgIconRight]}
+          />
+        </TouchableOpacity>
+      </View>
+      <View style={{flex: 1, marginTop: hp(-5.5)}}>
+        <View style={styles.topSpacer} />
+        <View style={styles.cardContainer}>{renderUsers()}</View>
+        <View style={styles.bottomSpacer} />
+      </View>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  svgIconLeft: {
+    zIndex: 2000,
+  },
+  svgIconRight: {
+    zIndex: 2000,
+  },
+  svgIcon: {
+    width: hp(7),
+    height: hp(7),
+  },
+  headerTitle: {
+    fontFamily: "lato-regular",
+    fontSize: hp(3),
+    color: "#FF9E00",
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: hp(2),
+    paddingVertical: hp(2),
+    backgroundColor: "#023E8A",
+  },
   userName: {
     fontFamily: "lato-regular",
     fontSize: hp(3.8),
@@ -265,6 +316,7 @@ const styles = StyleSheet.create({
     height: hp(5),
   },
   cardContainer: {
+    paddingTop: hp(6),
     flex: 1,
     padding: wp(5),
     position: "absolute",
