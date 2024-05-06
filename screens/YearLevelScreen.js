@@ -24,14 +24,12 @@ const YearLevelScreen = () => {
   const [selectedYear, setSelectedYear] = useState("");
   const [progressValue, setProgressValue] = useState(0.1);
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
   const [year, setYear] = useState([
     { label: "Freshman", value: "freshman" },
-    { label: "Sophomore", value: "banana" },
+    { label: "Sophomore", value: "sophomore" },
     { label: "Junior", value: "junior" },
     { label: "Senior", value: "senior" },
   ]);
-  
 
   const { putAttribute, user, removeAttribute } = useUserContext();
 
@@ -53,10 +51,7 @@ const YearLevelScreen = () => {
     return null;
   }
 
-  const handleSelectYear = (item) => {
-    console.log("Selected year:", item.label);
-    setSelectedYear(item.label);
-  };
+  console.log("selected", selectedYear);
 
   const goToNextScreen = () => {
     console.log("Selected year:", selectedYear);
@@ -88,20 +83,16 @@ const YearLevelScreen = () => {
       </View>
       <DropDownPicker
         open={open}
-        value={value}
+        value={selectedYear}
         items={year}
         setOpen={setOpen}
-        setValue={setValue}
+        setValue={setSelectedYear}
         setItems={setYear}
         containerStyle={styles.pickerContainer}
         style={styles.inputField}
         dropDownStyle={styles.dropdownStyle}
         labelStyle={styles.labelStyle}
         dropDownItemStyle={styles.dropDownItemStyle}
-        onChangeItem={(item) => {
-          console.log("Item selected:", item);
-          handleSelectYear(item);
-        }}
         placeholder="Select your year level"
       />
       <TouchableOpacity
@@ -177,10 +168,10 @@ const styles = StyleSheet.create({
     fontFamily: "lato-regular",
     fontSize: wp(4),
     color: "#414042",
-    paddingLeft: wp(2), 
+    paddingLeft: wp(2),
   },
   dropDownItemStyle: {
-    fontFamily: "lato-bold", 
+    fontFamily: "lato-bold",
   },
   nextIconContainer: {
     position: "absolute",

@@ -117,7 +117,7 @@ const App = () => (
   <UserContextProvider>
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="YearLevelScreen"
+        initialRouteName="LogInScreen"
         screenOptions={{ headerShown: false, statusBarHidden: true }}
       >
         <Stack.Screen name="TabNavigator" component={TabNavigator} />
