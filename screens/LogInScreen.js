@@ -17,6 +17,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Entypo } from "@expo/vector-icons";
 import { auth, db } from "../firebaseConfig";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useUserContext } from "../context/UserContext";
 
 const LoginScreen = () => {
   const navigation = useNavigation();
@@ -26,6 +27,8 @@ const LoginScreen = () => {
     userName: "",
     password: "",
   });
+
+  const { setUser } = useUserContext();
   useEffect(() => {
     loadFont().then(() => setFontLoaded(true));
   }, []);
@@ -53,8 +56,9 @@ const LoginScreen = () => {
           logInCredential.password
         );
         await AsyncStorage.setItem("email", userEmail.email);
-        await AsyncStorage.setItem("password", password);
-        navigation.replace("CardScreen");
+        await AsyncStorage.setItem("password", logInCredential.password);
+        setUser({ email: userEmail.email, userName: logInCredential.userName });
+        navigation.replace("NameScreen");
       } catch (error) {
         console.log(error.message);
       }

@@ -17,10 +17,13 @@ import { SvgXml } from "react-native-svg";
 import { SVGnext } from "../misc/loadSVG";
 import { useNavigation } from "@react-navigation/native";
 import * as Progress from "react-native-progress";
+import { useUserContext } from "../context/UserContext";
 
 const NameScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
   const [name, setName] = useState("");
+  const { user, putAttribute } = useUserContext();
+  console.log(user);
 
   const navigation = useNavigation();
 
@@ -29,6 +32,12 @@ const NameScreen = () => {
   }, []);
 
   const goToNextScreen = () => {
+    if (!name.trim()) {
+      console.log("Please enter your name");
+      return;
+    }
+
+    putAttribute("fullName", name);
     navigation.navigate("YearLevelScreen");
   };
 

@@ -58,7 +58,7 @@ const DisplayingPhotoScreen = () => {
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.previousIconContainer}
-        onPress={() => navigation.navigate("ProgramScreen")}
+        onPress={() => navigation.navigate("AddPhotoScreen")}
       >
         <SvgXml
           xml={SVGprevious}
