@@ -5,7 +5,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LandingScreen from "./screens/LandingScreen";
 import SplashScren from "./screens/SplashScreen";
 import RegisterScreen from "./screens/RegisterScreen";
-import BlurScreen from "./screens/BlurScreen";
 import TopicScreen from "./screens/TopicScreen";
 import GenderScreen from "./screens/GenderScreen";
 import ReminderScreen from "./screens/ReminderScreen";
@@ -21,7 +20,6 @@ import ChatScreen from "./screens/ChatScreen";
 import { FontAwesome } from "@expo/vector-icons";
 import { SvgXml } from "react-native-svg";
 import { SVGLogo, inactiveLogo } from "./misc/loadSVG";
-import { Blur } from "@shopify/react-native-skia";
 import LoginScreen from "./screens/LogInScreen";
 import { UserContextProvider } from "./context/UserContext";
 
@@ -125,7 +123,6 @@ const App = () => (
         <Stack.Screen name="TabNavigator" component={TabNavigator} />
         <Stack.Screen name="TopicScreen" component={TopicScreen} />
         <Stack.Screen name="GenderScreen" component={GenderScreen} />
-        <Stack.Screen name="BlurScreen" component={BlurScreen} />
         <Stack.Screen name="SplashScreen" component={SplashScren} />
         <Stack.Screen name="LandingScreen" component={LandingScreen} />
         <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
