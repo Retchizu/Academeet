@@ -1,5 +1,3 @@
-// NameScreen.js
-
 import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
@@ -18,6 +16,7 @@ import { SVGnext } from "../misc/loadSVG";
 import { useNavigation } from "@react-navigation/native";
 import * as Progress from "react-native-progress";
 import { useUserContext } from "../context/UserContext";
+import Toast from "react-native-toast-message";
 
 const NameScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -33,7 +32,11 @@ const NameScreen = () => {
 
   const goToNextScreen = () => {
     if (!name.trim()) {
-      console.log("Please enter your name"); //toast
+      Toast.show({
+        type: "error",
+        text1: "Please enter your name.",
+        visibilityTime: 3000,
+      });
       return;
     }
 
@@ -50,7 +53,6 @@ const NameScreen = () => {
       <View style={styles.progressBarContainer}>
         <Progress.Bar progress={0.1} width={wp(90)} color="#FF6D00" />
       </View>
-
       <View style={styles.titleContainer}>
         <Text style={styles.logoText}>What's your name?</Text>
         <Text style={styles.description}>Please introduce yourself.</Text>

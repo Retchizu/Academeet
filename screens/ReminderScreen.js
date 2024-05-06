@@ -12,6 +12,7 @@ import { useUserContext } from "../context/UserContext";
 import { db, storage } from "../firebaseConfig";
 import * as FileSystem from "expo-file-system";
 import { useNavigation, CommonActions } from "@react-navigation/native";
+import Toast from "react-native-toast-message";
 
 const ReminderScreen = () => {
   const [progressValue, setProgressValue] = useState(0.8);
@@ -63,7 +64,11 @@ const ReminderScreen = () => {
           ...user,
           imageUri: url,
         });
-      console.log("Uploaded"); // change to toast later (toast)
+      Toast.show({
+        type: "success",
+        text1: "Image Uploaded Successfully",
+        visibilityTime: 3000,
+      });
       navigation.dispatch(
         CommonActions.reset({
           index: 1,
@@ -71,9 +76,14 @@ const ReminderScreen = () => {
         })
       );
     } catch (error) {
-      console.log(error.message); // change to toast later(toast)
+      Toast.show({
+        type: "error",
+        text1: "Error Uploading Image",
+        visibilityTime: 3000,
+      });
     }
   };
+
   const saveDataToDatabase = () => {
     handleImageUpload();
   };

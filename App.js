@@ -22,6 +22,7 @@ import { SvgXml } from "react-native-svg";
 import { SVGLogo, inactiveLogo } from "./misc/loadSVG";
 import LoginScreen from "./screens/LogInScreen";
 import { UserContextProvider } from "./context/UserContext";
+import Toast from "react-native-toast-message";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -117,7 +118,7 @@ const App = () => (
   <UserContextProvider>
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="LogInScreen"
+        initialRouteName="SplashScreen"
         screenOptions={{ headerShown: false, statusBarHidden: true }}
       >
         <Stack.Screen name="TabNavigator" component={TabNavigator} />
@@ -142,6 +143,7 @@ const App = () => (
         <Stack.Screen name="CardScreen" component={CardScreen} />
       </Stack.Navigator>
     </NavigationContainer>
+    <Toast />
   </UserContextProvider>
 );
 

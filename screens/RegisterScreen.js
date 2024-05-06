@@ -27,6 +27,7 @@ import {
 } from "../methods/validator";
 import { Formik } from "formik";
 import { UserContextProvider, useUserContext } from "../context/UserContext";
+import Toast from "react-native-toast-message";
 
 const RegisterScreen = () => {
   const navigation = useNavigation();
@@ -58,7 +59,11 @@ const RegisterScreen = () => {
       setLoading(true);
       const isUserNameUnique = await distinctUserName(values.userName);
       if (!isUserNameUnique) {
-        console.log(`${values.userName} is already taken`); //toast
+        Toast.show({
+          type: "error",
+          text1: `${values.userName} is already taken`,
+          visibilityTime: 3000,
+        });
         setLoading(false);
         return;
       }
@@ -82,7 +87,12 @@ const RegisterScreen = () => {
         formikActions.setSubmitting(false);
       }
     } catch (error) {
-      console.log(error.message); // toast
+      Toast.show({
+        type: "error",
+        text1: "Registration Failed",
+        text2: "Username is already taken.",
+        visibilityTime: 3000,
+      });
     } finally {
       setLoading(false);
     }

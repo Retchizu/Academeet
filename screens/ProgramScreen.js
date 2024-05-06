@@ -18,6 +18,7 @@ import { useNavigation } from "@react-navigation/native";
 import * as Progress from "react-native-progress";
 import DropDownPicker from "react-native-dropdown-picker";
 import { useUserContext } from "../context/UserContext";
+import Toast from "react-native-toast-message";
 
 const ProgramScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -62,7 +63,10 @@ const ProgramScreen = () => {
 
   const goToNextScreen = () => {
     if (!selectedProgram.trim()) {
-      console.log("Please select a program"); //toast
+      Toast.show({
+        type: "error",
+        text1: "Please select a program",
+      });
       return;
     }
     putAttribute("userProgram", selectedProgram);

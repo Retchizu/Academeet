@@ -17,6 +17,7 @@ import { SVGnext, SVGprevious } from "../misc/loadSVG";
 import { useNavigation } from "@react-navigation/native";
 import * as Progress from "react-native-progress";
 import { useUserContext } from "../context/UserContext";
+import Toast from "react-native-toast-message";
 
 const InterestScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -88,7 +89,11 @@ const InterestScreen = () => {
   console.log("user with traits", user.selectedTraits);
   const goToNextScreen = () => {
     if (!selectedTraits.length) {
-      console.log("Please select atleast 1 trait"); //toast
+      Toast.show({
+        type: "error",
+        text1: "Please select at least 1 trait.",
+        visibilityTime: 3000,
+      });
       return;
     }
     if (user.selectedTrait && user.selectedTrait.length) {

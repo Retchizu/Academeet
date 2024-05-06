@@ -18,6 +18,7 @@ import { useNavigation } from "@react-navigation/native";
 import * as Progress from "react-native-progress";
 import DropDownPicker from "react-native-dropdown-picker";
 import { useUserContext } from "../context/UserContext";
+import Toast from "react-native-toast-message";
 
 const YearLevelScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -56,7 +57,11 @@ const YearLevelScreen = () => {
   const goToNextScreen = () => {
     console.log("Selected year:", selectedYear); //for testing
     if (!selectedYear.trim()) {
-      console.log("Please select your year"); // toast
+      Toast.show({
+        type: "error",
+        text1: "Please select your year level.",
+        visibilityTime: 3000,
+      });
       return;
     }
     putAttribute("yearLevel", selectedYear);
