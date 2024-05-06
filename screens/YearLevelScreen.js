@@ -16,6 +16,7 @@ import { SvgXml } from "react-native-svg";
 import { dropDown, SVGnext, SVGprevious } from "../misc/loadSVG";
 import { useNavigation } from "@react-navigation/native";
 import * as Progress from "react-native-progress";
+import { useUserContext } from "../context/UserContext";
 
 const YearLevelScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -29,6 +30,10 @@ const YearLevelScreen = () => {
     { key: 4, label: "Senior" },
   ];
   year.sort();
+
+  const { putAttribute, user } = useUserContext();
+
+  console.log(user);
 
   const containerRef = useRef(null);
   const navigation = useNavigation();
@@ -55,6 +60,19 @@ const YearLevelScreen = () => {
 
   const handlePress = () => {
     setShowModal(true);
+  };
+
+  const goToNextScreen = () => {
+    if (!selectedYear.trim()) {
+      console.log("Please select your year");
+      return;
+    }
+    putAttribute("yearLevel", selectedYear);
+    navigation.navigate("ProgramScreen"); //pakiayos ng program screen
+  };
+
+  const goToPreviousScreen = () => {
+    navigation.goBack();
   };
 
   return (
@@ -99,13 +117,13 @@ const YearLevelScreen = () => {
       </Modal>
       <TouchableOpacity
         style={styles.nextIconContainer}
-        onPress={() => navigation.navigate("ProgramScreen")}
+        onPress={() => goToNextScreen()}
       >
         <SvgXml xml={SVGnext} width={45} height={45} style={styles.nextIcon} />
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.previousIconContainer}
-        onPress={() => navigation.navigate("NameScreen")}
+        onPress={() => goToPreviousScreen()}
       >
         <SvgXml
           xml={SVGprevious}

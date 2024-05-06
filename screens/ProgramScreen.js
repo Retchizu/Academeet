@@ -1,7 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Modal, TextInput, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Modal,
+  TextInput,
+  Image,
+} from "react-native";
 import { loadFont } from "../misc/loadFont";
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 import { useNavigation } from "@react-navigation/native";
 import img1 from "../misc/Rompek.png";
 
@@ -21,7 +32,6 @@ const ProfileScreen = () => {
   ];
   programs.sort();
 
-
   const containerRef = useRef(null);
   const navigation = useNavigation();
   const [bio, setBio] = useState("");
@@ -29,7 +39,6 @@ const ProfileScreen = () => {
   useEffect(() => {
     loadFont().then(() => setFontLoaded(true));
   }, []);
-
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -68,7 +77,12 @@ const ProfileScreen = () => {
         )}
       </TouchableOpacity>
 
-      <Modal visible={showModal} transparent animationType="slide">
+      <Modal
+        visible={showModal}
+        transparent
+        animationType="slide"
+        onRequestClose={() => setShowModal(false)}
+      >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <TextInput
@@ -105,7 +119,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#023E8A",
   },
   content: {
-    alignItems: "center", 
+    alignItems: "center",
     marginBottom: hp(2),
   },
   nameText: {
