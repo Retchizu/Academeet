@@ -16,14 +16,13 @@ import { useUserContext } from "../context/UserContext";
 const SplashScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
   const [isShowSplash, setIsShowSplash] = useState(true);
-  const [isAutoLogInRequest, setIsAutoLogInRequest] = useState(false);
+  const [isAutoLogInRequest, setIsAutoLogInRequest] = useState(true);
   const navigation = useNavigation();
   const { setUser } = useUserContext();
 
   useEffect(() => {
     const autoLogIn = async () => {
       try {
-        setIsAutoLogInRequest(true);
         const email = await AsyncStorage.getItem("email");
         const password = await AsyncStorage.getItem("password");
         const userName = await AsyncStorage.getItem("userName");
@@ -61,16 +60,15 @@ const SplashScreen = () => {
           }
         }
         setIsAutoLogInRequest(false);
+        setIsShowSplash(false);
       } catch (error) {
         console.log(error.message);
         setIsAutoLogInRequest(false);
+        setIsShowSplash(false);
       }
     };
     autoLogIn();
     loadFont().then(() => setFontLoaded(true));
-    setTimeout(() => {
-      setIsShowSplash(false);
-    }, 3000);
   }, []);
 
   if (!fontLoaded) {
@@ -79,7 +77,7 @@ const SplashScreen = () => {
 
   return (
     <View style={styles.container}>
-      {isShowSplash && !isAutoLogInRequest ? (
+      {isShowSplash && isAutoLogInRequest ? (
         <>
           <SvgXml xml={SVGLogo} />
           <Text style={styles.logoText}>academeet</Text>

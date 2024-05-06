@@ -49,7 +49,7 @@ const ProfileScreen = () => {
     await db.collection("User").doc(user.userName).update({
       userBio: bioText,
     });
-    setBioText(""); 
+    setBioText("");
     setShowModal(false);
   };
 
