@@ -60,6 +60,7 @@ const LoginScreen = () => {
         );
         await AsyncStorage.setItem("email", userEmail.email);
         await AsyncStorage.setItem("password", logInCredential.password);
+        await AsyncStorage.setItem("userName", logInCredential.userName);
         const data = await db
           .collection("User")
           .doc(logInCredential.userName)
