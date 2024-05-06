@@ -187,7 +187,7 @@ const CardScreen = () => {
 const styles = StyleSheet.create({
   userName: {
     fontFamily: "lato-regular",
-    fontSize: wp(7),
+    fontSize: hp(3.8),
     color: "black",
     marginBottom: hp(1),
     marginRight: wp(1),
@@ -222,9 +222,10 @@ const styles = StyleSheet.create({
     borderRadius: wp(8),
     overflow: "hidden",
     paddingTop: hp(2),
-    paddingLeft: wp(4),
-    paddingRight: wp(4),
+    paddingLeft: hp(2),
+    paddingRight: hp(2),
     paddingBottom: hp(4),
+    marginBottom: hp(2)
   },
   container: {
     flex: 1,
