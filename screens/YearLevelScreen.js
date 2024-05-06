@@ -13,30 +13,30 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { SvgXml } from "react-native-svg";
-import { dropDown, SVGnext, SVGprevious } from "../misc/loadSVG";
+import { SVGnext, SVGprevious } from "../misc/loadSVG";
 import { useNavigation } from "@react-navigation/native";
 import * as Progress from "react-native-progress";
+import DropDownPicker from "react-native-dropdown-picker";
 import { useUserContext } from "../context/UserContext";
 
 const YearLevelScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
   const [selectedYear, setSelectedYear] = useState("");
-  const [showModal, setShowModal] = useState(false);
   const [progressValue, setProgressValue] = useState(0.1);
-  const year = [
-    { key: 1, label: "Freshman" },
-    { key: 2, label: "Sophomore" },
-    { key: 3, label: "Junior" },
-    { key: 4, label: "Senior" },
-  ];
-  year.sort();
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  const [year, setYear] = useState([
+    { label: "Freshman", value: "freshman" },
+    { label: "Sophomore", value: "banana" },
+    { label: "Junior", value: "junior" },
+    { label: "Senior", value: "senior" },
+  ]);
+  
 
   const { putAttribute, user, removeAttribute } = useUserContext();
 
-  console.log(user);
-
-  const containerRef = useRef(null);
   const navigation = useNavigation();
+  const containerRef = useRef(null);
 
   useEffect(() => {
     loadFont().then(() => setFontLoaded(true));
@@ -53,22 +53,19 @@ const YearLevelScreen = () => {
     return null;
   }
 
-  const handleSelectYear = (year) => {
-    setSelectedYear(year.label);
-    setShowModal(false);
-  };
-
-  const handlePress = () => {
-    setShowModal(true);
+  const handleSelectYear = (item) => {
+    console.log("Selected year:", item.label);
+    setSelectedYear(item.label);
   };
 
   const goToNextScreen = () => {
+    console.log("Selected year:", selectedYear);
     if (!selectedYear.trim()) {
       console.log("Please select your year");
       return;
     }
     putAttribute("yearLevel", selectedYear);
-    navigation.navigate("ProgramScreen"); //pakiayos ng program screen
+    navigation.navigate("ProgramScreen");
   };
 
   const goToPreviousScreen = () => {
@@ -89,35 +86,24 @@ const YearLevelScreen = () => {
           So we can help you find people within the same bracket.
         </Text>
       </View>
-      <TouchableOpacity style={styles.pickerContainer} onPress={handlePress}>
-        <View style={styles.pickerContent}>
-          <Text style={styles.inputField}>
-            {selectedYear || "Select your year level"}
-          </Text>
-          <SvgXml xml={dropDown} width={wp(4)} height={wp(4)} />
-        </View>
-      </TouchableOpacity>
-      <Modal visible={showModal} transparent={true} animationType="fade">
-        <TouchableOpacity
-          style={styles.modalContainer}
-          onPress={() => setShowModal(false)}
-        >
-          <View style={styles.dropdownModal}>
-            <FlatList
-              data={year}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  style={styles.optionItem}
-                  onPress={() => handleSelectYear(item)}
-                >
-                  <Text style={styles.optionText}>{item.label}</Text>
-                </TouchableOpacity>
-              )}
-              keyExtractor={(item, index) => index.toString()}
-            />
-          </View>
-        </TouchableOpacity>
-      </Modal>
+      <DropDownPicker
+        open={open}
+        value={value}
+        items={year}
+        setOpen={setOpen}
+        setValue={setValue}
+        setItems={setYear}
+        containerStyle={styles.pickerContainer}
+        style={styles.inputField}
+        dropDownStyle={styles.dropdownStyle}
+        labelStyle={styles.labelStyle}
+        dropDownItemStyle={styles.dropDownItemStyle}
+        onChangeItem={(item) => {
+          console.log("Item selected:", item);
+          handleSelectYear(item);
+        }}
+        placeholder="Select your year level"
+      />
       <TouchableOpacity
         style={styles.nextIconContainer}
         onPress={() => goToNextScreen()}
@@ -171,55 +157,30 @@ const styles = StyleSheet.create({
   },
   pickerContainer: {
     width: wp(70),
-    height: hp(5),
-    position: "relative",
-    zIndex: 1,
-  },
-  pickerContent: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: "100%",
-    height: "100%",
-    backgroundColor: "#FFFFFF",
-    borderRadius: hp(2),
-    borderWidth: wp(0.3),
-    borderColor: "#CCCCCC",
-    paddingHorizontal: wp(2),
+    marginTop: hp(3),
+    zIndex: 1000,
   },
   inputField: {
-    color: "#414042",
-    fontFamily: "lato-regular",
-    fontSize: wp(4),
-    flex: 1,
-  },
-  modalContainer: {
-    flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  dropdownModal: {
-    position: "absolute",
-    left: wp(15),
-    top: hp(46),
-    width: wp(70),
-    maxHeight: hp(30),
     backgroundColor: "#FFFFFF",
     borderRadius: hp(2),
     borderWidth: wp(0.3),
     borderColor: "#CCCCCC",
-    zIndex: 2,
+    paddingLeft: wp(2),
   },
-  optionItem: {
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#CCCCCC",
+  dropdownStyle: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: hp(2),
+    borderWidth: wp(0.3),
+    borderColor: "#CCCCCC",
   },
-  optionText: {
+  labelStyle: {
+    fontFamily: "lato-regular",
     fontSize: wp(4),
     color: "#414042",
-    paddingHorizontal: wp(2),
+    paddingLeft: wp(2), 
+  },
+  dropDownItemStyle: {
+    fontFamily: "lato-bold", 
   },
   nextIconContainer: {
     position: "absolute",
