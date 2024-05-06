@@ -48,6 +48,27 @@ const users = [
     program: "BSCS",
     interests: "Mobile App Development, Flutter",
   },
+  {
+    id: "5",
+    uri: require("../assets/Tita.jpg"),
+    name: "Tita",
+    program: "BSCS",
+    interests: "Rich's",
+  },
+  {
+    id: "6",
+    uri: require("../assets/Tits.png"),
+    name: "Tits",
+    program: "BSCS",
+    interests: "UGH",
+  },
+  {
+    id: "7",
+    uri: require("../assets/HartHurt.png"),
+    name: "Fsh enjoyer",
+    program: "IT",
+    interests: "Pre, alam mo ba",
+  },
 ];
 
 const screenHeight = Dimensions.get("window").height;
@@ -55,6 +76,8 @@ const screenWidth = Dimensions.get("window").width;
 
 const CardScreen = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [likedCards, setLikedCards] = useState([]);
+  const [passedCards, setPassedCards] = useState([]);
   const position = new Animated.ValueXY();
   const [fontLoaded, setFontLoaded] = useState(false);
   const insets = useSafeAreaInsets();
@@ -70,16 +93,18 @@ const CardScreen = () => {
     },
     onPanResponderRelease: (evt, gestureState) => {
       if (gestureState.dx > 100) {
+        // Swipe to the right
+        // If swiped to right, store the name of the user to the likedCards array
+        setLikedCards([...likedCards, users[currentIndex].name]);
+      } else if (gestureState.dx < -100) {
+        // Swipe to the left
+        // Vice versa
+        setPassedCards([...passedCards, users[currentIndex].name]);
+      }
+
+      if (gestureState.dx > 100 || gestureState.dx < -100) {
         Animated.spring(position, {
           toValue: { x: screenWidth + 100, y: gestureState.dy },
-          useNativeDriver: true,
-        }).start(() => {
-          setCurrentIndex(currentIndex + 1);
-          position.setValue({ x: 0, y: 0 });
-        });
-      } else if (gestureState.dx < -100) {
-        Animated.spring(position, {
-          toValue: { x: -screenWidth - 100, y: gestureState.dy },
           useNativeDriver: true,
         }).start(() => {
           setCurrentIndex(currentIndex + 1);
@@ -175,6 +200,14 @@ const CardScreen = () => {
       .reverse();
   };
 
+  useEffect(() => {
+    console.log("Liked Cards: ", likedCards.join(", "));
+  }, [likedCards]);
+
+  useEffect(() => {
+    console.log("Passed Cards: ", passedCards.join(", "));
+  }, [passedCards]);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topSpacer} />
@@ -210,12 +243,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  informationContainer: {
-    paddingLeft: wp(5),
-    flexDirection: "row",
-    backgroundColor: "red",
-    bottom: hp(10),
-  },
   imageContainer: {
     flex: 1,
     backgroundColor: "white",
@@ -225,7 +252,7 @@ const styles = StyleSheet.create({
     paddingLeft: hp(2),
     paddingRight: hp(2),
     paddingBottom: hp(4),
-    marginBottom: hp(2)
+    marginBottom: hp(2),
   },
   container: {
     flex: 1,
@@ -241,8 +268,8 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: wp(5),
     position: "absolute",
-    top: hp(1), 
-    bottom: hp(5), 
+    top: hp(1),
+    bottom: hp(5),
     left: 0,
     right: 0,
   },

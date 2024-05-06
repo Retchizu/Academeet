@@ -19,7 +19,10 @@ import { useNavigation } from "@react-navigation/native";
 import img1 from "../misc/Rompek.png";
 import { useUserContext } from "../context/UserContext";
 import { db, storage } from "../firebaseConfig";
+import { SvgXml } from "react-native-svg";
+import { SVGLogo, pendingSVG, settingSVG } from "../misc/loadSVG";
 
+// Function to load font and set fontLoaded state
 const ProfileScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -40,18 +43,36 @@ const ProfileScreen = () => {
   const handleAddBio = () => {
     setShowModal(true);
   };
-  console.log(user);
+
   const saveBio = async () => {
     putAttribute("userBio", bioText);
     await db.collection("User").doc(user.userName).update({
       userBio: bioText,
     });
-    setBioText(""); // Clear the input field after saving
+    setBioText("");
     setShowModal(false);
   };
 
   return (
     <View style={styles.container} ref={containerRef}>
+      <View style={styles.header}>
+        <TouchableOpacity
+          // TODO: Onclick baws
+          onPress={() => {
+            console.log("clicked pending ");
+          }}
+        >
+          <SvgXml xml={pendingSVG} style={styles.svgIcon} />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>academeet</Text>
+        <TouchableOpacity
+          onPress={() => {
+            console.log("Clicked settings");
+          }}
+        >
+          <SvgXml xml={settingSVG} style={styles.svgIcon} />
+        </TouchableOpacity>
+      </View>
       <View style={styles.content}>
         <Image
           source={
@@ -120,7 +141,7 @@ const ProfileScreen = () => {
               },
             ]}
           >
-            Miscallaneous
+            Miscellaneous
           </Text>
           <View style={styles.personalInfoContainer}>
             <View style={styles.infoContainer}>
@@ -142,6 +163,7 @@ const ProfileScreen = () => {
           </View>
         </View>
       </View>
+      {/* Modal */}
       <Modal
         visible={showModal}
         transparent
@@ -172,11 +194,27 @@ export default ProfileScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
     backgroundColor: "#023E8A",
   },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: hp(2),
+    paddingVertical: hp(2),
+    backgroundColor: "#023E8A",
+  },
+  headerTitle: {
+    fontFamily: "lato-regular",
+    fontSize: hp(3),
+    color: "#FF9E00",
+  },
+  svgIcon: {
+    width: hp(7),
+    height: hp(7),
+  },
   content: {
+    flex: 1,
     marginBottom: hp(15),
     alignItems: "center",
   },
@@ -199,20 +237,20 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     marginTop: hp(1),
     textAlign: "left",
-    marginLeft: wp(5), // Align text to the left
+    marginLeft: wp(5),
   },
   profilePic: {
     borderRadius: hp(4),
     marginBottom: hp(1),
-    marginTop: hp(3),
-    width: hp(20), // Adjust image width as needed
-    height: hp(20), // Adjust image height as needed
+    marginTop: hp(1),
+    width: hp(18),
+    height: hp(18),
   },
   addBio: {
     fontFamily: "lato-regular",
     fontSize: hp(1.8),
     color: "#FFFFFF",
-    marginTop: hp(2), // Moved closer to the Personal Information
+    marginTop: hp(2),
   },
   modalContainer: {
     flex: 1,
@@ -250,7 +288,7 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
   },
   personalInfoContainer: {
-    marginTop: hp(1), // Moved closer to the Add Bio button
+    marginTop: hp(1),
     width: wp(80),
     backgroundColor: "#0077B6",
     borderRadius: hp(2),
@@ -262,12 +300,12 @@ const styles = StyleSheet.create({
     marginTop: hp(2),
   },
   emailContainer: {
-    flexDirection: "row", // Arrange children horizontally
-    justifyContent: "space-between", // Align children to the start and end of the container
-    alignItems: "center", // Align children vertically
-    borderBottomWidth: 0.5, // Add a thin line at the bottom
-    borderBottomColor: "#FFFFFF", // Set the color of the line
-    paddingBottom: hp(1), // Add padding to improve visual appearance
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    borderBottomWidth: 0.5,
+    borderBottomColor: "#FFFFFF",
+    paddingBottom: hp(1),
   },
   infoContainer: {
     flexDirection: "row",
