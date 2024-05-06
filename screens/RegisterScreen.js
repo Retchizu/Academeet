@@ -7,6 +7,7 @@ import {
   TextInput,
   ActivityIndicator,
   ScrollView,
+  KeyboardAvoidingView,
 } from "react-native";
 import { loadFont } from "../misc/loadFont";
 import { SvgXml } from "react-native-svg";
@@ -168,6 +169,7 @@ const RegisterScreen = () => {
                     {errors.confirmPassword}
                   </Text>
                 )}
+
                 <View style={styles.passwordInputContainer}>
                   <TextInput
                     style={styles.passwordInputField}
@@ -191,25 +193,23 @@ const RegisterScreen = () => {
                 </View>
               </View>
 
-              <View style={{ alignItems: "center" }}>
-                <View style={styles.registerButtonContainer}>
-                  <TouchableOpacity
-                    style={[styles.button, styles.registerButton]}
-                    onPress={handleSubmit}
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? (
-                      <ActivityIndicator size="small" color="#FFFFFF" />
-                    ) : (
-                      <Text style={styles.buttonText}>Register</Text>
-                    )}
-                  </TouchableOpacity>
-                </View>
+              <View style={styles.registerButtonContainer}>
+                <TouchableOpacity
+                  style={[styles.button, styles.registerButton]}
+                  onPress={handleSubmit}
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <ActivityIndicator size="small" color="#FFFFFF" />
+                  ) : (
+                    <Text style={styles.buttonText}>Register</Text>
+                  )}
+                </TouchableOpacity>
 
                 <View
                   style={{
                     flexDirection: "row",
-                    alignItems: "center",
+                    justifyContent: "center",
                   }}
                 >
                   <Text style={styles.registerText}>
@@ -236,16 +236,14 @@ const styles = StyleSheet.create({
   centerView: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: hp(15),
+    marginTop: hp(10),
   },
   inputField: {
     fontFamily: "lato-light",
-    width: wp(65),
-    height: hp(6),
     borderWidth: wp(0.3),
     borderColor: "#414042",
     borderRadius: wp(5),
-    marginTop: hp(1),
+    marginVertical: hp(1),
     marginHorizontal: wp(4),
     paddingHorizontal: wp(4),
     paddingVertical: hp(1),
@@ -259,14 +257,10 @@ const styles = StyleSheet.create({
   },
   textInputContainer: {
     fontFamily: "lato-light",
-    fontSize: wp(4),
     color: "#414042",
-    alignSelf: "center",
-    padding: hp(2),
+    marginHorizontal: wp(12),
   },
   passwordInputContainer: {
-    width: wp(65),
-    height: hp(6),
     borderWidth: wp(0.3),
     borderColor: "#414042",
     borderRadius: wp(5),
@@ -282,7 +276,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   eyeIconContainer: {
-    marginRight: wp(2),
+    marginRight: wp(1.5),
   },
 
   logoText: {
@@ -296,12 +290,12 @@ const styles = StyleSheet.create({
   },
   registerButtonContainer: {
     marginTop: hp(4),
+    alignItems: "center",
   },
   button: {
     paddingVertical: hp(1.6),
     paddingHorizontal: wp(6),
     borderRadius: wp(4),
-    marginRight: wp(3),
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -321,6 +315,7 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
   },
   registerText: {
+    textAlign: "center",
     fontFamily: "lato-light",
     fontSize: wp(3.5),
     color: "#FFFFFF",
@@ -336,6 +331,6 @@ const styles = StyleSheet.create({
     fontSize: wp(3),
     textAlign: "right",
     marginHorizontal: wp(8),
-    marginVertical: hp(0.2),
+    marginTop: hp(1),
   },
 });

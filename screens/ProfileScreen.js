@@ -42,12 +42,10 @@ const ProfileScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [bioText, setBioText] = useState("");
-  const [userBio, setUserBio] = useState("");
   const containerRef = useRef(null);
   const navigation = useNavigation();
   const defaultImage = require("../assets/default_profile_pic.jpg");
-
-  const { user } = useUserContext();
+  const { putAttribute, user } = useUserContext();
 
   useEffect(() => {
     loadFont().then(() => setFontLoaded(true));
@@ -60,9 +58,12 @@ const ProfileScreen = () => {
   const handleAddBio = () => {
     setShowModal(true);
   };
-
-  const saveBio = () => {
-    setUserBio(bioText); // Save the typed bio
+  console.log(user);
+  const saveBio = async () => {
+    putAttribute("userBio", bioText);
+    await db.collection("User").doc(user.userName).update({
+      userBio: bioText,
+    });
     setBioText(""); // Clear the input field after saving
     setShowModal(false);
   };
@@ -81,7 +82,9 @@ const ProfileScreen = () => {
         <Text style={styles.nameText}>{user.fullName}</Text>
         <Text style={styles.infoText}>{user.userProgram}</Text>
         <TouchableOpacity onPress={handleAddBio}>
-          <Text style={styles.addBio}>{userBio ? userBio : "Add Bio"}</Text>
+          <Text style={styles.addBio}>
+            {user.userBio ? user.userBio : "Add Bio"}
+          </Text>
         </TouchableOpacity>
 
         <View style={styles.secondContainer}>
@@ -157,7 +160,12 @@ const ProfileScreen = () => {
           </View>
         </View>
       </View>
-      <Modal visible={showModal} transparent animationType="slide">
+      <Modal
+        visible={showModal}
+        transparent
+        animationType="slide"
+        onRequestClose={() => setShowModal(false)}
+      >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <TextInput
@@ -187,7 +195,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#023E8A",
   },
   content: {
-    marginBottom: hp(15), 
+    marginBottom: hp(15),
     alignItems: "center",
   },
   nameText: {
@@ -269,7 +277,7 @@ const styles = StyleSheet.create({
     padding: hp(2),
   },
   secondContainer: {
-    marginTop: hp(5),
+    marginTop: hp(2),
   },
   emailContainer: {
     flexDirection: "row", // Arrange children horizontally
