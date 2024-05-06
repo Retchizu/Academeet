@@ -60,8 +60,37 @@ const LoginScreen = () => {
         );
         await AsyncStorage.setItem("email", userEmail.email);
         await AsyncStorage.setItem("password", logInCredential.password);
-        setUser({ email: userEmail.email, userName: logInCredential.userName });
-        navigation.replace("NameScreen");
+        const data = await db
+          .collection("User")
+          .doc(logInCredential.userName)
+          .get();
+        if (data.exists) {
+          const {
+            email,
+            fullName,
+            selectedTrait,
+            userGender,
+            userName,
+            userProgram,
+            userTopic,
+            yearLevel,
+          } = data.data();
+          if (
+            email &&
+            fullName &&
+            selectedTrait &&
+            userGender &&
+            userName &&
+            userProgram &&
+            userTopic &&
+            yearLevel
+          ) {
+            setUser(data.data());
+            navigation.replace("TabNavigator");
+          } else {
+            navigation.replace("NameScreen");
+          }
+        }
       } catch (error) {
         console.log(error.message);
       } finally {
@@ -107,7 +136,7 @@ const LoginScreen = () => {
           <TouchableOpacity
             style={[styles.button, styles.loginButton]}
             onPress={() => logInUser()}
-            disabled={loading} 
+            disabled={loading}
           >
             {loading ? (
               <ActivityIndicator size="small" color="#FFFFFF" />

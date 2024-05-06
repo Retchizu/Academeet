@@ -1,22 +1,40 @@
 import React, { useState, useEffect, useRef } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Modal, TextInput, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Modal,
+  TextInput,
+  Image,
+} from "react-native";
 import { loadFont } from "../misc/loadFont";
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 import { useNavigation } from "@react-navigation/native";
 import img1 from "../misc/Rompek.png";
-
+import { useUserContext } from "../context/UserContext";
+import { db, storage } from "../firebaseConfig";
 
 const data = [
   {
-    key: 1, name: "Romnoel Petracorta", 
+    key: 1,
+    name: "Romnoel Petracorta",
     program: "Computer Science",
-    email: "Lychee@gmail.com",  
+    email: "Lychee@gmail.com",
     yearLevel: "Sophomore",
     gender: "Male",
     characteristics: ["Curious", "Creative", "Sociable", "Adaptable", "Nigger"],
-    topicsInterestedIn: ["Java", "CyberSecurity", "Mobile Application", "Game Dev"]
-  }
-]
+    topicsInterestedIn: [
+      "Java",
+      "CyberSecurity",
+      "Mobile Application",
+      "Game Dev",
+    ],
+  },
+];
 
 const ProfileScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -25,8 +43,33 @@ const ProfileScreen = () => {
   const [userBio, setUserBio] = useState("");
   const containerRef = useRef(null);
   const navigation = useNavigation();
+  const [imageUri, setImageUri] = useState("");
+  const defaultImage = require("../assets/default_profile_pic.jpg");
+
+  const { user } = useUserContext();
 
   useEffect(() => {
+    const fetchImage = async () => {
+      try {
+        if (!imageUri.trim()) {
+          const docRef = db.collection("User").doc(user.userName);
+          const doc = await docRef.get();
+
+          if (doc.exists) {
+            console.log("running");
+            const { imageUri } = doc.data();
+
+            const storageRef = storage.ref();
+            const url = await storageRef.child(imageUri).getDownloadURL();
+            console.log(url);
+            setImageUri(url);
+          }
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    fetchImage();
     loadFont().then(() => setFontLoaded(true));
   }, []);
 
@@ -47,7 +90,10 @@ const ProfileScreen = () => {
   return (
     <View style={styles.container} ref={containerRef}>
       <View style={styles.content}>
-        <Image source={img1} style={styles.profilePic} />
+        <Image
+          source={!imageUri.trim() ? defaultImage : { uri: imageUri }}
+          style={styles.profilePic}
+        />
         <Text style={styles.nameText}>{data[0].name}</Text>
         <Text style={styles.infoText}>{data[0].program}</Text>
         <TouchableOpacity onPress={handleAddBio}>
@@ -55,51 +101,77 @@ const ProfileScreen = () => {
         </TouchableOpacity>
 
         <View style={styles.secondContainer}>
-          <Text style={[{ 
-            alignSelf: "flex-start", 
-            marginBottom: hp(1), 
-            fontSize: wp(4),
-            fontFamily: "lato-bold",
-            color: "#FFFFFF",
-            }]}>
-              Personal Information
-              </Text>
+          <Text
+            style={[
+              {
+                alignSelf: "flex-start",
+                marginBottom: hp(1),
+                fontSize: wp(4),
+                fontFamily: "lato-bold",
+                color: "#FFFFFF",
+              },
+            ]}
+          >
+            Personal Information
+          </Text>
           <View style={styles.personalInfoContainer}>
             <View style={styles.emailContainer}>
               <Text style={[styles.infoText]}>Email:</Text>
-              <Text style={[styles.sectionText, { flex: 2, textAlign: "right" }]}>{data[0].email}</Text>
+              <Text
+                style={[styles.sectionText, { flex: 2, textAlign: "right" }]}
+              >
+                {user.email}
+              </Text>
             </View>
             <View style={styles.infoContainer}>
               <Text style={[styles.infoText]}>Year Level:</Text>
-              <Text style={[styles.sectionText, { flex: 2, textAlign: "right" }]}>{data[0].yearLevel}</Text>
+              <Text
+                style={[styles.sectionText, { flex: 2, textAlign: "right" }]}
+              >
+                {user.yearLevel}
+              </Text>
             </View>
             <View style={styles.infoContainer}>
               <Text style={[styles.infoText]}>Gender:</Text>
-              <Text style={[styles.sectionText, { flex: 2, textAlign: "right" }]}>{data[0].gender}</Text>
-            </View>
-
-          </View>
-          <Text style={[{ 
-            alignSelf: "flex-start", 
-            fontSize: wp(4),
-            fontFamily: "lato-bold",
-            color: "#FFFFFF",
-            marginTop: wp(4)
-            }]}>
-              Miscallaneous
+              <Text
+                style={[styles.sectionText, { flex: 2, textAlign: "right" }]}
+              >
+                {user.userGender}
               </Text>
+            </View>
+          </View>
+          <Text
+            style={[
+              {
+                alignSelf: "flex-start",
+                fontSize: wp(4),
+                fontFamily: "lato-bold",
+                color: "#FFFFFF",
+                marginTop: wp(4),
+              },
+            ]}
+          >
+            Miscallaneous
+          </Text>
           <View style={styles.personalInfoContainer}>
-          <View style={styles.infoContainer}>
+            <View style={styles.infoContainer}>
               <Text style={[styles.infoText]}>Characteristics:</Text>
-              <Text style={[styles.sectionText, { flex: 2, textAlign: "right" }]}>{data[0].characteristics.join(", ")}</Text>
+              <Text
+                style={[styles.sectionText, { flex: 2, textAlign: "right" }]}
+              >
+                {user.selectedTrait.join(", ")}
+              </Text>
             </View>
             <View style={styles.infoContainer}>
               <Text style={[styles.infoText]}>Interests:</Text>
-              <Text style={[styles.sectionText, { flex: 2, textAlign: "right" }]}>{data[0].topicsInterestedIn.join(", ")}</Text>
+              <Text
+                style={[styles.sectionText, { flex: 2, textAlign: "right" }]}
+              >
+                {user.userTopic.join(", ")}
+              </Text>
             </View>
           </View>
         </View>
-            
       </View>
 
       <Modal visible={showModal} transparent animationType="slide">
@@ -132,7 +204,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#023E8A",
   },
   content: {
-    alignItems: "center", 
+    alignItems: "center",
     marginBottom: hp(10), // Reduced marginBottom
   },
   nameText: {
