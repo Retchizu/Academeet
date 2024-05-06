@@ -8,6 +8,7 @@ import {
   TextInput,
   Image,
   ScrollView,
+  Dimensions,
 } from "react-native";
 import { loadFont } from "../misc/loadFont";
 import {
@@ -82,96 +83,78 @@ const ProfileScreen = () => {
         <TouchableOpacity onPress={handleAddBio}>
           <Text style={styles.addBio}>{userBio ? userBio : "Add Bio"}</Text>
         </TouchableOpacity>
-        <View style={{ height: hp(80) }}>
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={styles.secondContainer}>
+
+        <View style={styles.secondContainer}>
+          <Text
+            style={[
+              {
+                alignSelf: "flex-start",
+                marginBottom: hp(1),
+                fontSize: wp(4),
+                fontFamily: "lato-bold",
+                color: "#FFFFFF",
+              },
+            ]}
+          >
+            Personal Information
+          </Text>
+          <View style={styles.personalInfoContainer}>
+            <View style={styles.emailContainer}>
+              <Text style={[styles.infoText]}>Email:</Text>
               <Text
-                style={[
-                  {
-                    alignSelf: "flex-start",
-                    marginBottom: hp(1),
-                    fontSize: wp(4),
-                    fontFamily: "lato-bold",
-                    color: "#FFFFFF",
-                  },
-                ]}
+                style={[styles.sectionText, { flex: 2, textAlign: "right" }]}
               >
-                Personal Information
+                {user.email}
               </Text>
-              <View style={styles.personalInfoContainer}>
-                <View style={styles.emailContainer}>
-                  <Text style={[styles.infoText]}>Email:</Text>
-                  <Text
-                    style={[
-                      styles.sectionText,
-                      { flex: 2, textAlign: "right" },
-                    ]}
-                  >
-                    {user.email}
-                  </Text>
-                </View>
-                <View style={styles.infoContainer}>
-                  <Text style={[styles.infoText]}>Year Level:</Text>
-                  <Text
-                    style={[
-                      styles.sectionText,
-                      { flex: 2, textAlign: "right" },
-                    ]}
-                  >
-                    {user.yearLevel}
-                  </Text>
-                </View>
-                <View style={styles.infoContainer}>
-                  <Text style={[styles.infoText]}>Gender:</Text>
-                  <Text
-                    style={[
-                      styles.sectionText,
-                      { flex: 2, textAlign: "right" },
-                    ]}
-                  >
-                    {user.userGender}
-                  </Text>
-                </View>
-              </View>
-              <Text
-                style={[
-                  {
-                    alignSelf: "flex-start",
-                    fontSize: wp(4),
-                    fontFamily: "lato-bold",
-                    color: "#FFFFFF",
-                    marginTop: wp(4),
-                  },
-                ]}
-              >
-                Miscallaneous
-              </Text>
-              <View style={styles.personalInfoContainer}>
-                <View style={styles.infoContainer}>
-                  <Text style={[styles.infoText]}>Characteristics:</Text>
-                  <Text
-                    style={[
-                      styles.sectionText,
-                      { flex: 2, textAlign: "right" },
-                    ]}
-                  >
-                    {user.selectedTrait.join(", ")}
-                  </Text>
-                </View>
-                <View style={styles.infoContainer}>
-                  <Text style={[styles.infoText]}>Interests:</Text>
-                  <Text
-                    style={[
-                      styles.sectionText,
-                      { flex: 2, textAlign: "right" },
-                    ]}
-                  >
-                    {user.userTopic.join(", ")}
-                  </Text>
-                </View>
-              </View>
             </View>
-          </ScrollView>
+            <View style={styles.infoContainer}>
+              <Text style={[styles.infoText]}>Year Level:</Text>
+              <Text
+                style={[styles.sectionText, { flex: 2, textAlign: "right" }]}
+              >
+                {user.yearLevel}
+              </Text>
+            </View>
+            <View style={styles.infoContainer}>
+              <Text style={[styles.infoText]}>Gender:</Text>
+              <Text
+                style={[styles.sectionText, { flex: 2, textAlign: "right" }]}
+              >
+                {user.userGender}
+              </Text>
+            </View>
+          </View>
+          <Text
+            style={[
+              {
+                alignSelf: "flex-start",
+                fontSize: wp(4),
+                fontFamily: "lato-bold",
+                color: "#FFFFFF",
+                marginTop: wp(4),
+              },
+            ]}
+          >
+            Miscallaneous
+          </Text>
+          <View style={styles.personalInfoContainer}>
+            <View style={styles.infoContainer}>
+              <Text style={[styles.infoText]}>Characteristics:</Text>
+              <Text
+                style={[styles.sectionText, { flex: 2, textAlign: "right" }]}
+              >
+                {user.selectedTrait.join(", ")}
+              </Text>
+            </View>
+            <View style={styles.infoContainer}>
+              <Text style={[styles.infoText]}>Interests:</Text>
+              <Text
+                style={[styles.sectionText, { flex: 2, textAlign: "right" }]}
+              >
+                {user.userTopic.join(", ")}
+              </Text>
+            </View>
+          </View>
         </View>
       </View>
       <Modal visible={showModal} transparent animationType="slide">
@@ -204,40 +187,40 @@ const styles = StyleSheet.create({
     backgroundColor: "#023E8A",
   },
   content: {
-    marginBottom: hp(15), // Reduced marginBottom
+    marginBottom: hp(15), 
     alignItems: "center",
   },
   nameText: {
     fontFamily: "lato-bold",
-    fontSize: wp(6),
+    fontSize: hp(3),
     color: "#FFFFFF",
     textAlign: "center",
   },
   infoText: {
     fontFamily: "lato-regular",
-    fontSize: wp(4),
+    fontSize: hp(2),
     color: "#FFFFFF",
     textAlign: "left",
     marginTop: hp(1),
   },
   sectionText: {
     fontFamily: "lato-bold",
-    fontSize: wp(3),
+    fontSize: hp(1.5),
     color: "#FFFFFF",
     marginTop: hp(1),
     textAlign: "left",
     marginLeft: wp(5), // Align text to the left
   },
   profilePic: {
-    borderRadius: wp(5),
-    marginBottom: hp(2),
+    borderRadius: hp(4),
+    marginBottom: hp(1),
     marginTop: hp(3),
-    width: wp(40), // Adjust image width as needed
-    height: wp(40), // Adjust image height as needed
+    width: hp(20), // Adjust image width as needed
+    height: hp(20), // Adjust image height as needed
   },
   addBio: {
     fontFamily: "lato-regular",
-    fontSize: wp(3),
+    fontSize: hp(1.8),
     color: "#FFFFFF",
     marginTop: hp(2), // Moved closer to the Personal Information
   },
@@ -281,9 +264,9 @@ const styles = StyleSheet.create({
     width: wp(80),
     backgroundColor: "#0077B6",
     borderRadius: hp(2),
-    borderWidth: wp(0.3),
+    borderWidth: hp(0.1),
     borderColor: "#0077B6",
-    padding: wp(3),
+    padding: hp(2),
   },
   secondContainer: {
     marginTop: hp(5),
