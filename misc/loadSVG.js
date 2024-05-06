@@ -100,7 +100,6 @@ const reminderSVG = `<svg width="126" height="120" viewBox="0 0 126 120" fill="n
 </svg>
 `;
 
-
 const SVGaddImageButton = `
 <svg width="147" height="134" viewBox="0 0 147 134" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect width="147" height="134" rx="40" fill="white"/>
@@ -122,5 +121,12 @@ const SVGImage = `
 
 `;
 
-export { SVGLogo, SVGnext, SVGprevious, dropDown, SVGaddImageButton, SVGImage };
-
+export {
+  SVGLogo,
+  SVGnext,
+  SVGprevious,
+  dropDown,
+  SVGaddImageButton,
+  SVGImage,
+  reminderSVG,
+};

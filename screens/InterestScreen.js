@@ -5,6 +5,7 @@ import {
   View,
   TouchableOpacity,
   TextInput,
+  ScrollView,
 } from "react-native";
 import { loadFont } from "../misc/loadFont";
 import {
@@ -15,6 +16,7 @@ import { SvgXml } from "react-native-svg";
 import { SVGnext, SVGprevious } from "../misc/loadSVG";
 import { useNavigation } from "@react-navigation/native";
 import * as Progress from "react-native-progress";
+import { useUserContext } from "../context/UserContext";
 
 const InterestScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -22,8 +24,13 @@ const InterestScreen = () => {
   const [progressValue, setProgressValue] = useState(0.5);
   const navigation = useNavigation();
 
+  const { putAttribute, user, removeAttribute } = useUserContext();
+
   useEffect(() => {
     loadFont().then(() => setFontLoaded(true));
+    if (user.selectedTraits) {
+      setSelectedTraits(user.selectedTraits);
+    }
   }, []);
 
   useEffect(() => {
@@ -37,7 +44,9 @@ const InterestScreen = () => {
     if (selectedTraits.includes(trait)) {
       setSelectedTraits(selectedTraits.filter((item) => item !== trait));
     } else {
-      setSelectedTraits([...selectedTraits, trait]);
+      if (selectedTraits.length < 5) {
+        setSelectedTraits([...selectedTraits, trait]);
+      }
     }
   };
 
@@ -76,7 +85,26 @@ const InterestScreen = () => {
     { key: 29, label: "Resourceful" },
   ];
   personalityTraits.sort((a, b) => a.label.localeCompare(b.label));
+  console.log("user with traits", user.selectedTraits);
+  const goToNextScreen = () => {
+    if (!selectedTraits.length) {
+      console.log("Please select atleast 1 trait");
+      return;
+    }
+    if (user.selectedTrait && user.selectedTrait.length) {
+      removeAttribute("selectedTrait");
+    }
 
+    putAttribute("selectedTrait", selectedTraits);
+    navigation.navigate("TopicScreen");
+  };
+
+  const goToPreviousScreen = () => {
+    if (user.selectedTrait) {
+      removeAttribute("selectedTrait");
+    }
+    navigation.goBack();
+  };
   return (
     <View style={styles.container}>
       <View style={styles.progressBarContainer}>
@@ -91,39 +119,53 @@ const InterestScreen = () => {
           yourself in a way where you can show your interest to others.
         </Text>
         <Text style={styles.onlyText}> Choose 5 personal traits </Text>
-        <View style={styles.traitsContainer}>
-          {personalityTraits.map((trait, index) => (
-            <TouchableOpacity
-              key={trait.key}
-              style={[
-                styles.traitButton,
-                selectedTraits.includes(trait.label) && styles.traitSelected,
-              ]}
-              onPress={() => toggleTrait(trait.label)}
-            >
-              <Text style={styles.traitText}>{trait.label}</Text>
-            </TouchableOpacity>
-          ))}
+        <View style={{ height: hp(50) }}>
+          <ScrollView>
+            <View style={styles.traitsContainer}>
+              {personalityTraits.map((trait, index) => (
+                <TouchableOpacity
+                  key={trait.key}
+                  style={[
+                    styles.traitButton,
+                    selectedTraits.includes(trait.label) &&
+                      styles.traitSelected,
+                  ]}
+                  onPress={() => toggleTrait(trait.label)}
+                >
+                  <Text style={styles.traitText}>{trait.label}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </ScrollView>
         </View>
       </View>
 
-      <TouchableOpacity
-        style={styles.nextIconContainer}
-        onPress={() => navigation.navigate("TopicScreen")}
+      <View
+        style={{
+          justifyContent: "space-between",
+          flexDirection: "row",
+          flex: 1,
+          alignItems: "flex-end",
+          marginBottom: hp(3),
+        }}
       >
-        <SvgXml xml={SVGnext} width={45} height={45} style={styles.nextIcon} />
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.previousIconContainer}
-        onPress={() => navigation.navigate("GenderScreen")}
-      >
-        <SvgXml
-          xml={SVGprevious}
-          width={45}
-          height={45}
-          style={styles.previousIcon}
-        />
-      </TouchableOpacity>
+        <TouchableOpacity onPress={() => goToPreviousScreen()}>
+          <SvgXml
+            xml={SVGprevious}
+            width={45}
+            height={45}
+            style={styles.previousIcon}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => goToNextScreen()}>
+          <SvgXml
+            xml={SVGnext}
+            width={45}
+            height={45}
+            style={styles.nextIcon}
+          />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -156,8 +198,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
     backgroundColor: "#023E8A",
   },
   titleContainer: {
@@ -187,13 +227,9 @@ const styles = StyleSheet.create({
   },
   previousIconContainer: {
     position: "absolute",
-    bottom: hp(5),
-    left: wp(2),
   },
   nextIconContainer: {
     position: "absolute",
-    bottom: hp(5),
-    right: wp(2),
   },
   nextIcon: {
     tintColor: "#FFFFFF",
@@ -208,7 +244,6 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    justifyContent: "center",
     alignItems: "center",
     paddingVertical: hp(2),
   },

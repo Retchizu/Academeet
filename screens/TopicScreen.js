@@ -15,6 +15,7 @@ import { SvgXml } from "react-native-svg";
 import { SVGnext, SVGprevious } from "../misc/loadSVG";
 import { useNavigation } from "@react-navigation/native";
 import * as Progress from "react-native-progress";
+import { useUserContext } from "../context/UserContext";
 
 const topicsLanguage = [
   { key: 1, label: "Java" },
@@ -50,9 +51,13 @@ const TopicScreen = () => {
   const [selectedTopics, setSelectedTopics] = useState([]);
   const navigation = useNavigation();
   const [progressValue, setProgressValue] = useState(0.7);
+  const { putAttribute, user, removeAttribute } = useUserContext();
 
   useEffect(() => {
     loadFont().then(() => setFontLoaded(true));
+    if (user.selectedTopic && user.selectedTopic.length) {
+      setSelectedTopics(user.selectedTopic);
+    }
   }, []);
 
   useEffect(() => {
@@ -72,12 +77,26 @@ const TopicScreen = () => {
     } else {
       if (selectedTopics.length < 5) {
         setSelectedTopics([...selectedTopics, topic]);
-      } else {
-        alert("You can only select up to 5 topics.");
       }
     }
   };
 
+  console.log(user);
+  const goToNextScreen = () => {
+    if (!selectedTopics.length) {
+      console.log("Please select atlesast 1 topic");
+      return;
+    }
+    putAttribute("userTopic", selectedTopics);
+    navigation.navigate("ReminderScreen");
+  };
+
+  const goToPreviousScreen = () => {
+    if (user.selectedTopic && user.selectedTopic.length) {
+      removeAttribute("selectedTopic");
+    }
+    navigation.goBack();
+  };
   return (
     <View style={styles.container}>
       <View style={styles.progressBarContainer}>
@@ -94,39 +113,51 @@ const TopicScreen = () => {
           Choose 5 topics you are interested in{" "}
         </Text>
       </View>
-
-      <View style={styles.topicsContainer}>
-        {topicsLanguage.map((topic) => (
-          <TouchableOpacity
-            key={topic.key}
-            style={[
-              styles.topicButton,
-              selectedTopics.includes(topic.label) && styles.topicSelected,
-            ]}
-            onPress={() => toggleTopic(topic.label)}
-          >
-            <Text style={styles.topicText}>{topic.label}</Text>
-          </TouchableOpacity>
-        ))}
+      <View style={{ height: hp(60) }}>
+        <ScrollView>
+          <View style={styles.topicsContainer}>
+            {topicsLanguage.map((topic) => (
+              <TouchableOpacity
+                key={topic.key}
+                style={[
+                  styles.topicButton,
+                  selectedTopics.includes(topic.label) && styles.topicSelected,
+                ]}
+                onPress={() => toggleTopic(topic.label)}
+              >
+                <Text style={styles.topicText}>{topic.label}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </ScrollView>
       </View>
 
-      <TouchableOpacity
-        style={styles.nextIconContainer}
-        onPress={() => navigation.navigate("ReminderScreen")}
+      <View
+        style={{
+          justifyContent: "space-between",
+          flexDirection: "row",
+          flex: 1,
+          alignItems: "flex-end",
+          marginBottom: hp(5),
+        }}
       >
-        <SvgXml xml={SVGnext} width={45} height={45} style={styles.nextIcon} />
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.previousIconContainer}
-        onPress={() => navigation.navigate("InterestScreen")}
-      >
-        <SvgXml
-          xml={SVGprevious}
-          width={45}
-          height={45}
-          style={styles.previousIcon}
-        />
-      </TouchableOpacity>
+        <TouchableOpacity onPress={() => goToPreviousScreen()}>
+          <SvgXml
+            xml={SVGprevious}
+            width={45}
+            height={45}
+            style={styles.previousIcon}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => goToNextScreen()}>
+          <SvgXml
+            xml={SVGnext}
+            width={45}
+            height={45}
+            style={styles.nextIcon}
+          />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -139,7 +170,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#023E8A",
   },
   progressBarContainer: {
-    justifyContent: "center",
     alignItems: "center",
     paddingVertical: hp(2),
   },
@@ -187,16 +217,7 @@ const styles = StyleSheet.create({
     fontFamily: "lato-regular",
     fontSize: wp(3.5),
   },
-  previousIconContainer: {
-    position: "absolute",
-    bottom: hp(5),
-    left: wp(2),
-  },
-  nextIconContainer: {
-    position: "absolute",
-    bottom: hp(5),
-    right: wp(2),
-  },
+
   nextIcon: {
     tintColor: "#FFFFFF",
     paddingRight: wp(20),
@@ -204,16 +225,13 @@ const styles = StyleSheet.create({
   previousIcon: {
     tintColor: "#FFFFFF",
     paddingLeft: wp(20),
-
   },
   progressBarContainer: {
     position: "absolute",
     top: 0,
     left: 0,
     right: 0,
-    justifyContent: "center",
     alignItems: "center",
     paddingVertical: hp(2),
-
   },
 });

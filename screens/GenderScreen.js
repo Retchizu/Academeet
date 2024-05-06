@@ -9,12 +9,14 @@ import { SvgXml } from "react-native-svg";
 import { SVGnext, SVGprevious } from "../misc/loadSVG";
 import { useNavigation } from "@react-navigation/native";
 import * as Progress from "react-native-progress";
+import { useUserContext } from "../context/UserContext";
 
 const GenderScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
   const [selectedGender, setSelectedGender] = useState("");
   const navigation = useNavigation();
   const [progressValue, setProgressValue] = useState(0.45);
+  const { putAttribute, user, removeAttribute } = useUserContext();
 
   useEffect(() => {
     loadFont().then(() => setFontLoaded(true));
@@ -32,9 +34,21 @@ const GenderScreen = () => {
   }
 
   const goToNextScreen = () => {
-    navigation.navigate("AboutYourselfScreen");
+    if (!selectedGender.trim()) {
+      console.log("Please identify your gender");
+      return;
+    }
+    putAttribute("userGender", selectedGender);
+    navigation.navigate("InterestScreen");
   };
 
+  const goToPreviousScreen = () => {
+    if (user.userGender) {
+      removeAttribute("userGender");
+    }
+    navigation.goBack();
+  };
+  console.log(user);
   return (
     <View style={styles.container}>
       <View style={styles.progressBarContainer}>
@@ -73,13 +87,13 @@ const GenderScreen = () => {
       </View>
       <TouchableOpacity
         style={styles.nextIconContainer}
-        onPress={() => navigation.navigate("InterestScreen")}
+        onPress={() => goToNextScreen()}
       >
         <SvgXml xml={SVGnext} width={45} height={45} style={styles.nextIcon} />
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.previousIconContainer}
-        onPress={() => navigation.navigate("AddPhotoScreen")}
+        onPress={() => goToPreviousScreen()}
       >
         <SvgXml
           xml={SVGprevious}

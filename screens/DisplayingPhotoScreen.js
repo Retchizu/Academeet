@@ -9,6 +9,7 @@ import { SvgXml } from "react-native-svg";
 import { SVGnext, SVGprevious, SVGImage } from "../misc/loadSVG";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import * as Progress from "react-native-progress";
+import { useUserContext } from "../context/UserContext";
 
 const DisplayingPhotoScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -17,6 +18,8 @@ const DisplayingPhotoScreen = () => {
   const [progressValue, setProgressValue] = useState(0.4);
   const route = useRoute();
   const uri = route.params?.uri;
+
+  const { putAttribute, user, removeAttribute } = useUserContext();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -33,6 +36,27 @@ const DisplayingPhotoScreen = () => {
     return null;
   }
 
+  console.log("uri photo", uri);
+
+  const goToNextScreen = () => {
+    if (!uri && uri == null) {
+      console.log("Image is null");
+      putAttribute("imageUri", null);
+      return;
+    } else {
+      putAttribute("imageUri", uri);
+    }
+
+    navigation.navigate("GenderScreen");
+  };
+
+  const goToPreviousScreen = () => {
+    if (user.imageUri) {
+      removeAttribute("imageUri");
+    }
+
+    navigation.goBack();
+  };
   return (
     <View style={styles.container} ref={containerRef}>
       <View style={styles.progressBarContainer}>
@@ -47,18 +71,23 @@ const DisplayingPhotoScreen = () => {
       </View>
       <View style={styles.imageContainer}>
         <SvgXml xml={SVGImage} width={350} height={438} />
-        {uri && <Image source={{ uri }} style={styles.image} />}
+        {uri && (
+          <Image
+            source={{ uri: uri ? uri : user.imageUri.uri }}
+            style={styles.image}
+          />
+        )}
       </View>
 
       <TouchableOpacity
         style={styles.nextIconContainer}
-        onPress={() => navigation.navigate("GenderScreen")}
+        onPress={() => goToNextScreen()}
       >
         <SvgXml xml={SVGnext} width={45} height={45} style={styles.nextIcon} />
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.previousIconContainer}
-        onPress={() => navigation.navigate("AddPhotoScreen")}
+        onPress={() => goToPreviousScreen()}
       >
         <SvgXml
           xml={SVGprevious}

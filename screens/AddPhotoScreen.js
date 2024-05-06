@@ -69,7 +69,7 @@ const AddPhotoScreen = () => {
     return null;
   }
 
-  const handleImageUpload = async () => {
+  /* const handleImageUpload = async () => {
     try {
       const { uri } = await FileSystem.getInfoAsync(image);
       const blob = await new Promise((resolve, reject) => {
@@ -92,7 +92,7 @@ const AddPhotoScreen = () => {
     } catch (error) {
       console.log(error.message);
     }
-  };
+  }; */
   return (
     <View style={styles.container} ref={containerRef}>
       <View style={styles.progressBarContainer}>

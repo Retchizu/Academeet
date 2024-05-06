@@ -31,7 +31,7 @@ const YearLevelScreen = () => {
   ];
   year.sort();
 
-  const { putAttribute, user } = useUserContext();
+  const { putAttribute, user, removeAttribute } = useUserContext();
 
   console.log(user);
 
@@ -72,6 +72,9 @@ const YearLevelScreen = () => {
   };
 
   const goToPreviousScreen = () => {
+    if (user.yearLevel) {
+      removeAttribute("yearLevel");
+    }
     navigation.goBack();
   };
 

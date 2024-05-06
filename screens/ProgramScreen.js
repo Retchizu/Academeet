@@ -16,6 +16,7 @@ import { SvgXml } from "react-native-svg";
 import { dropDown, SVGnext, SVGprevious } from "../misc/loadSVG";
 import { useNavigation } from "@react-navigation/native";
 import * as Progress from "react-native-progress";
+import { useUserContext } from "../context/UserContext";
 
 const ProgramScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -29,6 +30,9 @@ const ProgramScreen = () => {
     "Multimedia Arts",
   ];
   programs.sort();
+  const { putAttribute, user, removeAttribute } = useUserContext();
+
+  console.log(user);
 
   const containerRef = useRef(null);
   const navigation = useNavigation();
@@ -57,6 +61,21 @@ const ProgramScreen = () => {
     setShowModal(true);
   };
 
+  const goToNextScreen = () => {
+    if (!selectedProgram.trim()) {
+      console.log("Please select a program");
+      return;
+    }
+    putAttribute("userProgram", selectedProgram);
+    navigation.navigate("AddPhotoScreen");
+  };
+
+  const goToPreviousScreen = () => {
+    if (user.userProgram) {
+      removeAttribute("userProgram");
+    }
+    navigation.goBack();
+  };
   return (
     <View style={styles.container} ref={containerRef}>
       <View style={styles.progressBarContainer}>
@@ -99,13 +118,13 @@ const ProgramScreen = () => {
       </Modal>
       <TouchableOpacity
         style={styles.nextIconContainer}
-        onPress={() => navigation.navigate("ReminderScreen")}
+        onPress={() => goToNextScreen()}
       >
         <SvgXml xml={SVGnext} width={45} height={45} style={styles.nextIcon} />
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.previousIconContainer}
-        onPress={() => navigation.navigate("YearLevelScreen")}
+        onPress={() => goToPreviousScreen()}
       >
         <SvgXml
           xml={SVGprevious}

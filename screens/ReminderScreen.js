@@ -27,6 +27,10 @@ const ReminderScreen = () => {
     return null;
   }
 
+  const saveDataToDatabase = () => {
+    //hell nuh bruv
+  };
+
   // Todo: Make it so that when the user already agreed,
   // This window won't show again.
   return (
@@ -91,13 +95,13 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontFamily: "lato-regular",
-    fontSize: wp(6),
+    fontSize: hp(3),
     color: "#FFFFFF",
     marginBottom: hp(3),
   },
   text: {
     fontFamily: "lato-light",
-    fontSize: wp(5),
+    fontSize: hp(2.5),
     color: "#FFFFFF",
     marginBottom: hp(2),
     textAlign: "justify",
