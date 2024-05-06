@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   TextInput,
   ActivityIndicator,
+  ScrollView,
 } from "react-native";
 import { loadFont } from "../misc/loadFont";
 import { SvgXml } from "react-native-svg";
@@ -24,6 +25,7 @@ import {
   validationSchema,
 } from "../methods/validator";
 import { Formik } from "formik";
+import { UserContextProvider } from "../context/UserContext";
 
 const RegisterScreen = () => {
   const navigation = useNavigation();
@@ -31,7 +33,8 @@ const RegisterScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
+  const { setUser } = UserContextProvider();
 
   useEffect(() => {
     loadFont().then(() => setFontLoaded(true));
@@ -51,7 +54,7 @@ const RegisterScreen = () => {
 
   const registerAccount = async (values, formikActions) => {
     try {
-      setLoading(true); 
+      setLoading(true);
       const isUserNameUnique = await distinctUserName(values.userName);
       if (!isUserNameUnique) {
         console.log(`${values.userName} is already taken`);
@@ -72,6 +75,7 @@ const RegisterScreen = () => {
 
         await AsyncStorage.setItem("email", values.email);
         await AsyncStorage.setItem("password", values.confirmPassword);
+        setUser({ email: values.email, userName: values.userName });
         navigation.replace("NameScreen");
         formikActions.resetForm();
         formikActions.setSubmitting(false);
@@ -79,12 +83,12 @@ const RegisterScreen = () => {
     } catch (error) {
       console.log(error.message);
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Formik
         initialValues={{
           email: "",
@@ -192,7 +196,7 @@ const RegisterScreen = () => {
                   <TouchableOpacity
                     style={[styles.button, styles.registerButton]}
                     onPress={handleSubmit}
-                    disabled={isSubmitting} 
+                    disabled={isSubmitting}
                   >
                     {isSubmitting ? (
                       <ActivityIndicator size="small" color="#FFFFFF" />
@@ -222,7 +226,7 @@ const RegisterScreen = () => {
           );
         }}
       </Formik>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -246,11 +250,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: wp(4),
     paddingVertical: hp(1),
     backgroundColor: "#FFFFFF",
-    fontSize: hp(2.5), 
+    fontSize: hp(2.5),
   },
   passwordInputField: {
     flex: 1,
-    fontSize: hp(2.5), 
+    fontSize: hp(2.5),
     fontFamily: "lato-light",
   },
   textInputContainer: {
