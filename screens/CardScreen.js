@@ -21,7 +21,7 @@ import {
 } from "react-native-safe-area-context";
 import { SvgXml } from "react-native-svg";
 import { pendingSVG, settingSVG } from "../misc/loadSVG";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 
 const users = [
   {
@@ -151,36 +151,13 @@ const CardScreen = () => {
       if (i === currentIndex) {
         return (
           <Animated.View
-            {...panResponder.panHandlers}
             key={item.id}
             style={[styles.cardContainer, rotateAndTranslate]}
           >
-            <View style={styles.imageContainer}>
-              <Image style={styles.image} source={item.uri} />
-              <View style={styles.textContainer}>
-                <View style={styles.nameProgramContainer}>
-                  <Text style={styles.userName}>{item.name}, </Text>
-                  <Text style={styles.userProgram}>{item.program}</Text>
-                </View>
-                <Text style={styles.userDetails}>{item.interests}</Text>
+            <View style={styles.cardContent} {...panResponder.panHandlers}>
+              <View style={styles.imageContainer}>
+                <Image style={styles.image} source={item.uri} />
               </View>
-            </View>
-          </Animated.View>
-        );
-      } else if (i === (currentIndex + 1) % users.length) {
-        return (
-          <Animated.View
-            key={item.id}
-            style={[
-              styles.cardContainer,
-              {
-                opacity: nextCardOpacityChange,
-                transform: [{ scale: nextCardScaleChange }],
-              },
-            ]}
-          >
-            <View style={styles.imageContainer}>
-              <Image style={styles.image} source={item.uri} />
               <View style={styles.textContainer}>
                 <View style={styles.nameProgramContainer}>
                   <Text style={styles.userName}>{item.name}, </Text>
@@ -208,9 +185,7 @@ const CardScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("PendingScreen")}
-        >
+        <TouchableOpacity onPress={() => navigation.navigate("PendingScreen")}>
           <SvgXml xml={pendingSVG} style={styles.svgIcon} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>academeet</Text>
@@ -222,6 +197,7 @@ const CardScreen = () => {
           <SvgXml xml={settingSVG} style={styles.svgIcon} />
         </TouchableOpacity>
       </View>
+      <View></View>
       <View style={styles.topSpacer} />
       <View style={styles.cardContainer}>{renderUsers()}</View>
       <View style={styles.bottomSpacer} />
@@ -230,6 +206,16 @@ const CardScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  cardContent: {
+    flex: 1,
+    backgroundColor: "white",
+    borderRadius: wp(8),
+    overflow: "hidden",
+    paddingLeft: hp(2),
+    paddingRight: hp(2),
+    paddingBottom: hp(4),
+    marginBottom: hp(2),
+  },
   userName: {
     fontFamily: "lato-regular",
     fontSize: hp(3.8),
