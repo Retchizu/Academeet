@@ -23,58 +23,6 @@ import { SvgXml } from "react-native-svg";
 import { pendingSVG, settingSVG } from "../misc/loadSVG";
 import { useNavigation } from "@react-navigation/native";
 
-const users = [
-  {
-    id: "1",
-    uri: require("../assets/Romy.jpg"),
-    name: "Romy",
-    program: "BSCS",
-    interests: "Game Dev, Pixel Art, GDScript",
-  },
-  {
-    id: "2",
-    uri: require("../assets/BI.jpg"),
-    name: "BI",
-    program: "BSCS",
-    interests: "Web Development, UI/UX Design",
-  },
-  {
-    id: "3",
-    uri: require("../assets/Luna.jpg"),
-    name: "Luna",
-    program: "BSCS",
-    interests: "Machine Learning, Data Science",
-  },
-  {
-    id: "4",
-    uri: require("../assets/Sarap.jpg"),
-    name: "Sarap",
-    program: "BSCS",
-    interests: "Mobile App Development, Flutter",
-  },
-  {
-    id: "5",
-    uri: require("../assets/Tita.jpg"),
-    name: "Tita",
-    program: "BSCS",
-    interests: "Rich's",
-  },
-  {
-    id: "6",
-    uri: require("../assets/Tits.png"),
-    name: "Tits",
-    program: "BSCS",
-    interests: "UGH",
-  },
-  {
-    id: "7",
-    uri: require("../assets/HartHurt.png"),
-    name: "Fsh enjoyer",
-    program: "IT",
-    interests: "Pre, alam mo ba",
-  },
-];
-
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
 
@@ -87,28 +35,116 @@ const CardScreen = () => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
 
+  const [users, setUsers] = useState([
+    {
+      id: "1",
+      uri: require("../assets/Romy.jpg"),
+      name: "Romy",
+      program: "BSCS",
+      interests: "Game Dev, Pixel Art, GDScript",
+    },
+    {
+      id: "2",
+      uri: require("../assets/BI.jpg"),
+      name: "BI",
+      program: "BSCS",
+      interests: "Web Development, UI/UX Design",
+    },
+    {
+      id: "3",
+      uri: require("../assets/Luna.jpg"),
+      name: "Luna",
+      program: "BSCS",
+      interests: "Machine Learning, Data Science",
+    },
+    {
+      id: "4",
+      uri: require("../assets/Sarap.jpg"),
+      name: "Sarap",
+      program: "BSCS",
+      interests: "Mobile App Development, Flutter",
+    },
+    {
+      id: "5",
+      uri: require("../assets/Tita.jpg"),
+      name: "Tita",
+      program: "BSCS",
+      interests: "Rich's",
+    },
+    {
+      id: "6",
+      uri: require("../assets/Tits.png"),
+      name: "Tits",
+      program: "BSCS",
+      interests: "UGH",
+    },
+    {
+      id: "7",
+      uri: require("../assets/HartHurt.png"),
+      name: "Fsh enjoyer",
+      program: "IT",
+      interests: "Pre, alam mo ba",
+    },
+  ]);
+
   useEffect(() => {
     loadFont().then(() => setFontLoaded(true));
   }, []);
 
+  console.log("current", currentIndex);
+  console.log("users", users);
+  console.log("userslength in render", users.length);
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
     onPanResponderMove: (evt, gestureState) => {
       position.setValue({ x: gestureState.dx, y: gestureState.dy });
     },
     onPanResponderRelease: (evt, gestureState) => {
+      const currentObject = users[currentIndex];
+      if (!currentObject) {
+        // Skip the card if it was null
+        return;
+      }
+      const currentObjectName = currentObject.name;
       if (gestureState.dx > 100) {
         // Swipe to the right
         // If swiped to right, store the name of the user to the likedCards array
-        setLikedCards([...likedCards, users[currentIndex].name]);
+        const isExisting = likedCards.find(
+          (item) => item === currentObjectName
+        );
+        if (!isExisting) {
+          setLikedCards([...likedCards, currentObjectName]);
+        } else {
+          setLikedCards(
+            likedCards.filter((item) => item !== currentObjectName)
+          );
+        }
         // Remove the card from the users array
-        users.splice(currentIndex, 1);
+        const currentObjectIndex = users.findIndex(
+          (item) => item.name === currentObjectName
+        );
+        const updatedUsers = [...users];
+        updatedUsers.splice(currentObjectIndex, 1);
+        setUsers(updatedUsers);
+        // Update the current index to render the next user
+        setCurrentIndex((currentIndex + 1) % updatedUsers.length);
       } else if (gestureState.dx < -100) {
         // Swipe to the left
         // Vice versa
-        setPassedCards([...passedCards, users[currentIndex].name]);
-        // Loop back to the beginning if swiped left
-        setCurrentIndex((currentIndex + 1) % users.length);
+        const isExisting = passedCards.find(
+          (item) => item === currentObjectName
+        );
+        if (!isExisting) {
+          setPassedCards([...passedCards, currentObjectName]);
+          // Loop back to the beginning if swiped left
+          setCurrentIndex((currentIndex + 1) % users.length);
+        } else {
+          const temp = [...passedCards];
+          temp.shift();
+          temp.splice(users.length - 1, 0, currentObjectName);
+          setPassedCards(temp);
+          setCurrentIndex((currentIndex + 1) % users.length);
+        }
       }
 
       Animated.spring(position, {
@@ -146,9 +182,18 @@ const CardScreen = () => {
     extrapolate: "clamp",
   });
 
+  useEffect(() => {
+    console.log("Liked Cards: ", likedCards.join(", "));
+  }, [likedCards]);
+
+  useEffect(() => {
+    console.log("Passed Cards: ", passedCards.join(", "));
+  }, [passedCards]);
+
   const renderUsers = () => {
     return users.map((item, i) => {
       if (i === currentIndex) {
+        console.log("i in if", i);
         return (
           <Animated.View
             key={item.id}
@@ -169,18 +214,11 @@ const CardScreen = () => {
           </Animated.View>
         );
       } else {
-        return null;
+        console.log("i in else", i);
+        return;
       }
     });
   };
-
-  useEffect(() => {
-    console.log("Liked Cards: ", likedCards.join(", "));
-  }, [likedCards]);
-
-  useEffect(() => {
-    console.log("Passed Cards: ", passedCards.join(", "));
-  }, [passedCards]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -199,7 +237,15 @@ const CardScreen = () => {
       </View>
       <View></View>
       <View style={styles.topSpacer} />
-      <View style={styles.cardContainer}>{renderUsers()}</View>
+      <View style={styles.cardContainer}>
+        {!users.length ? (
+          <View>
+            <Text>no more users to show</Text>
+          </View>
+        ) : (
+          renderUsers()
+        )}
+      </View>
       <View style={styles.bottomSpacer} />
     </SafeAreaView>
   );
