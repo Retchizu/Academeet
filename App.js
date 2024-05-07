@@ -17,6 +17,7 @@ import DisplayingPhotoScreen from "./screens/DisplayingPhotoScreen";
 import YearLevelScreen from "./screens/YearLevelScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import ChatScreen from "./screens/ChatScreen";
+import PendingScreen from "./screens/PendingScreen";
 import { FontAwesome } from "@expo/vector-icons";
 import { SvgXml } from "react-native-svg";
 import { SVGLogo, inactiveLogo } from "./misc/loadSVG";
@@ -133,6 +134,7 @@ const App = () => (
         <Stack.Screen name="InterestScreen" component={InterestScreen} />
         <Stack.Screen name="ReminderScreen" component={ReminderScreen} />
         <Stack.Screen name="LogInScreen" component={LoginScreen} />
+        <Stack.Screen name="PendingScreen" component={PendingScreen} />
 
         <Stack.Screen name="YearLevelScreen" component={YearLevelScreen} />
         <Stack.Screen

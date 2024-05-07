@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,6 +7,7 @@ import {
   Image,
   Dimensions,
   PanResponder,
+  TouchableOpacity,
 } from "react-native";
 import { loadFont } from "../misc/loadFont";
 import {
@@ -18,6 +19,9 @@ import {
   SafeAreaView,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
+import { SvgXml } from "react-native-svg";
+import { pendingSVG, settingSVG } from "../misc/loadSVG";
+import { useNavigation } from '@react-navigation/native';
 
 const users = [
   {
@@ -81,6 +85,7 @@ const CardScreen = () => {
   const position = new Animated.ValueXY();
   const [fontLoaded, setFontLoaded] = useState(false);
   const insets = useSafeAreaInsets();
+  const navigation = useNavigation();
 
   useEffect(() => {
     loadFont().then(() => setFontLoaded(true));
@@ -96,27 +101,21 @@ const CardScreen = () => {
         // Swipe to the right
         // If swiped to right, store the name of the user to the likedCards array
         setLikedCards([...likedCards, users[currentIndex].name]);
+        // Remove the card from the users array
+        users.splice(currentIndex, 1);
       } else if (gestureState.dx < -100) {
         // Swipe to the left
         // Vice versa
         setPassedCards([...passedCards, users[currentIndex].name]);
+        // Loop back to the beginning if swiped left
+        setCurrentIndex((currentIndex + 1) % users.length);
       }
 
-      if (gestureState.dx > 100 || gestureState.dx < -100) {
-        Animated.spring(position, {
-          toValue: { x: screenWidth + 100, y: gestureState.dy },
-          useNativeDriver: true,
-        }).start(() => {
-          setCurrentIndex(currentIndex + 1);
-          position.setValue({ x: 0, y: 0 });
-        });
-      } else {
-        Animated.spring(position, {
-          toValue: { x: 0, y: 0 },
-          friction: 4,
-          useNativeDriver: true,
-        }).start();
-      }
+      Animated.spring(position, {
+        toValue: { x: 0, y: 0 },
+        friction: 4,
+        useNativeDriver: true,
+      }).start();
     },
   });
 
@@ -148,56 +147,54 @@ const CardScreen = () => {
   });
 
   const renderUsers = () => {
-    return users
-      .map((item, i) => {
-        if (i < currentIndex) {
-          return null;
-        } else if (i === currentIndex) {
-          return (
-            <Animated.View
-              {...panResponder.panHandlers}
-              key={item.id}
-              style={[styles.cardContainer, rotateAndTranslate]}
-            >
-              <View style={styles.imageContainer}>
-                <Image style={styles.image} source={item.uri} />
-                <View style={styles.textContainer}>
-                  <View style={styles.nameProgramContainer}>
-                    <Text style={styles.userName}>{item.name}, </Text>
-                    <Text style={styles.userProgram}>{item.program}</Text>
-                  </View>
-                  <Text style={styles.userDetails}>{item.interests}</Text>
+    return users.map((item, i) => {
+      if (i === currentIndex) {
+        return (
+          <Animated.View
+            {...panResponder.panHandlers}
+            key={item.id}
+            style={[styles.cardContainer, rotateAndTranslate]}
+          >
+            <View style={styles.imageContainer}>
+              <Image style={styles.image} source={item.uri} />
+              <View style={styles.textContainer}>
+                <View style={styles.nameProgramContainer}>
+                  <Text style={styles.userName}>{item.name}, </Text>
+                  <Text style={styles.userProgram}>{item.program}</Text>
                 </View>
+                <Text style={styles.userDetails}>{item.interests}</Text>
               </View>
-            </Animated.View>
-          );
-        } else {
-          return (
-            <Animated.View
-              key={item.id}
-              style={[
-                styles.cardContainer,
-                {
-                  opacity: nextCardOpacityChange,
-                  transform: [{ scale: nextCardScaleChange }],
-                },
-              ]}
-            >
-              <View style={styles.imageContainer}>
-                <Image style={styles.image} source={item.uri} />
-                <View style={styles.textContainer}>
-                  <View style={styles.nameProgramContainer}>
-                    <Text style={styles.userName}>{item.name}, </Text>
-                    <Text style={styles.userProgram}>{item.program}</Text>
-                  </View>
-                  <Text style={styles.userDetails}>{item.interests}</Text>
+            </View>
+          </Animated.View>
+        );
+      } else if (i === (currentIndex + 1) % users.length) {
+        return (
+          <Animated.View
+            key={item.id}
+            style={[
+              styles.cardContainer,
+              {
+                opacity: nextCardOpacityChange,
+                transform: [{ scale: nextCardScaleChange }],
+              },
+            ]}
+          >
+            <View style={styles.imageContainer}>
+              <Image style={styles.image} source={item.uri} />
+              <View style={styles.textContainer}>
+                <View style={styles.nameProgramContainer}>
+                  <Text style={styles.userName}>{item.name}, </Text>
+                  <Text style={styles.userProgram}>{item.program}</Text>
                 </View>
+                <Text style={styles.userDetails}>{item.interests}</Text>
               </View>
-            </Animated.View>
-          );
-        }
-      })
-      .reverse();
+            </View>
+          </Animated.View>
+        );
+      } else {
+        return null;
+      }
+    });
   };
 
   useEffect(() => {
@@ -210,6 +207,21 @@ const CardScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("PendingScreen")}
+        >
+          <SvgXml xml={pendingSVG} style={styles.svgIcon} />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>academeet</Text>
+        <TouchableOpacity
+          onPress={() => {
+            console.log("Clicked settings");
+          }}
+        >
+          <SvgXml xml={settingSVG} style={styles.svgIcon} />
+        </TouchableOpacity>
+      </View>
       <View style={styles.topSpacer} />
       <View style={styles.cardContainer}>{renderUsers()}</View>
       <View style={styles.bottomSpacer} />
@@ -268,7 +280,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: wp(5),
     position: "absolute",
-    top: hp(1),
+    top: hp(3),
     bottom: hp(5),
     left: 0,
     right: 0,
@@ -279,6 +291,23 @@ const styles = StyleSheet.create({
     width: null,
     resizeMode: "cover",
     borderRadius: wp(8),
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: hp(2),
+    paddingVertical: hp(2),
+    backgroundColor: "#023E8A",
+  },
+  headerTitle: {
+    fontFamily: "lato-regular",
+    fontSize: hp(3),
+    color: "#FF9E00",
+  },
+  svgIcon: {
+    width: hp(7),
+    height: hp(7),
   },
 });
 
