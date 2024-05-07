@@ -238,12 +238,14 @@ const CardScreen = () => {
       <View></View>
       <View style={styles.topSpacer} />
       <View style={styles.cardContainer}>
-        {!users.length ? (
-          <View>
-            <Text>no more users to show</Text>
-          </View>
-        ) : (
+        {users.length ? (
           renderUsers()
+        ) : (
+          <View style={styles.centeredContainer}>
+            <View style={styles.centeredTextContainer}>
+              <Text style={{color: "white", fontFamily: "lato-regular", fontSize: hp(2)}}>No more users to show</Text>
+            </View>
+          </View>
         )}
       </View>
       <View style={styles.bottomSpacer} />
@@ -252,6 +254,21 @@ const CardScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  centeredContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  centeredTextContainer: {
+    elevation: 4,
+    backgroundColor: "#0077B6",
+    padding: hp(6), // Adjust as needed
+    borderRadius: hp(4),
+  },
+  centeredText: {
+  color: "white",
+  fontSize: hp(2), 
+},
   cardContent: {
     flex: 1,
     backgroundColor: "white",
