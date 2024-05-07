@@ -10,6 +10,7 @@ import { SVGnext, SVGprevious } from "../misc/loadSVG";
 import { useNavigation } from "@react-navigation/native";
 import * as Progress from "react-native-progress";
 import { useUserContext } from "../context/UserContext";
+import Toast from "react-native-toast-message";
 
 const GenderScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -35,7 +36,11 @@ const GenderScreen = () => {
 
   const goToNextScreen = () => {
     if (!selectedGender.trim()) {
-      console.log("Please identify your gender"); //toast
+      Toast.show({
+        type: "error",
+        text1: "Please identify your gender.",
+        visibilityTime: 3000,
+      });
       return;
     }
     putAttribute("userGender", selectedGender);

@@ -19,6 +19,7 @@ import { Entypo } from "@expo/vector-icons";
 import { auth, db } from "../firebaseConfig";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useUserContext } from "../context/UserContext";
+import Toast from "react-native-toast-message";
 
 const LoginScreen = () => {
   const navigation = useNavigation();
@@ -94,12 +95,19 @@ const LoginScreen = () => {
           }
         }
       } catch (error) {
-        console.log(error.message); //toast
+        Toast.show({
+          type: "error",
+          text1: error.message,
+          visibilityTime: 3000,
+        });
       } finally {
         setLoading(false);
       }
     } else {
-      console.log("Please complete the missing fields"); //toast
+      Toast.show({
+        type: "error",
+        text1: "Please complete the missing fields",
+      });
     }
   };
 

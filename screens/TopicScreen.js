@@ -16,6 +16,7 @@ import { SVGnext, SVGprevious } from "../misc/loadSVG";
 import { useNavigation } from "@react-navigation/native";
 import * as Progress from "react-native-progress";
 import { useUserContext } from "../context/UserContext";
+import Toast from "react-native-toast-message";
 
 const topicsLanguage = [
   { key: 1, label: "Java" },
@@ -84,7 +85,11 @@ const TopicScreen = () => {
   console.log(user);
   const goToNextScreen = () => {
     if (!selectedTopics.length) {
-      console.log("Please select atlesast 1 topic"); //toast
+      Toast.show({
+        type: "error",
+        text1: "Please select at least 1 topic.",
+        visibilityTime: 3000,
+      });
       return;
     }
     putAttribute("userTopic", selectedTopics);
