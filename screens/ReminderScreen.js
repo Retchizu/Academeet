@@ -62,6 +62,7 @@ const ReminderScreen = () => {
         .doc(user.userName)
         .update({
           ...user,
+          userLikedProfile: [],
           imageUri: url,
         });
       Toast.show({
