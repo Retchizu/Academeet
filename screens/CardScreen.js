@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,6 +7,7 @@ import {
   Image,
   Dimensions,
   PanResponder,
+  TouchableOpacity,
 } from "react-native";
 import { loadFont } from "../misc/loadFont";
 import {
@@ -18,6 +19,9 @@ import {
   SafeAreaView,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
+import { SvgXml } from "react-native-svg";
+import { pendingSVG, settingSVG } from "../misc/loadSVG";
+import { useNavigation } from '@react-navigation/native';
 
 const users = [
   {
@@ -81,6 +85,7 @@ const CardScreen = () => {
   const position = new Animated.ValueXY();
   const [fontLoaded, setFontLoaded] = useState(false);
   const insets = useSafeAreaInsets();
+  const navigation = useNavigation();
 
   useEffect(() => {
     loadFont().then(() => setFontLoaded(true));
@@ -202,6 +207,21 @@ const CardScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("PendingScreen")}
+        >
+          <SvgXml xml={pendingSVG} style={styles.svgIcon} />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>academeet</Text>
+        <TouchableOpacity
+          onPress={() => {
+            console.log("Clicked settings");
+          }}
+        >
+          <SvgXml xml={settingSVG} style={styles.svgIcon} />
+        </TouchableOpacity>
+      </View>
       <View style={styles.topSpacer} />
       <View style={styles.cardContainer}>{renderUsers()}</View>
       <View style={styles.bottomSpacer} />
@@ -260,7 +280,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: wp(5),
     position: "absolute",
-    top: hp(1),
+    top: hp(3),
     bottom: hp(5),
     left: 0,
     right: 0,
@@ -271,6 +291,23 @@ const styles = StyleSheet.create({
     width: null,
     resizeMode: "cover",
     borderRadius: wp(8),
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: hp(2),
+    paddingVertical: hp(2),
+    backgroundColor: "#023E8A",
+  },
+  headerTitle: {
+    fontFamily: "lato-regular",
+    fontSize: hp(3),
+    color: "#FF9E00",
+  },
+  svgIcon: {
+    width: hp(7),
+    height: hp(7),
   },
 });
 
