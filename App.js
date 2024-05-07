@@ -45,7 +45,7 @@ const TabNavigator = () => {
           bottom: 25,
           right: 20,
           left: 20,
-          elevation: 0,
+          elevation: 4,
           backgroundColor: "#0077B6",
           borderTopWidth: 0,
           borderRadius: 20,
