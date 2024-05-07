@@ -22,10 +22,11 @@ import {
 } from "react-native-safe-area-context";
 import { SvgXml } from "react-native-svg";
 import { pendingSVG, settingSVG } from "../misc/loadSVG";
-import { useNavigation } from "@react-navigation/native";
-import { db } from "../firebaseConfig";
+import { useNavigation, CommonActions } from "@react-navigation/native";
+import { auth, db } from "../firebaseConfig";
 import { useAcademeetUserContext } from "../context/AcademeetUserContext";
 import { useUserContext } from "../context/UserContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
@@ -40,7 +41,7 @@ const CardScreen = () => {
   const navigation = useNavigation();
   const { setAcademeetUsersList } = useAcademeetUserContext();
   const [imagesLoaded, setImagesLoaded] = useState(false); // State to track if images are loaded
-  const { user, putAttribute } = useUserContext();
+  const { user, putItemToUserLikedProfile } = useUserContext();
   const [userCards, setUserCards] = useState([]);
 
   const fetchUserFromDatabase = async () => {
@@ -55,7 +56,20 @@ const CardScreen = () => {
         }
       });
       setAcademeetUsersList(fetchingList);
-      setUserCards(fetchingList);
+      if (user.userLikedProfile && user.userLikedProfile.length) {
+        console.log("run in if");
+        const filteredFetchingList = fetchingList.filter(
+          (item) =>
+            !user.userLikedProfile.some(
+              (profile) => item.userName === profile.userName
+            )
+        );
+        console.log("filtered", filteredFetchingList);
+        setUserCards(filteredFetchingList);
+      } else {
+        console.log("run in else");
+        setUserCards(fetchingList);
+      }
     } catch (error) {
       console.log(error.message);
     }
@@ -140,19 +154,6 @@ const CardScreen = () => {
       ...position.getTranslateTransform(),
     ],
   };
-
-  const nextCardOpacityChange = position.x.interpolate({
-    inputRange: [-screenWidth / 2, 0, screenWidth / 2],
-    outputRange: [1, 0, 1],
-    extrapolate: "clamp",
-  });
-
-  const nextCardScaleChange = position.x.interpolate({
-    inputRange: [-screenWidth / 2, 0, screenWidth / 2],
-    outputRange: [1, 0.8, 1],
-    extrapolate: "clamp",
-  });
-
   const renderUsers = () => {
     return userCards.map((item, i) => {
       if (i === currentIndex) {
@@ -218,11 +219,19 @@ const CardScreen = () => {
     const likedCardsToDatabase = async () => {
       try {
         if (likedCards.length) {
-          await db.collection("User").doc(user.userName).update({
-            userLikedProfile: likedCards,
-          });
+          await db
+            .collection("User")
+            .doc(user.userName)
+            .update({
+              userLikedProfile: [...user.userLikedProfile, ...likedCards],
+            });
 
-          putAttribute("userLikedProfile", likedCards);
+          if (likedCards.length) {
+            likedCards.forEach((item) => {
+              putItemToUserLikedProfile(item);
+            });
+          }
+
           console.log("done updating");
         }
       } catch (error) {
@@ -232,6 +241,7 @@ const CardScreen = () => {
 
     if (likedCards.length) {
       likedCardsToDatabase();
+      setLikedCards([]);
     }
   }, [likedCards]);
 
@@ -243,8 +253,15 @@ const CardScreen = () => {
         </TouchableOpacity>
         <Text style={styles.headerTitle}>academeet</Text>
         <TouchableOpacity
-          onPress={() => {
-            console.log("Clicked settings");
+          onPress={async () => {
+            auth.signOut();
+            await AsyncStorage.clear();
+            navigation.dispatch(
+              CommonActions.reset({
+                index: 1,
+                routes: [{ name: "LogInScreen" }],
+              })
+            );
           }}
         >
           <SvgXml xml={settingSVG} style={styles.svgIcon} />
