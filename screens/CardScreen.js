@@ -96,27 +96,21 @@ const CardScreen = () => {
         // Swipe to the right
         // If swiped to right, store the name of the user to the likedCards array
         setLikedCards([...likedCards, users[currentIndex].name]);
+        // Remove the card from the users array
+        users.splice(currentIndex, 1);
       } else if (gestureState.dx < -100) {
         // Swipe to the left
         // Vice versa
         setPassedCards([...passedCards, users[currentIndex].name]);
+        // Loop back to the beginning if swiped left
+        setCurrentIndex((currentIndex + 1) % users.length);
       }
 
-      if (gestureState.dx > 100 || gestureState.dx < -100) {
-        Animated.spring(position, {
-          toValue: { x: screenWidth + 100, y: gestureState.dy },
-          useNativeDriver: true,
-        }).start(() => {
-          setCurrentIndex(currentIndex + 1);
-          position.setValue({ x: 0, y: 0 });
-        });
-      } else {
-        Animated.spring(position, {
-          toValue: { x: 0, y: 0 },
-          friction: 4,
-          useNativeDriver: true,
-        }).start();
-      }
+      Animated.spring(position, {
+        toValue: { x: 0, y: 0 },
+        friction: 4,
+        useNativeDriver: true,
+      }).start();
     },
   });
 
@@ -148,56 +142,54 @@ const CardScreen = () => {
   });
 
   const renderUsers = () => {
-    return users
-      .map((item, i) => {
-        if (i < currentIndex) {
-          return null;
-        } else if (i === currentIndex) {
-          return (
-            <Animated.View
-              {...panResponder.panHandlers}
-              key={item.id}
-              style={[styles.cardContainer, rotateAndTranslate]}
-            >
-              <View style={styles.imageContainer}>
-                <Image style={styles.image} source={item.uri} />
-                <View style={styles.textContainer}>
-                  <View style={styles.nameProgramContainer}>
-                    <Text style={styles.userName}>{item.name}, </Text>
-                    <Text style={styles.userProgram}>{item.program}</Text>
-                  </View>
-                  <Text style={styles.userDetails}>{item.interests}</Text>
+    return users.map((item, i) => {
+      if (i === currentIndex) {
+        return (
+          <Animated.View
+            {...panResponder.panHandlers}
+            key={item.id}
+            style={[styles.cardContainer, rotateAndTranslate]}
+          >
+            <View style={styles.imageContainer}>
+              <Image style={styles.image} source={item.uri} />
+              <View style={styles.textContainer}>
+                <View style={styles.nameProgramContainer}>
+                  <Text style={styles.userName}>{item.name}, </Text>
+                  <Text style={styles.userProgram}>{item.program}</Text>
                 </View>
+                <Text style={styles.userDetails}>{item.interests}</Text>
               </View>
-            </Animated.View>
-          );
-        } else {
-          return (
-            <Animated.View
-              key={item.id}
-              style={[
-                styles.cardContainer,
-                {
-                  opacity: nextCardOpacityChange,
-                  transform: [{ scale: nextCardScaleChange }],
-                },
-              ]}
-            >
-              <View style={styles.imageContainer}>
-                <Image style={styles.image} source={item.uri} />
-                <View style={styles.textContainer}>
-                  <View style={styles.nameProgramContainer}>
-                    <Text style={styles.userName}>{item.name}, </Text>
-                    <Text style={styles.userProgram}>{item.program}</Text>
-                  </View>
-                  <Text style={styles.userDetails}>{item.interests}</Text>
+            </View>
+          </Animated.View>
+        );
+      } else if (i === (currentIndex + 1) % users.length) {
+        return (
+          <Animated.View
+            key={item.id}
+            style={[
+              styles.cardContainer,
+              {
+                opacity: nextCardOpacityChange,
+                transform: [{ scale: nextCardScaleChange }],
+              },
+            ]}
+          >
+            <View style={styles.imageContainer}>
+              <Image style={styles.image} source={item.uri} />
+              <View style={styles.textContainer}>
+                <View style={styles.nameProgramContainer}>
+                  <Text style={styles.userName}>{item.name}, </Text>
+                  <Text style={styles.userProgram}>{item.program}</Text>
                 </View>
+                <Text style={styles.userDetails}>{item.interests}</Text>
               </View>
-            </Animated.View>
-          );
-        }
-      })
-      .reverse();
+            </View>
+          </Animated.View>
+        );
+      } else {
+        return null;
+      }
+    });
   };
 
   useEffect(() => {
