@@ -40,7 +40,7 @@ const CardScreen = () => {
   const navigation = useNavigation();
   const { setAcademeetUsersList } = useAcademeetUserContext();
   const [imagesLoaded, setImagesLoaded] = useState(false); // State to track if images are loaded
-  const { user } = useUserContext();
+  const { user, putAttribute } = useUserContext();
   const [userCards, setUserCards] = useState([]);
 
   const fetchUserFromDatabase = async () => {
@@ -221,6 +221,8 @@ const CardScreen = () => {
           await db.collection("User").doc(user.userName).update({
             userLikedProfile: likedCards,
           });
+
+          putAttribute("userLikedProfile", likedCards);
           console.log("done updating");
         }
       } catch (error) {

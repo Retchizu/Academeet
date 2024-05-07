@@ -1,17 +1,18 @@
-import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
-import React from 'react';
-import { users } from './CardScreen'; 
+import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
+import React from "react";
+import { users } from "./CardScreen";
+import { useUserContext } from "../context/UserContext";
 
 const PendingScreen = () => {
-
-  const likedButNotLikedBack = users.filter(user => user.likedBack === false);
+  const { user } = useUserContext();
+  console.log("liked", user.userLikedProfile);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {likedButNotLikedBack.map((user, index) => (
-        <View key={index} style={styles.profileContainer}>
-          <Image source={user.uri} style={styles.profileImage} />
-          <Text style={styles.profileName}>{user.name}</Text>
+      {user.userLikedProfile.map((user, index) => (
+        <View key={user.userName} style={styles.profileContainer}>
+          <Image source={{ uri: user.imageUri }} style={styles.profileImage} />
+          <Text style={styles.profileName}>{user.fulleName}</Text>
         </View>
       ))}
     </ScrollView>
@@ -23,12 +24,12 @@ export default PendingScreen;
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
   profileContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: 20,
   },
   profileImage: {

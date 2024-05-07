@@ -5,8 +5,15 @@ const UserContext = createContext();
 export const UserContextProvider = ({ children }) => {
   const [user, setUser] = useState({});
 
-  const putAttribute = (attributeName, attirbuteValue) => {
-    setUser((prev) => ({ ...prev, [attributeName]: attirbuteValue }));
+  const putAttribute = (attributeName, attributeValue) => {
+    if (attributeName === "userLikedProfile" && Array.isArray(attributeValue)) {
+      setUser((prev) => ({
+        ...prev,
+        [attributeName]: prev[attributeName].concat(attributeValue),
+      }));
+    } else {
+      setUser((prev) => ({ ...prev, [attributeName]: attributeValue }));
+    }
   };
 
   const removeAttribute = (attributeName) => {
