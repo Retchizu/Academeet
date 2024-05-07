@@ -56,12 +56,7 @@ const ProfileScreen = () => {
   return (
     <View style={styles.container} ref={containerRef}>
       <View style={styles.header}>
-        <TouchableOpacity
-          // TODO: Onclick baws
-          onPress={() => {
-            console.log("clicked pending ");
-          }}
-        >
+        <TouchableOpacity onPress={() => navigation.navigate("PendingScreen")}>
           <SvgXml xml={pendingSVG} style={styles.svgIcon} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>academeet</Text>
