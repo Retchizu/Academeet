@@ -25,6 +25,7 @@ import { pendingSVG, settingSVG } from "../misc/loadSVG";
 import { useNavigation } from "@react-navigation/native";
 import { db } from "../firebaseConfig";
 import { useAcademeetUserContext } from "../context/AcademeetUserContext";
+import { useUserContext } from "../context/UserContext";
 
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
@@ -37,8 +38,10 @@ const CardScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
-  const { academeetUsers, setAcademeetUsersList } = useAcademeetUserContext();
+  const { setAcademeetUsersList } = useAcademeetUserContext();
   const [imagesLoaded, setImagesLoaded] = useState(false); // State to track if images are loaded
+  const { user } = useUserContext();
+  const [userCards, setUserCards] = useState([]);
 
   const fetchUserFromDatabase = async () => {
     const docRef = db.collection("User");
@@ -47,11 +50,12 @@ const CardScreen = () => {
       const docs = await docRef.get();
       const fetchingList = [];
       docs.forEach((doc) => {
-        if (doc.data().userName !== academeetUsers.userName) {
+        if (doc.data().userName !== user.userName) {
           fetchingList.push(doc.data());
         }
       });
       setAcademeetUsersList(fetchingList);
+      setUserCards(fetchingList);
     } catch (error) {
       console.log(error.message);
     }
@@ -67,50 +71,50 @@ const CardScreen = () => {
       position.setValue({ x: gestureState.dx, y: gestureState.dy });
     },
     onPanResponderRelease: (evt, gestureState) => {
-      const currentObject = academeetUsers[currentIndex];
+      const currentObject = userCards[currentIndex];
       if (!currentObject) {
         // Skip the card if it was null
         return;
       }
-      const currentObjectId = currentObject.id;
+      const currentObjectUserName = currentObject.userName;
       if (gestureState.dx > 100) {
         // Swipe to the right
         // If swiped to right, store the id of the user to the likedCards array
         const isExisting = likedCards.find(
-          (item) => item.id === currentObjectId
+          (item) => item.userName === currentObjectUserName
         );
         if (!isExisting) {
           setLikedCards([...likedCards, currentObject]);
         } else {
           setLikedCards(
-            likedCards.filter((item) => item.id !== currentObjectId)
+            likedCards.filter((item) => item.userName !== currentObjectUserName)
           );
         }
         // Remove the card from the users array
-        const currentObjectIndex = academeetUsers.findIndex(
-          (item) => item.id === currentObjectId
+        const currentObjectIndex = userCards.findIndex(
+          (item) => item.userName === currentObjectUserName
         );
-        const updatedUsers = [...academeetUsers];
+        const updatedUsers = [...userCards];
         updatedUsers.splice(currentObjectIndex, 1);
-        setUsers(updatedUsers);
+        setUserCards(updatedUsers);
         // Update the current index to render the next user
         setCurrentIndex((currentIndex + 1) % updatedUsers.length);
       } else if (gestureState.dx < -100) {
         // Swipe to the left
         // Vice versa
         const isExisting = passedCards.find(
-          (item) => item.id === currentObjectId
+          (item) => item.userName === currentObjectUserName
         );
         if (!isExisting) {
           setPassedCards([...passedCards, currentObject]);
           // Loop back to the beginning if swiped left
-          setCurrentIndex((currentIndex + 1) % academeetUsers.length);
+          setCurrentIndex((currentIndex + 1) % userCards.length);
         } else {
           const temp = [...passedCards];
           temp.shift();
-          temp.splice(academeetUsers.length - 1, 0, currentObject);
+          temp.splice(userCards.length - 1, 0, currentObject);
           setPassedCards(temp);
-          setCurrentIndex((currentIndex + 1) % academeetUsers.length);
+          setCurrentIndex((currentIndex + 1) % userCards.length);
         }
       }
 
@@ -150,7 +154,7 @@ const CardScreen = () => {
   });
 
   const renderUsers = () => {
-    return academeetUsers.map((item, i) => {
+    return userCards.map((item, i) => {
       if (i === currentIndex) {
         const userNameFontSize = item.fullName.length > 20 ? hp(2.5) : hp(3);
         const userDetailsFontSize =
@@ -210,6 +214,25 @@ const CardScreen = () => {
     });
   };
 
+  useEffect(() => {
+    const likedCardsToDatabase = async () => {
+      try {
+        if (likedCards.length) {
+          await db.collection("User").doc(user.userName).update({
+            userLikedProfile: likedCards,
+          });
+          console.log("done updating");
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+
+    if (likedCards.length) {
+      likedCardsToDatabase();
+    }
+  }, [likedCards]);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -228,7 +251,7 @@ const CardScreen = () => {
       <View></View>
       <View style={styles.topSpacer} />
       <View style={styles.cardContainer}>
-        {academeetUsers.length ? (
+        {userCards.length ? (
           renderUsers()
         ) : (
           <View style={styles.centeredContainer}>
