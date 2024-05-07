@@ -8,6 +8,7 @@ import {
   Dimensions,
   PanResponder,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import { loadFont } from "../misc/loadFont";
 import {
@@ -37,58 +38,7 @@ const CardScreen = () => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
   const { academeetUsers, setAcademeetUsersList } = useAcademeetUserContext();
-
-  /* const [users, setUsers] = useState([
-    {
-      id: "1",
-      uri: require("../assets/Romy.jpg"),
-      name: "Romy",
-      program: "BSCS",
-      interests: "Game Dev, Pixel Art, GDScript",
-    },
-    {
-      id: "2",
-      uri: require("../assets/BI.jpg"),
-      name: "BI",
-      program: "BSCS",
-      interests: "Web Development, UI/UX Design",
-    },
-    {
-      id: "3",
-      uri: require("../assets/Luna.jpg"),
-      name: "Luna",
-      program: "BSCS",
-      interests: "Machine Learning, Data Science",
-    },
-    {
-      id: "4",
-      uri: require("../assets/Sarap.jpg"),
-      name: "Sarap",
-      program: "BSCS",
-      interests: "Mobile App Development, Flutter",
-    },
-    {
-      id: "5",
-      uri: require("../assets/Tita.jpg"),
-      name: "Tita",
-      program: "BSCS",
-      interests: "Rich's",
-    },
-    {
-      id: "6",
-      uri: require("../assets/Tits.png"),
-      name: "Tits",
-      program: "BSCS",
-      interests: "UGH",
-    },
-    {
-      id: "7",
-      uri: require("../assets/HartHurt.png"),
-      name: "Fsh enjoyer",
-      program: "IT",
-      interests: "Pre, alam mo ba",
-    },
-  ]); */
+  const [imagesLoaded, setImagesLoaded] = useState(false); // State to track if images are loaded
 
   const fetchUserFromDatabase = async () => {
     const docRef = db.collection("User");
@@ -202,7 +152,13 @@ const CardScreen = () => {
   const renderUsers = () => {
     return academeetUsers.map((item, i) => {
       if (i === currentIndex) {
-        console.log("i in if", i);
+        const userNameFontSize = item.fullName.length > 20 ? hp(2.5) : hp(3);
+        const userDetailsFontSize =
+          item.userTopic.length > 50 ? hp(1.8) : hp(2);
+
+        // Join user topics with commas
+        const userTopics = item.userTopic.join(", ");
+
         return (
           <Animated.View
             key={item.userName}
@@ -210,21 +166,46 @@ const CardScreen = () => {
           >
             <View style={styles.cardContent} {...panResponder.panHandlers}>
               <View style={styles.imageContainer}>
-                <Image style={styles.image} source={{ uri: item.imageUri }} />
+                <Image
+                  style={styles.image}
+                  source={{ uri: item.imageUri }}
+                  onLoadEnd={() => setImagesLoaded(true)}
+                />
+                {!imagesLoaded && (
+                  <ActivityIndicator
+                    size="large"
+                    color="#0077B6"
+                    style={styles.loadingIndicator}
+                  />
+                )}
               </View>
               <View style={styles.textContainer}>
-                <View style={styles.nameProgramContainer}>
-                  <Text style={styles.userName}>{item.fullName}, </Text>
-                  <Text style={styles.userProgram}>{item.userProgram}</Text>
-                </View>
-                <Text style={styles.userDetails}>{item.userTopic}</Text>
+                <Text style={[styles.userName, { fontSize: userNameFontSize }]}>
+                  {item.fullName}
+                </Text>
+                <Text
+                  style={[
+                    styles.userProgram,
+                    { fontSize: userDetailsFontSize },
+                  ]}
+                >
+                  {item.userProgram}
+                </Text>
+                <Text
+                  style={[
+                    styles.userDetails,
+                    { fontSize: userDetailsFontSize },
+                  ]}
+                >
+                  {userTopics}
+                </Text>
               </View>
             </View>
           </Animated.View>
         );
       } else {
         console.log("i in else", i);
-        return;
+        return null;
       }
     });
   };
@@ -279,7 +260,7 @@ const styles = StyleSheet.create({
   centeredTextContainer: {
     elevation: 4,
     backgroundColor: "#0077B6",
-    padding: hp(6), // Adjust as needed
+    padding: hp(6),
     borderRadius: hp(4),
   },
   centeredText: {
@@ -298,20 +279,20 @@ const styles = StyleSheet.create({
   },
   userName: {
     fontFamily: "lato-regular",
-    fontSize: hp(3.8),
+    fontSize: hp(3),
     color: "black",
     marginBottom: hp(1),
     marginRight: wp(1),
   },
   userProgram: {
     fontFamily: "lato-regular",
-    fontSize: wp(7),
+    fontSize: hp(3),
     color: "black",
     marginBottom: hp(1),
   },
   userDetails: {
     fontFamily: "lato-light",
-    fontSize: wp(4.5),
+    fontSize: hp(2),
     color: "black",
   },
   textContainer: {
@@ -331,6 +312,7 @@ const styles = StyleSheet.create({
     paddingRight: hp(2),
     paddingBottom: hp(4),
     marginBottom: hp(2),
+    position: "relative", // Added position relative for proper positioning of loading indicator
   },
   container: {
     flex: 1,
@@ -374,6 +356,11 @@ const styles = StyleSheet.create({
   svgIcon: {
     width: hp(7),
     height: hp(7),
+  },
+  loadingIndicator: {
+    position: "absolute",
+    top: "50%", // Center loading indicator vertically
+    left: "50%", // Center loading indicator horizontally
   },
 });
 
