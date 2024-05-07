@@ -27,6 +27,7 @@ import { SVGLogo, inactiveLogo } from "./misc/loadSVG";
 import LoginScreen from "./screens/LogInScreen";
 import { UserContextProvider } from "./context/UserContext";
 import Toast from "react-native-toast-message";
+import { AcademeetUserContextProvider } from "./context/AcademeetUserContext";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -119,40 +120,39 @@ const TabNavigator = () => {
 };
 
 const App = () => (
-  <UserContextProvider>
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="SettingScreen"
-        screenOptions={{ headerShown: false, statusBarHidden: true }}
-      >
-        <Stack.Screen name="TabNavigator" component={TabNavigator} />
-        <Stack.Screen name="TopicScreen" component={TopicScreen} />
-        <Stack.Screen name="GenderScreen" component={GenderScreen} />
-        <Stack.Screen name="SplashScreen" component={SplashScren} />
-        <Stack.Screen name="LandingScreen" component={LandingScreen} />
-        <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-        <Stack.Screen name="ProgramScreen" component={ProgramScreen} />
-        <Stack.Screen name="AddPhotoScreen" component={AddPhotoScreen} />
-        <Stack.Screen name="NameScreen" component={NameScreen} />
-        <Stack.Screen name="InterestScreen" component={InterestScreen} />
-        <Stack.Screen name="ReminderScreen" component={ReminderScreen} />
-        <Stack.Screen name="LogInScreen" component={LoginScreen} />
-        <Stack.Screen name="PendingScreen" component={PendingScreen} />
-        <Stack.Screen name="SettingScreen" component={SettingScreen} />
-        <Stack.Screen name="AboutAppScreen" component={AboutAppScreen} />
-        <Stack.Screen name="DevelopersScreen" component={DevelopersScreen} />
+  <AcademeetUserContextProvider>
+    <UserContextProvider>
+      <NavigationContainer>
+        <Stack.Navigator
+          initialRouteName="SplashScreen"
+          screenOptions={{ headerShown: false, statusBarHidden: true }}
+        >
+          <Stack.Screen name="TabNavigator" component={TabNavigator} />
+          <Stack.Screen name="TopicScreen" component={TopicScreen} />
+          <Stack.Screen name="GenderScreen" component={GenderScreen} />
+          <Stack.Screen name="SplashScreen" component={SplashScren} />
+          <Stack.Screen name="LandingScreen" component={LandingScreen} />
+          <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+          <Stack.Screen name="ProgramScreen" component={ProgramScreen} />
+          <Stack.Screen name="AddPhotoScreen" component={AddPhotoScreen} />
+          <Stack.Screen name="NameScreen" component={NameScreen} />
+          <Stack.Screen name="InterestScreen" component={InterestScreen} />
+          <Stack.Screen name="ReminderScreen" component={ReminderScreen} />
+          <Stack.Screen name="LogInScreen" component={LoginScreen} />
+          <Stack.Screen name="PendingScreen" component={PendingScreen} />
 
-        <Stack.Screen name="YearLevelScreen" component={YearLevelScreen} />
-        <Stack.Screen
-          name="DisplayingPhotoScreen"
-          component={DisplayingPhotoScreen}
-        />
+          <Stack.Screen name="YearLevelScreen" component={YearLevelScreen} />
+          <Stack.Screen
+            name="DisplayingPhotoScreen"
+            component={DisplayingPhotoScreen}
+          />
 
-        <Stack.Screen name="CardScreen" component={CardScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
-    <Toast />
-  </UserContextProvider>
+          <Stack.Screen name="CardScreen" component={CardScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+      <Toast />
+    </UserContextProvider>
+  </AcademeetUserContextProvider>
 );
 
 export default App;

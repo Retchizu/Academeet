@@ -22,6 +22,8 @@ import {
 import { SvgXml } from "react-native-svg";
 import { pendingSVG, settingSVG } from "../misc/loadSVG";
 import { useNavigation } from "@react-navigation/native";
+import { db } from "../firebaseConfig";
+import { useAcademeetUserContext } from "../context/AcademeetUserContext";
 
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
@@ -34,8 +36,9 @@ const CardScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
+  const { academeetUsers, setAcademeetUsersList } = useAcademeetUserContext();
 
-  const [users, setUsers] = useState([
+  /* const [users, setUsers] = useState([
     {
       id: "1",
       uri: require("../assets/Romy.jpg"),
@@ -85,45 +88,59 @@ const CardScreen = () => {
       program: "IT",
       interests: "Pre, alam mo ba",
     },
-  ]);
+  ]); */
 
+  const fetchUserFromDatabase = async () => {
+    const docRef = db.collection("User");
+
+    try {
+      const docs = await docRef.get();
+      const fetchingList = [];
+      docs.forEach((doc) => {
+        if (doc.data().userName !== academeetUsers.userName) {
+          fetchingList.push(doc.data());
+        }
+      });
+      setAcademeetUsersList(fetchingList);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   useEffect(() => {
+    fetchUserFromDatabase();
     loadFont().then(() => setFontLoaded(true));
   }, []);
 
-  console.log("current", currentIndex);
-  console.log("users", users);
-  console.log("userslength in render", users.length);
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
     onPanResponderMove: (evt, gestureState) => {
       position.setValue({ x: gestureState.dx, y: gestureState.dy });
     },
     onPanResponderRelease: (evt, gestureState) => {
-      const currentObject = users[currentIndex];
+      const currentObject = academeetUsers[currentIndex];
       if (!currentObject) {
         // Skip the card if it was null
         return;
       }
-      const currentObjectName = currentObject.name;
+      const currentObjectId = currentObject.id;
       if (gestureState.dx > 100) {
         // Swipe to the right
-        // If swiped to right, store the name of the user to the likedCards array
+        // If swiped to right, store the id of the user to the likedCards array
         const isExisting = likedCards.find(
-          (item) => item === currentObjectName
+          (item) => item.id === currentObjectId
         );
         if (!isExisting) {
-          setLikedCards([...likedCards, currentObjectName]);
+          setLikedCards([...likedCards, currentObject]);
         } else {
           setLikedCards(
-            likedCards.filter((item) => item !== currentObjectName)
+            likedCards.filter((item) => item.id !== currentObjectId)
           );
         }
         // Remove the card from the users array
-        const currentObjectIndex = users.findIndex(
-          (item) => item.name === currentObjectName
+        const currentObjectIndex = academeetUsers.findIndex(
+          (item) => item.id === currentObjectId
         );
-        const updatedUsers = [...users];
+        const updatedUsers = [...academeetUsers];
         updatedUsers.splice(currentObjectIndex, 1);
         setUsers(updatedUsers);
         // Update the current index to render the next user
@@ -132,18 +149,18 @@ const CardScreen = () => {
         // Swipe to the left
         // Vice versa
         const isExisting = passedCards.find(
-          (item) => item === currentObjectName
+          (item) => item.id === currentObjectId
         );
         if (!isExisting) {
-          setPassedCards([...passedCards, currentObjectName]);
+          setPassedCards([...passedCards, currentObject]);
           // Loop back to the beginning if swiped left
-          setCurrentIndex((currentIndex + 1) % users.length);
+          setCurrentIndex((currentIndex + 1) % academeetUsers.length);
         } else {
           const temp = [...passedCards];
           temp.shift();
-          temp.splice(users.length - 1, 0, currentObjectName);
+          temp.splice(academeetUsers.length - 1, 0, currentObject);
           setPassedCards(temp);
-          setCurrentIndex((currentIndex + 1) % users.length);
+          setCurrentIndex((currentIndex + 1) % academeetUsers.length);
         }
       }
 
@@ -182,33 +199,25 @@ const CardScreen = () => {
     extrapolate: "clamp",
   });
 
-  useEffect(() => {
-    console.log("Liked Cards: ", likedCards.join(", "));
-  }, [likedCards]);
-
-  useEffect(() => {
-    console.log("Passed Cards: ", passedCards.join(", "));
-  }, [passedCards]);
-
   const renderUsers = () => {
-    return users.map((item, i) => {
+    return academeetUsers.map((item, i) => {
       if (i === currentIndex) {
         console.log("i in if", i);
         return (
           <Animated.View
-            key={item.id}
+            key={item.userName}
             style={[styles.cardContainer, rotateAndTranslate]}
           >
             <View style={styles.cardContent} {...panResponder.panHandlers}>
               <View style={styles.imageContainer}>
-                <Image style={styles.image} source={item.uri} />
+                <Image style={styles.image} source={{ uri: item.imageUri }} />
               </View>
               <View style={styles.textContainer}>
                 <View style={styles.nameProgramContainer}>
-                  <Text style={styles.userName}>{item.name}, </Text>
-                  <Text style={styles.userProgram}>{item.program}</Text>
+                  <Text style={styles.userName}>{item.fullName}, </Text>
+                  <Text style={styles.userProgram}>{item.userProgram}</Text>
                 </View>
-                <Text style={styles.userDetails}>{item.interests}</Text>
+                <Text style={styles.userDetails}>{item.userTopic}</Text>
               </View>
             </View>
           </Animated.View>
@@ -238,12 +247,20 @@ const CardScreen = () => {
       <View></View>
       <View style={styles.topSpacer} />
       <View style={styles.cardContainer}>
-        {users.length ? (
+        {academeetUsers.length ? (
           renderUsers()
         ) : (
           <View style={styles.centeredContainer}>
             <View style={styles.centeredTextContainer}>
-              <Text style={{color: "white", fontFamily: "lato-regular", fontSize: hp(2)}}>No more users to show</Text>
+              <Text
+                style={{
+                  color: "white",
+                  fontFamily: "lato-regular",
+                  fontSize: hp(2),
+                }}
+              >
+                No more users to show
+              </Text>
             </View>
           </View>
         )}
@@ -266,9 +283,9 @@ const styles = StyleSheet.create({
     borderRadius: hp(4),
   },
   centeredText: {
-  color: "white",
-  fontSize: hp(2), 
-},
+    color: "white",
+    fontSize: hp(2),
+  },
   cardContent: {
     flex: 1,
     backgroundColor: "white",
