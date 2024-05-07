@@ -22,7 +22,7 @@ const PendingScreen = () => {
     console.log("Back button pressed");
   };
 
-  const isPendingAccepted = async () => {
+  /*  const isPendingAccepted = async () => {
     const doc = await db.collection("User").doc(user.userName).get();
     const currentUserLikedProfile = doc.data().userLikedProfile;
     if (!currentUserLikedProfile) return;
@@ -67,7 +67,7 @@ const PendingScreen = () => {
 
   useEffect(() => {
     isPendingAccepted();
-  });
+  }); */
   return (
     <View style={styles.container}>
       <View style={styles.header}>

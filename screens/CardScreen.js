@@ -27,6 +27,7 @@ import { auth, db } from "../firebaseConfig";
 import { useAcademeetUserContext } from "../context/AcademeetUserContext";
 import { useUserContext } from "../context/UserContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { filterUsersByInterests } from "../methods/exhaustiveAlgorithm";
 
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
@@ -64,18 +65,27 @@ const CardScreen = () => {
               (profile) => item.userName === profile.userName
             )
         );
-        console.log("filtered", filteredFetchingList);
-        setUserCards(filteredFetchingList);
+        const { filteredUsers } = filterUsersByInterests(
+          filteredFetchingList,
+          user.userTopic
+        );
+        setUserCards(filteredUsers);
       } else {
         console.log("run in else");
-        setUserCards(fetchingList);
+        const { filteredUsers } = filterUsersByInterests(
+          fetchingList,
+          user.userTopic
+        );
+        setUserCards(filteredUsers);
       }
     } catch (error) {
       console.log(error.message);
     }
   };
+
   useEffect(() => {
     fetchUserFromDatabase();
+
     loadFont().then(() => setFontLoaded(true));
   }, []);
 
