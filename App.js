@@ -18,6 +18,9 @@ import YearLevelScreen from "./screens/YearLevelScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import ChatScreen from "./screens/ChatScreen";
 import PendingScreen from "./screens/PendingScreen";
+import SettingScreen from "./screens/SettingScreen";
+import AboutAppScreen from "./screens/AboutAppScreen";
+import DevelopersScreen from "./screens/DevelopersScreen";
 import { FontAwesome } from "@expo/vector-icons";
 import { SvgXml } from "react-native-svg";
 import { SVGLogo, inactiveLogo } from "./misc/loadSVG";
@@ -119,7 +122,7 @@ const App = () => (
   <UserContextProvider>
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="SplashScreen"
+        initialRouteName="SettingScreen"
         screenOptions={{ headerShown: false, statusBarHidden: true }}
       >
         <Stack.Screen name="TabNavigator" component={TabNavigator} />
@@ -135,6 +138,9 @@ const App = () => (
         <Stack.Screen name="ReminderScreen" component={ReminderScreen} />
         <Stack.Screen name="LogInScreen" component={LoginScreen} />
         <Stack.Screen name="PendingScreen" component={PendingScreen} />
+        <Stack.Screen name="SettingScreen" component={SettingScreen} />
+        <Stack.Screen name="AboutAppScreen" component={AboutAppScreen} />
+        <Stack.Screen name="DevelopersScreen" component={DevelopersScreen} />
 
         <Stack.Screen name="YearLevelScreen" component={YearLevelScreen} />
         <Stack.Screen
