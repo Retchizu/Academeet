@@ -82,7 +82,7 @@ const RegisterScreen = () => {
         await AsyncStorage.setItem("email", values.email);
         await AsyncStorage.setItem("password", values.confirmPassword);
         await AsyncStorage.setItem("userName", values.userName);
-        setUser({ email: values.email, userName: values.userName });
+        setUser({ email: values.email, userName: values.userName, userLikedProfile: [] });
         navigation.replace("NameScreen");
         formikActions.resetForm();
         formikActions.setSubmitting(false);
