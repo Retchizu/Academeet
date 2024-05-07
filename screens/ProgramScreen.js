@@ -103,7 +103,7 @@ const ProgramScreen = () => {
         dropDownStyle={styles.dropdownStyle}
         labelStyle={styles.labelStyle}
         dropDownItemStyle={styles.dropDownItemStyle}
-        placeholder="Select your year level"
+        placeholder="Select your enrolled program"
       />
       <TouchableOpacity
         style={styles.nextIconContainer}
