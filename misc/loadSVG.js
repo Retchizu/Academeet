@@ -137,7 +137,46 @@ const settingSVG = `<svg width="27" height="29" viewBox="0 0 27 29" fill="none" 
 </svg>
 `;
 
+const pendingHeaderBack = `<svg width="53" height="51" viewBox="0 0 53 51" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_d_387_374)">
+<rect x="4.93823" y="2.81445" width="43.1237" height="39.2474" rx="19.6237" fill="#0077B6"/>
+</g>
+<g clip-path="url(#clip0_387_374)">
+<g filter="url(#filter1_d_387_374)">
+<path d="M33.5259 0.876221H19.4743C11.4463 0.876221 4.93823 7.38425 4.93823 15.4123V25.5876C4.93823 33.6156 11.4463 40.1236 19.4743 40.1236H33.5259C41.5539 40.1236 48.0619 33.6156 48.0619 25.5876V15.4123C48.0619 7.38425 41.5539 0.876221 33.5259 0.876221Z" fill="#0077B6"/>
+</g>
+<path d="M21.5664 21.6961L28.0981 28.2278C28.6963 28.826 29.6768 28.826 30.2751 28.2278L30.8202 27.6827C31.4184 27.0851 31.4184 26.1046 30.8202 25.5063L25.8366 20.5214L30.8209 15.5371C31.4191 14.9388 31.4191 13.9583 30.8209 13.3608L30.2758 12.8157C29.6775 12.2167 28.697 12.2167 28.0988 12.8157L21.5671 19.348C21.2455 19.669 21.1024 20.0996 21.1262 20.5221C21.1017 20.9438 21.2448 21.3745 21.5664 21.6961Z" fill="#515151"/>
+</g>
+<defs>
+<filter id="filter0_d_387_374" x="0.938232" y="2.81445" width="51.1238" height="47.2473" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="2"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_387_374"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_387_374" result="shape"/>
+</filter>
+<filter id="filter1_d_387_374" x="0.938232" y="0.876221" width="51.1238" height="47.2473" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="2"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_387_374"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_387_374" result="shape"/>
+</filter>
+<clipPath id="clip0_387_374">
+<rect width="47" height="43.1237" fill="white" transform="translate(3 0.876221)"/>
+</clipPath>
+</defs>
+</svg>
+`;
+
 export {
+  pendingHeaderBack,
   SVGLogo,
   SVGnext,
   SVGprevious,
