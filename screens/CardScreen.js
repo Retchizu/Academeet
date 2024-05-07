@@ -225,6 +225,8 @@ const CardScreen = () => {
     });
   };
 
+
+  console.log(user.userLikedProfile);
   useEffect(() => {
     const likedCardsToDatabase = async () => {
       try {
@@ -233,7 +235,7 @@ const CardScreen = () => {
             .collection("User")
             .doc(user.userName)
             .update({
-              userLikedProfile: [...user.userLikedProfile, ...likedCards],
+              userLikedProfile: user.userLikedProfile.length ? [...user.userLikedProfile, ...likedCards] : [...likedCards],
             });
 
           if (likedCards.length) {
