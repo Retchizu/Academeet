@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, FlatList, Image } from "react-native"; // Import Image
 import { useNavigation } from "@react-navigation/native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { SVGprevious } from "../misc/loadSVG";
 import { SvgXml } from "react-native-svg";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { loadFont } from "../misc/loadFont";
+import { SVGprevious } from "../misc/loadSVG";
 
 // Import images
-import img1 from "../misc/ErlXXRich.jpg";
-import img2 from "../misc/Ret.png";
-import img3 from "../misc/Romel.jpg";
-import img4 from "../misc/Keb.png";
+import img1 from "../assets/Tito.jpg";
+import img2 from "../assets/Tita.jpg";
+import img3 from "../assets/Romy.jpg";
+import img4 from "../assets/kebong.jpg";
 
 const DevelopersScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -29,7 +28,7 @@ const DevelopersScreen = () => {
       name: "Baltazar, Richmond",
       language: "JavaScript, Typescript",
       position: "Lead Programmer | Backend Developer",
-      image: img2, // Assign the correct image source
+      image: img2,
     },
     {
       name: "De leon, Erlyn",
@@ -52,7 +51,7 @@ const DevelopersScreen = () => {
   ];
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.header}>
         <SvgXml
           xml={SVGprevious}
@@ -63,31 +62,26 @@ const DevelopersScreen = () => {
         />
         <Text style={styles.headerText}>developers</Text>
       </View>
-      <View style={styles.appearanceContainer}>
+
+      <View style={styles.developersContainer}>
         <FlatList
           data={developersData}
-          keyExtractor={(item, index) => index.toString()} // Add keyExtractor
+          keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
             <View style={styles.developerContainer}>
-              <Image
-                source={item.image}
-                style={{
-                  width: 100,
-                  height: 100,
-                  borderRadius: 20,
-                  margin: 10,
-                }}
-              />
-              <View style={{ flex: 1 }}>
+              <View style={styles.imageContainer}>
+                <Image source={item.image} style={styles.image} />
+              </View>
+              <View style={styles.textContainer}>
                 <Text style={styles.developerName}>{item.name}</Text>
-                <Text style={styles.developerposition}>{item.position}</Text>
+                <Text style={styles.developerPosition}>{item.position}</Text>
                 <Text style={styles.developerLanguage}>{item.language}</Text>
               </View>
             </View>
           )}
         />
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -95,12 +89,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#023E8A",
+    paddingHorizontal: wp(2),
   },
   header: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: hp(5),
-    paddingHorizontal: hp(1),
+    marginTop: hp(2),
   },
   previousIcon: {
     marginLeft: wp(2),
@@ -114,12 +108,20 @@ const styles = StyleSheet.create({
     paddingBottom: hp(5),
     paddingLeft: wp(15),
   },
+  developersContainer: {
+    flex: 1,
+    backgroundColor: "#0077B6",
+    borderRadius: hp(3),
+    paddingVertical: hp(-1),
+    paddingHorizontal: wp(2),
+    marginTop: hp(-2),
+    marginBottom: hp(2),
+  },
   developerContainer: {
     flexDirection: "row",
     marginVertical: hp("1%"),
-    padding: 10,
     backgroundColor: "#0077B6",
-    borderRadius: 10,
+    borderRadius: hp(10),
     alignItems: "center",
   },
   developerName: {
@@ -134,20 +136,24 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     paddingBottom: hp(2),
   },
-  developerposition: {
+  developerPosition: {
     fontSize: wp(3.5),
     fontFamily: "lato-regular",
     padding: 2.5,
     color: "#FFFFFF",
     paddingBottom: hp(1),
   },
-  appearanceContainer: {
-    marginHorizontal: 20,
-    padding: 15,
-    borderRadius: 30,
-    backgroundColor: "#0077B6",
-    marginBottom: hp("10"),
-    paddingTop: hp(2),
+  imageContainer: {
+    marginRight: wp(2),
+  },
+  textContainer: {
+    flexDirection: "column",
+  },
+  image: {
+    width: 100,
+    height: 100,
+    borderRadius: 20,
+    margin: 10,
   },
 });
 
