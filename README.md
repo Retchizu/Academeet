@@ -141,7 +141,7 @@
       <div style="text-align: center;">
         <b>𝖱𝗂𝖼𝗁𝗆𝗈𝗇𝖽 𝖡𝖺𝗅𝗍𝖺𝗓𝖺𝗋</b><br>
         <b>𝖱𝗈𝗅𝖾:</b> 𝖫𝖾𝖺𝖽 𝖯𝗋𝗈𝗀𝗋𝖺𝗆𝗆𝖾𝗋<br>
-        <b>𝖯𝗋𝖾𝖿𝖾𝗋𝗋𝖾𝖽 𝖫𝖺𝗇𝗀𝗎𝖺𝗀𝖾:</b> TypeScript, JavaScript
+        <b>𝖯𝗋𝖾𝖿𝖾𝗋𝗋𝖾𝖽 𝖫𝖺𝗇𝗀𝗎𝖺𝗀𝖾:</b> 𝖡𝖺𝖼𝗄𝖾𝗇𝖽, TypeScript, JavaScript
       </div>
     </div>
     <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">

@@ -140,6 +140,9 @@ const App = () => (
           <Stack.Screen name="ReminderScreen" component={ReminderScreen} />
           <Stack.Screen name="LogInScreen" component={LoginScreen} />
           <Stack.Screen name="PendingScreen" component={PendingScreen} />
+          <Stack.Screen name="SettingScreen" component={SettingScreen} />
+          <Stack.Screen name="DevelopersScreen" component={DevelopersScreen} />
+          <Stack.Screen name="AboutAppScreen" component={AboutAppScreen} />
 
           <Stack.Screen name="YearLevelScreen" component={YearLevelScreen} />
           <Stack.Screen

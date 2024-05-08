@@ -17,6 +17,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useUserContext } from "../context/UserContext";
 import { db, storage } from "../firebaseConfig";
 import { SvgXml } from "react-native-svg";
+import { SVGprevious, reminderSVG } from "../misc/loadSVG";
 import { SVGLogo, pendingSVG, settingSVG } from "../misc/loadSVG";
 
 const ProfileScreen = () => {
@@ -154,7 +155,7 @@ const ProfileScreen = () => {
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => {
-            console.log("clicked pending ");
+            navigation.navigate("PendingScreen")
           }}
         >
           <SvgXml xml={pendingSVG} style={styles.svgIcon} />
@@ -162,7 +163,7 @@ const ProfileScreen = () => {
         <Text style={styles.headerTitle}>academeet</Text>
         <TouchableOpacity
           onPress={() => {
-            console.log("Clicked settings");
+            navigation.navigate("SettingScreen");
           }}
         >
           <SvgXml xml={settingSVG} style={styles.svgIcon} />
