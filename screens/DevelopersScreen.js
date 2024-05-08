@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, FlatList, Image } from "react-native"; // Import Image
+import { StyleSheet, Text, View, FlatList, Image } from "react-native"; 
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SVGprevious } from "../misc/loadSVG";
@@ -9,8 +9,7 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { loadFont } from "../misc/loadFont";
-
-// Import images
+ 
 import img1 from "../misc/ErlXXRich.jpg";
 import img2 from "../misc/Ret.png";
 import img3 from "../misc/Romel.jpg";
@@ -29,7 +28,7 @@ const DevelopersScreen = () => {
       name: "Baltazar, Richmond",
       language: "JavaScript, Typescript",
       position: "Lead Programmer",
-      image: img2, // Assign the correct image source
+      image: img2,
     },
     {
       name: "De leon, Erlyn",

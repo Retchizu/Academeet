@@ -160,13 +160,15 @@ const styles = StyleSheet.create({
   imageContainer: {
     marginTop: hp(5),
     position: "relative",
+    justifyContent: "center",
+    alignItems: "center",
   },
   image: {
     position: "absolute",
-    top: wp(13.6),
-    left: wp(6.1),
-    width: wp(75),
-    height: hp(40),
-    borderRadius: 10,
+    width: hp(35),
+    height: hp(35),
+    marginBottom: hp(10),
+    borderRadius: hp(4),
+    backgroundColor: "red",
   },
 });
