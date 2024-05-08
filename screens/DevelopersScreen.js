@@ -28,7 +28,7 @@ const DevelopersScreen = () => {
     {
       name: "Baltazar, Richmond",
       language: "JavaScript, Typescript",
-      position: "Lead Programmer",
+      position: "Lead Programmer | Backend Developer",
       image: img2, // Assign the correct image source
     },
     {
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
   previousIcon: {
     marginLeft: wp(2),
     marginRight: wp(5),
-    marginBottom: hp(4)
+    marginBottom: hp(4),
   },
   headerText: {
     fontSize: wp(7),
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     backgroundColor: "#0077B6",
     marginBottom: hp("10"),
-    paddingTop: hp(2)
+    paddingTop: hp(2),
   },
 });
 

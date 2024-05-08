@@ -97,7 +97,8 @@ const LoginScreen = () => {
       } catch (error) {
         Toast.show({
           type: "error",
-          text1: error.message,
+          text1: "Error signing in",
+          text2: error.message,
           visibilityTime: 3000,
         });
       } finally {

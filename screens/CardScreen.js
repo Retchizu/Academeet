@@ -28,6 +28,7 @@ import { useAcademeetUserContext } from "../context/AcademeetUserContext";
 import { useUserContext } from "../context/UserContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { filterUsersByInterests } from "../methods/exhaustiveAlgorithm";
+const defaultProfilePicture = require("../assets/default_profile_pic.jpg");
 
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
@@ -52,7 +53,8 @@ const CardScreen = () => {
       const docs = await docRef.get();
       const fetchingList = [];
       docs.forEach((doc) => {
-        if (doc.data().userName !== user.userName) {
+        const { fullName } = doc.data();
+        if (doc.data().userName !== user.userName && fullName) {
           fetchingList.push(doc.data());
         }
       });
@@ -183,7 +185,11 @@ const CardScreen = () => {
               <View style={styles.imageContainer}>
                 <Image
                   style={styles.image}
-                  source={{ uri: item.imageUri }}
+                  source={
+                    item.imageUri
+                      ? { uri: item.imageUri }
+                      : defaultProfilePicture
+                  }
                   onLoadEnd={() => setImagesLoaded(true)}
                 />
                 {!imagesLoaded && (
@@ -225,8 +231,6 @@ const CardScreen = () => {
     });
   };
 
-
-  console.log(user.userLikedProfile);
   useEffect(() => {
     const likedCardsToDatabase = async () => {
       try {
@@ -235,7 +239,7 @@ const CardScreen = () => {
             .collection("User")
             .doc(user.userName)
             .update({
-              userLikedProfile: user.userLikedProfile.length ? [...user.userLikedProfile, ...likedCards] : [...likedCards],
+              userLikedProfile: [...user.userLikedProfile, ...likedCards],
             });
 
           if (likedCards.length) {
@@ -265,7 +269,16 @@ const CardScreen = () => {
         </TouchableOpacity>
         <Text style={styles.headerTitle}>academeet</Text>
         <TouchableOpacity
-          onPress={navigation.navigate("SettingScreen")}
+          onPress={async () => {
+            auth.signOut();
+            await AsyncStorage.clear();
+            navigation.dispatch(
+              CommonActions.reset({
+                index: 1,
+                routes: [{ name: "LogInScreen" }],
+              })
+            );
+          }}
         >
           <SvgXml xml={settingSVG} style={styles.svgIcon} />
         </TouchableOpacity>

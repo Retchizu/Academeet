@@ -67,7 +67,7 @@ const ReminderScreen = () => {
         });
       Toast.show({
         type: "success",
-        text1: "Image Uploaded Successfully",
+        text1: "Done Uploading Profile",
         visibilityTime: 3000,
       });
       navigation.dispatch(
@@ -79,7 +79,7 @@ const ReminderScreen = () => {
     } catch (error) {
       Toast.show({
         type: "error",
-        text1: "Error Uploading Image",
+        text1: "Please upload your profile screen",
         visibilityTime: 3000,
       });
     }

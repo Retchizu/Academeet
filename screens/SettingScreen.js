@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { loadFont } from "../misc/loadFont";
-import { useNavigation } from "@react-navigation/native";
 import { SvgXml } from "react-native-svg";
 import { SVGprevious, reminderSVG } from "../misc/loadSVG";
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+import { auth } from "../firebaseConfig";
+import { CommonActions, useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Toast from "react-native-toast-message";
 
 const SettingScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -33,6 +39,29 @@ const SettingScreen = () => {
     },
   ];
 
+  const signOut = async () => {
+    try {
+      await auth.signOut();
+      await AsyncStorage.clear();
+      navigation.dispatch(
+        CommonActions.navigate({
+          name: "LogInScreen",
+        })
+      );
+      Toast.show({
+        type: "success",
+        text1: "Log out sucessfully",
+        visibilityTime: 3000,
+      });
+    } catch (error) {
+      Toast.show({
+        type: "error",
+        text1: "Log out error, try again later",
+        text2: `${error.message}`,
+        visibilityTime: 3000,
+      });
+    }
+  };
   const handleChoicesFunctionality = (key) => {
     switch (key) {
       case 1:
@@ -42,6 +71,10 @@ const SettingScreen = () => {
         break;
       case 3:
         navigation.navigate("AboutAppScreen");
+        break;
+      case 4:
+        signOut();
+
         break;
       default:
         break;
