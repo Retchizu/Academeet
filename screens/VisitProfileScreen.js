@@ -52,8 +52,8 @@ const VisitProfileScreen = ({ route }) => {
           <Text style={styles.headingText}>Personal Information</Text>
           <View style={styles.personalInfoContainer}>
             <View style={styles.infoContainer}>
-              <Text style={styles.infoText}>Email:</Text>
-              <Text style={styles.sectionText}>{param.user.email}</Text>
+              <Text style={styles.infoText}>Username:</Text>
+              <Text style={styles.sectionText}>{param.user.userName}</Text>
             </View>
             <View style={styles.infoContainer}>
               <Text style={styles.infoText}>Year Level:</Text>

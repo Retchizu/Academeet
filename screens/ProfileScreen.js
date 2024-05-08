@@ -196,8 +196,8 @@ const ProfileScreen = () => {
           <Text style={styles.headingText}>Personal Information</Text>
           <View style={styles.personalInfoContainer}>
             <View style={styles.infoContainer}>
-              <Text style={styles.infoText}>Email:</Text>
-              <Text style={styles.sectionText}>{user.email}</Text>
+              <Text style={styles.infoText}>Username:</Text>
+              <Text style={styles.sectionText}>{user.userName}</Text>
             </View>
             <View style={styles.infoContainer}>
               <Text style={styles.infoText}>Year Level:</Text>
