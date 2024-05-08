@@ -19,6 +19,7 @@ import { db, storage } from "../firebaseConfig";
 import { SvgXml } from "react-native-svg";
 import { SVGprevious, reminderSVG } from "../misc/loadSVG";
 import { SVGLogo, pendingSVG, settingSVG } from "../misc/loadSVG";
+import Toast from "react-native-toast-message";
 
 const ProfileScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -59,35 +60,40 @@ const ProfileScreen = () => {
     setShowModal(false);
   };
 
-  const toggleTrait = (trait) => {
+  const toggleTrait = async (trait) => {
     const isTraitSelected = user.selectedTrait.includes(trait);
 
     if (isTraitSelected && user.selectedTrait.length === 1) {
-
       putAttribute("selectedTrait", []);
-    } else if ((isTraitSelected && user.selectedTrait.length > 1) || (!isTraitSelected && user.selectedTrait.length < 5)) {
+    } else if (
+      (isTraitSelected && user.selectedTrait.length > 1) ||
+      (!isTraitSelected && user.selectedTrait.length < 5)
+    ) {
       const updatedTraits = isTraitSelected
         ? user.selectedTrait.filter((item) => item !== trait)
         : [...user.selectedTrait, trait];
-  
+
       putAttribute("selectedTrait", updatedTraits);
     }
   };
 
-  const toggleTopic = (topic) => {
+  const toggleTopic = async (topic) => {
     const isTopicSelected = user.userTopic.includes(topic);
-  
+
     if (isTopicSelected && user.userTopic.length === 1) {
       putAttribute("userTopic", []);
-    } else if ((isTopicSelected && user.userTopic.length > 1) || (!isTopicSelected && user.userTopic.length < 5)) {
+    } else if (
+      (isTopicSelected && user.userTopic.length > 1) ||
+      (!isTopicSelected && user.userTopic.length < 5)
+    ) {
       const updatedTopics = isTopicSelected
         ? user.userTopic.filter((item) => item !== topic)
         : [...user.userTopic, topic];
-  
+
       putAttribute("userTopic", updatedTopics);
     }
   };
-  
+
   const personalityTraits = [
     { key: 1, label: "Curious" },
     { key: 2, label: "Creative" },
@@ -116,7 +122,7 @@ const ProfileScreen = () => {
     { key: 25, label: "Responsible" },
     { key: 26, label: "Flexible" },
     { key: 27, label: "Proactive" },
-    { key: 28, label: "Resourceful" }, 
+    { key: 28, label: "Resourceful" },
   ];
 
   const topicsLanguage = [
@@ -127,25 +133,25 @@ const ProfileScreen = () => {
     { key: 5, label: "Ruby" },
     { key: 6, label: "Swift" },
     { key: 7, label: "Artificial Intelligence" },
-    { key: 8, label: "Data Science" }, 
-    { key: 9, label: "Machine Learning" }, 
-    { key: 10, label: "Cybersecurity" }, 
+    { key: 8, label: "Data Science" },
+    { key: 9, label: "Machine Learning" },
+    { key: 10, label: "Cybersecurity" },
     { key: 11, label: "Web Development" },
-    { key: 12, label: "Mobile App Development" }, 
-    { key: 13, label: "Blockchain" }, 
-    { key: 14, label: "Internet of Things" }, 
-    { key: 15, label: "Cloud Computing" }, 
+    { key: 12, label: "Mobile App Development" },
+    { key: 13, label: "Blockchain" },
+    { key: 14, label: "Internet of Things" },
+    { key: 15, label: "Cloud Computing" },
     { key: 16, label: "Augmented Reality/ Virtual Reality" },
     { key: 17, label: "Quantum Computing" },
-    { key: 18, label: "Agile Methodology" }, 
-    { key: 19, label: "DevOps" }, 
+    { key: 18, label: "Agile Methodology" },
+    { key: 19, label: "DevOps" },
     { key: 20, label: "Software Testing" },
     { key: 21, label: "Software Architecture" },
-    { key: 22, label: "Finance & Technology" }, 
-    { key: 23, label: "Healthcare & Technology" }, 
-    { key: 24, label: "Gaming & Technology" }, 
-    { key: 25, label: "Education Technology" }, 
-    { key: 26, label: "E-commerce & Technology" }, 
+    { key: 22, label: "Finance & Technology" },
+    { key: 23, label: "Healthcare & Technology" },
+    { key: 24, label: "Gaming & Technology" },
+    { key: 25, label: "Education Technology" },
+    { key: 26, label: "E-commerce & Technology" },
   ];
 
   personalityTraits.sort((a, b) => a.label.localeCompare(b.label));
@@ -155,7 +161,7 @@ const ProfileScreen = () => {
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("PendingScreen")
+            navigation.navigate("PendingScreen");
           }}
         >
           <SvgXml xml={pendingSVG} style={styles.svgIcon} />
@@ -298,7 +304,25 @@ const ProfileScreen = () => {
               ))}
               <TouchableOpacity
                 style={styles.closeButton}
-                onPress={() => setShowTraitModal(false)}
+                onPress={async () => {
+                  try {
+                    await db.collection("User").doc(user.userName).update({
+                      selectedTrait: user.selectedTrait,
+                    });
+                    Toast.show({
+                      type: "success",
+                      text1: "Updated successfully",
+                    });
+                  } catch (error) {
+                    Toast.show({
+                      type: "error",
+                      text1: "Error updating, try again later",
+                      text2: error.message,
+                    });
+                  }
+
+                  setShowTraitModal(false);
+                }}
               >
                 <Text style={styles.closeButtonText}>Save</Text>
               </TouchableOpacity>
@@ -340,7 +364,24 @@ const ProfileScreen = () => {
               ))}
               <TouchableOpacity
                 style={styles.closeButton}
-                onPress={() => setShowTopicModal(false)}
+                onPress={async () => {
+                  try {
+                    await db.collection("User").doc(user.userName).update({
+                      userTopic: user.userTopic,
+                    });
+                    Toast.show({
+                      type: "success",
+                      text1: "Updated successfully",
+                    });
+                  } catch (error) {
+                    Toast.show({
+                      type: "error",
+                      text1: "Error updating, try again later",
+                      text2: error.message,
+                    });
+                  }
+                  setShowTopicModal(false);
+                }}
               >
                 <Text style={styles.closeButtonText}>Save</Text>
               </TouchableOpacity>
@@ -348,7 +389,6 @@ const ProfileScreen = () => {
           </View>
         </View>
       </Modal>
-
     </View>
   );
 };
@@ -507,7 +547,6 @@ const styles = StyleSheet.create({
     borderRadius: wp(2),
     paddingHorizontal: wp(2),
     backgroundColor: "#FF6D00",
-    
   },
   modalTraitContainer: {
     backgroundColor: "#0077B6",
