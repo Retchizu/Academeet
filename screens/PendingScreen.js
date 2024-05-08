@@ -15,11 +15,13 @@ import {
 } from "react-native-responsive-screen";
 import { pendingHeaderBack } from "../misc/loadSVG";
 import { db } from "../firebaseConfig";
+import { useNavigation } from "@react-navigation/native";
 
 const PendingScreen = () => {
+  const navigation = useNavigation();
   const { user } = useUserContext(); // Get user data from the context
   const handleBackPress = () => {
-    console.log("Back button pressed");
+    navigation.goBack();
   };
 
   /*  const isPendingAccepted = async () => {

@@ -265,16 +265,7 @@ const CardScreen = () => {
         </TouchableOpacity>
         <Text style={styles.headerTitle}>academeet</Text>
         <TouchableOpacity
-          onPress={async () => {
-            auth.signOut();
-            await AsyncStorage.clear();
-            navigation.dispatch(
-              CommonActions.reset({
-                index: 1,
-                routes: [{ name: "LogInScreen" }],
-              })
-            );
-          }}
+          onPress={navigation.navigate("SettingScreen")}
         >
           <SvgXml xml={settingSVG} style={styles.svgIcon} />
         </TouchableOpacity>

@@ -45,7 +45,7 @@ const DevelopersScreen = () => {
     },
     {
       name: "Petracorta, Romnoel",
-      language: "Python, C#",
+      language: "GDScript, Python, C#",
       position: "UI/UX Designer | Programmer",
       image: img3,
     },

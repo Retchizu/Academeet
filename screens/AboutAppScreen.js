@@ -30,7 +30,7 @@ const AboutAppScreen = () => {
           width={45}
           height={45}
           style={styles.previousIcon}
-          onPress={() => navigation.goBack()} // Add onPress here
+          onPress={() => navigation.goBack()}
         />
         <Text style={styles.headerText}>about app</Text>
       </View>
@@ -44,15 +44,15 @@ const AboutAppScreen = () => {
           />
         </View>
         <Text style={styles.text}>
-          lorem epsum, hardcoded shizz wala pako maisim Jeez Rick, oh jeez dang
-          Nobody exists on purpose. Nobody belongs anywhere. When you are an
-          asshole, it doesn't matter how right you are. Nobody wants to give
-          you the satisfaction. Well, then get your shit together, get it all
-          together, and put it in a backpack, all your shit, so it's together.
-          And if you gotta take it somewhere, take it somewhere, you know, take
-          it to the shit store and sell it, or put it in the shit museum. I
-          don't care what you do, you just gotta get it together. Get your shit
-          together.
+          Welcome to Academeet, where connecting with fellow students who share
+          your academic interests is effortless. With Academeet, discover
+          like-minded peers and engage in meaningful learning experiences
+          together. Our app utilizes an exhaustive search algorithm to match you
+          with students who have similar topics of interest, ensuring every
+          connection is relevant and valuable. Whetger you're seeking study
+          partners, projec collaborators, or simply want to expand your academic
+          network, Academeet is here to facilitate your journey. Embrace the
+          opportunity to meet and learn simultaneously with Academeet.
         </Text>
       </View>
     </SafeAreaView>
@@ -73,14 +73,14 @@ const styles = StyleSheet.create({
   previousIcon: {
     marginLeft: wp(2),
     marginRight: wp(5),
-    marginBottom: hp(1)
+    marginBottom: hp(1),
   },
   headerText: {
     fontSize: wp(7),
     fontFamily: "lato-bold",
     color: "#FF9E00",
     paddingBottom: hp(2),
-    paddingLeft: wp(15)
+    paddingLeft: wp(15),
   },
   logoContainer: {
     flexDirection: "row",
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: "lato-light",
-    fontSize: hp(2),
+    fontSize: hp(2.2),
     color: "#FFFFFF",
     marginBottom: hp(2),
     textAlign: "justify",

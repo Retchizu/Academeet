@@ -2,13 +2,9 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { loadFont } from "../misc/loadFont";
 import { useNavigation } from "@react-navigation/native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { SVGprevious } from "../misc/loadSVG";
 import { SvgXml } from "react-native-svg";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
+import { SVGprevious, reminderSVG } from "../misc/loadSVG";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 
 const SettingScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -32,8 +28,8 @@ const SettingScreen = () => {
       name: "About the app",
     },
     {
-        key: 4,
-        name: "Log out",
+      key: 4,
+      name: "Log out",
     },
   ];
 
@@ -53,12 +49,11 @@ const SettingScreen = () => {
   };
 
   const goBack = () => {
-    console.log("Going back...");
     navigation.goBack();
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={goBack} style={styles.svgContainer}>
           <SvgXml
@@ -82,7 +77,7 @@ const SettingScreen = () => {
           </TouchableOpacity>
         ))}
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -94,8 +89,8 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: hp(5), // Adjust as needed
-    paddingHorizontal: hp(2), // Adjust as needed
+    marginTop: hp(5),
+    paddingHorizontal: hp(2),
   },
   svgContainer: {
     position: "absolute",
@@ -104,27 +99,26 @@ const styles = StyleSheet.create({
   previousIcon: {
     marginLeft: wp(2),
     marginRight: wp(5),
-    marginBottom: hp(2)
+    marginBottom: hp(2),
   },
   headerText: {
-    fontSize: wp(7), // Adjust as needed
+    fontSize: wp(7),
     fontFamily: "lato-bold",
     color: "#FF9E00",
     paddingLeft: wp(35),
-    paddingBottom: hp(3)
+    paddingBottom: hp(3),
   },
   settingContainer: {
-    marginVertical: hp(1), // Adjust as needed
+    marginVertical: hp(1),
     borderBottomColor: "#10ABD5",
     borderBottomWidth: wp(0.5),
-    paddingHorizontal: wp(2), // Adjust as needed
+    paddingHorizontal: wp(2),
     justifyContent: "flex-start",
     paddingBottom: hp(1),
-
   },
-  settingText: { 
+  settingText: {
     fontFamily: "lato-regular",
-    fontSize: wp(4.5), 
+    fontSize: wp(4.5),
     color: "#FFFFFF",
   },
   mapContainer: {
@@ -135,7 +129,7 @@ const styles = StyleSheet.create({
     borderWidth: hp(0.1),
     borderColor: "#0077B6",
     padding: hp(1),
-    alignSelf: "center", // Horizontally center the container
+    alignSelf: "center",
   },
 });
 
