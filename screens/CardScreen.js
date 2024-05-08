@@ -264,9 +264,7 @@ const CardScreen = () => {
           <SvgXml xml={pendingSVG} style={styles.svgIcon} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>academeet</Text>
-        <TouchableOpacity
-          onPress={navigation.navigate("SettingScreen")}
-        >
+        <TouchableOpacity onPress={() => navigation.navigate("SettingScreen")}>
           <SvgXml xml={settingSVG} style={styles.svgIcon} />
         </TouchableOpacity>
       </View>

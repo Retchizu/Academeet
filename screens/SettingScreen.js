@@ -4,7 +4,13 @@ import { loadFont } from "../misc/loadFont";
 import { useNavigation } from "@react-navigation/native";
 import { SvgXml } from "react-native-svg";
 import { SVGprevious, reminderSVG } from "../misc/loadSVG";
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import { auth } from "../firebaseConfig";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { CommonActions } from "@react-navigation/native";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 
 const SettingScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -42,6 +48,22 @@ const SettingScreen = () => {
         break;
       case 3:
         navigation.navigate("AboutAppScreen");
+        break;
+      case 4:
+        auth
+          .signOut()
+          .then(async () => {
+            await AsyncStorage.clear();
+            navigation.dispatch(
+              CommonActions.reset({
+                index: 1,
+                routes: [{ name: "LogInScreen" }],
+              })
+            );
+          })
+          .catch((error) => {
+            console.error("Error signing out: ", error);
+          });
         break;
       default:
         break;
