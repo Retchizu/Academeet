@@ -22,7 +22,11 @@ import {
 } from "react-native-safe-area-context";
 import { SvgXml } from "react-native-svg";
 import { pendingSVG, settingSVG } from "../misc/loadSVG";
-import { useNavigation, CommonActions } from "@react-navigation/native";
+import {
+  useNavigation,
+  CommonActions,
+  useFocusEffect,
+} from "@react-navigation/native";
 import { auth, db } from "../firebaseConfig";
 import { useAcademeetUserContext } from "../context/AcademeetUserContext";
 import { useUserContext } from "../context/UserContext";
@@ -41,7 +45,7 @@ const CardScreen = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
-  const { setAcademeetUsersList } = useAcademeetUserContext();
+  const { setAcademeetUsersList, academeetUsers } = useAcademeetUserContext();
   const [imagesLoaded, setImagesLoaded] = useState(false); // State to track if images are loaded
   const { user, putItemToUserLikedProfile } = useUserContext();
   const [userCards, setUserCards] = useState([]);
@@ -84,10 +88,9 @@ const CardScreen = () => {
       console.log(error.message);
     }
   };
-
+  console.log("user topic from cardscreen", user.userTopic);
   useEffect(() => {
     fetchUserFromDatabase();
-
     loadFont().then(() => setFontLoaded(true));
   }, []);
 
@@ -260,6 +263,23 @@ const CardScreen = () => {
       setLikedCards([]);
     }
   }, [likedCards]);
+
+  console.log("all users length", academeetUsers.length);
+  console.log("card length", userCards.length);
+  useEffect(() => {
+    const filteredFetchingList = academeetUsers.filter(
+      (item) =>
+        !user.userLikedProfile.some(
+          (profile) => item.userName === profile.userName
+        )
+    );
+    const { filteredUsers } = filterUsersByInterests(
+      filteredFetchingList,
+      user.userTopic
+    );
+    setUserCards(filteredUsers);
+    setCurrentIndex(0);
+  }, [user.userTopic, user.userTopic.length]);
 
   return (
     <SafeAreaView style={styles.container}>

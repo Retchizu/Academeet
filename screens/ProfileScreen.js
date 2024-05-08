@@ -59,7 +59,7 @@ const ProfileScreen = () => {
     setBioText("");
     setShowModal(false);
   };
-
+  console.log(user.userTopic);
   const toggleTrait = async (trait) => {
     const isTraitSelected = user.selectedTrait.includes(trait);
 
@@ -303,26 +303,40 @@ const ProfileScreen = () => {
                 </TouchableOpacity>
               ))}
               <TouchableOpacity
-                style={styles.closeButton}
-                onPress={async () => {
-                  try {
-                    await db.collection("User").doc(user.userName).update({
-                      selectedTrait: user.selectedTrait,
-                    });
-                    Toast.show({
-                      type: "success",
-                      text1: "Updated successfully",
-                    });
-                  } catch (error) {
-                    Toast.show({
-                      type: "error",
-                      text1: "Error updating, try again later",
-                      text2: error.message,
-                    });
-                  }
+                style={[
+                  styles.closeButton,
+                  {
+                    backgroundColor: !user.selectedTrait.length
+                      ? "gray"
+                      : "#FF9E00",
+                  },
+                ]}
+                onPress={
+                  !user.selectedTrait.length
+                    ? () => {}
+                    : async () => {
+                        try {
+                          await db
+                            .collection("User")
+                            .doc(user.userName)
+                            .update({
+                              selectedTrait: user.selectedTrait,
+                            });
+                          Toast.show({
+                            type: "success",
+                            text1: "Updated successfully",
+                          });
+                        } catch (error) {
+                          Toast.show({
+                            type: "error",
+                            text1: "Error updating, try again later",
+                            text2: error.message,
+                          });
+                        }
 
-                  setShowTraitModal(false);
-                }}
+                        setShowTraitModal(false);
+                      }
+                }
               >
                 <Text style={styles.closeButtonText}>Save</Text>
               </TouchableOpacity>
@@ -363,25 +377,39 @@ const ProfileScreen = () => {
                 </TouchableOpacity>
               ))}
               <TouchableOpacity
-                style={styles.closeButton}
-                onPress={async () => {
-                  try {
-                    await db.collection("User").doc(user.userName).update({
-                      userTopic: user.userTopic,
-                    });
-                    Toast.show({
-                      type: "success",
-                      text1: "Updated successfully",
-                    });
-                  } catch (error) {
-                    Toast.show({
-                      type: "error",
-                      text1: "Error updating, try again later",
-                      text2: error.message,
-                    });
-                  }
-                  setShowTopicModal(false);
-                }}
+                style={[
+                  styles.closeButton,
+                  {
+                    backgroundColor: !user.userTopic.length
+                      ? "gray"
+                      : "#FF9E00",
+                  },
+                ]}
+                onPress={
+                  !user.userTopic.length
+                    ? () => {}
+                    : async () => {
+                        try {
+                          await db
+                            .collection("User")
+                            .doc(user.userName)
+                            .update({
+                              userTopic: user.userTopic,
+                            });
+                          Toast.show({
+                            type: "success",
+                            text1: "Updated successfully",
+                          });
+                        } catch (error) {
+                          Toast.show({
+                            type: "error",
+                            text1: "Error updating, try again later",
+                            text2: error.message,
+                          });
+                        }
+                        setShowTopicModal(false);
+                      }
+                }
               >
                 <Text style={styles.closeButtonText}>Save</Text>
               </TouchableOpacity>
@@ -573,7 +601,6 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
   },
   closeButton: {
-    backgroundColor: "#FF9E00",
     paddingVertical: hp(1.1),
     padding: wp(3),
     borderRadius: wp(5),

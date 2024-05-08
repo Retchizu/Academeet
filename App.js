@@ -28,6 +28,7 @@ import LoginScreen from "./screens/LogInScreen";
 import { UserContextProvider } from "./context/UserContext";
 import Toast from "react-native-toast-message";
 import { AcademeetUserContextProvider } from "./context/AcademeetUserContext";
+import VisitProfileScreen from "./screens/VisitProfileScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -143,6 +144,10 @@ const App = () => (
           <Stack.Screen name="SettingScreen" component={SettingScreen} />
           <Stack.Screen name="DevelopersScreen" component={DevelopersScreen} />
           <Stack.Screen name="AboutAppScreen" component={AboutAppScreen} />
+          <Stack.Screen
+            name="VisitProfileScreen"
+            component={VisitProfileScreen}
+          />
 
           <Stack.Screen name="YearLevelScreen" component={YearLevelScreen} />
           <Stack.Screen

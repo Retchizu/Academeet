@@ -86,7 +86,14 @@ const PendingScreen = () => {
         <ScrollView contentContainerStyle={styles.profileList}>
           {user.userLikedProfile ? (
             user.userLikedProfile.map((user, index) => (
-              <View key={user.userName} style={styles.profileContainer}>
+              <TouchableOpacity
+                key={user.userName}
+                style={styles.profileContainer}
+                activeOpacity={0.8}
+                onPress={() =>
+                  navigation.navigate("VisitProfileScreen", { user })
+                }
+              >
                 <Image
                   source={{ uri: user.imageUri }}
                   style={styles.profileImage}
@@ -94,7 +101,7 @@ const PendingScreen = () => {
                 <View style={styles.textContainer}>
                   <Text style={styles.profileName}>{user.fullName}</Text>
                 </View>
-              </View>
+              </TouchableOpacity>
             ))
           ) : (
             <>
@@ -135,18 +142,19 @@ const styles = StyleSheet.create({
   svgIcon: {},
   scrollViewContainer: {
     flex: 1,
-    padding: hp(2),
+    marginHorizontal: wp(5),
   },
   profileList: {
-    alignItems: "center",
-    justifyContent: "center",
+    flex: 1,
   },
   profileContainer: {
+    backgroundColor: "#0077B6",
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: hp(2),
+    marginVertical: hp(1),
     paddingHorizontal: hp(2),
-    marginRight: hp(4),
+    paddingVertical: hp(2),
+    borderRadius: wp(6),
   },
   profileImage: {
     borderRadius: hp(2),
